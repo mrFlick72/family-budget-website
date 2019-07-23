@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: family-budget-website
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      fail-fast: true
+  thymeleaf:
+    prefix: classpath:/static/
+
+server:
+  servlet:
+    context-path: /site
+
+#logging:
+#  level:
+#    org.springframework.security: DEBUG

@@ -9,8 +9,8 @@ import BudgetExpenseChartPage from "./page/BudgetExpenseChartPage";
 import {MessageRepository} from "../domain/repository/MessageRepository";
 
 const links = {
-    logOut: "/site/logout",
-    home: "/site/index"
+    logOut: "/family-budget/logout",
+    home: "/family-budget/index"
 };
 
 export default class SpentBudgetApp extends React.Component {

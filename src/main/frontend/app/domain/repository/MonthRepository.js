@@ -1,7 +1,7 @@
 export class MonthRepository {
 
     getMonthRegistry() {
-        return fetch("/site/month", {
+        return fetch("/family-budget/month", {
             headers: {
                 'Accept': 'application/json'
             },

@@ -39,6 +39,8 @@ public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
                                 currentUser.getName());
 
         if (isExpired(client.getAccessToken())) {
+            log.info("token to do refresh");
+
             refreshToken(client, currentUser);
         }
 

@@ -13,9 +13,9 @@ export default ({links, messages, children}) => (
                 {children}
                 <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li className="nav-item active">
-                        <Link className="nav-link" to="/account">
+                        <a className="nav-link" href="/account/site/index.html">
                             <i className="fas fa-user fa-lg"></i> {messages.userProfileLabel}
-                        </Link>
+                        </a>
                     </li>
                 </ul>
                 <form action={links.logOut} method="post">

@@ -1,4 +1,4 @@
-const BUDGET_EXPENSE_ATTACHMENT_URI = (budgetExpenseId) => `/site/spent-budget-service/budget/expense/${budgetExpenseId}/attachment`
+const BUDGET_EXPENSE_ATTACHMENT_URI = (budgetExpenseId) => `/family-budget/spent-budget-service/budget/expense/${budgetExpenseId}/attachment`
 
 export class BudgetExpenseFileFileRepository {
 
@@ -15,7 +15,7 @@ export class BudgetExpenseFileFileRepository {
     }
 
     getBudgetExpenseAttachmentFile(budgetExpenseId, attachmentFileName) {
-        return fetch(`/site/spent-budget-service/budget/expense/${budgetExpenseId}/attachment/${attachmentFileName}/name`, {
+        return fetch(`/family-budget/spent-budget-service/budget/expense/${budgetExpenseId}/attachment/${attachmentFileName}/name`, {
             method: "GET",
             credentials: 'same-origin'
         }).then(resp => {
@@ -27,7 +27,7 @@ export class BudgetExpenseFileFileRepository {
     }
 
     deleteBudgetExpenseAttachment(budgetExpenseId, attachmentFileName) {
-        return fetch(`/site/spent-budget-service/budget/expense/${budgetExpenseId}/attachment/${attachmentFileName}/name`, {
+        return fetch(`/family-budget/spent-budget-service/budget/expense/${budgetExpenseId}/attachment/${attachmentFileName}/name`, {
             method: "DELETE",
             credentials: 'same-origin'
         });
@@ -37,7 +37,7 @@ export class BudgetExpenseFileFileRepository {
         let data = new FormData();
         data.append('file', fileContent);
 
-        return fetch("/site/spent-budget-service/budget-expense", {
+        return fetch("/family-budget/spent-budget-service/budget-expense", {
             method: "POST",
             body: data,
             credentials: 'same-origin'
@@ -47,7 +47,7 @@ export class BudgetExpenseFileFileRepository {
     getBudgetExpenseFile(searchCriteria, mediaType) {
         let month = searchCriteria.month;
         let year = searchCriteria.year;
-        return fetch(`/site/spent-budget-service/budget-expense?month=${month}&year=${year}`, {
+        return fetch(`/family-budget/spent-budget-service/budget-expense?month=${month}&year=${year}`, {
             method: "GET",
             headers: {
                 "Accept": mediaType

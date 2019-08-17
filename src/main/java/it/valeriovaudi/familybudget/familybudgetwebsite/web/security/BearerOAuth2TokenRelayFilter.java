@@ -8,10 +8,10 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 
 public class BearerOAuth2TokenRelayFilter extends ZuulFilter {
 
-    private final OAuth2RefreshableTokenResolver oAuth2RefreshableTokenResolver;
+    private final OAuth2TokenResolver oAuth2TokenResolver;
 
-    public BearerOAuth2TokenRelayFilter(OAuth2RefreshableTokenResolver oAuth2RefreshableTokenResolver) {
-        this.oAuth2RefreshableTokenResolver = oAuth2RefreshableTokenResolver;
+    public BearerOAuth2TokenRelayFilter(OAuth2TokenResolver oAuth2TokenResolver) {
+        this.oAuth2TokenResolver = oAuth2TokenResolver;
     }
 
     public int filterOrder() {
@@ -31,7 +31,7 @@ public class BearerOAuth2TokenRelayFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         OAuth2AuthenticationToken currentUser =
                 OAuth2AuthenticationToken.class.cast(SecurityContextHolder.getContext().getAuthentication());
-        String authorization = oAuth2RefreshableTokenResolver.tokenFor(currentUser);
+        String authorization = oAuth2TokenResolver.tokenFor(currentUser);
         ctx.addZuulRequestHeader(HttpHeaders.AUTHORIZATION, "Bearer " + authorization);
         return null;
     }

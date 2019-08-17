@@ -1,12 +1,12 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.config;
 
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.BearerOAuth2TokenRelayFilter;
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.BearerTokenInterceptor;
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.OAuth2RefreshableTokenResolver;
+import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.*;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,15 +14,26 @@ import org.springframework.web.client.RestTemplate;
 public class OAuth2ClientConfig {
 
     @Bean
-    public BearerOAuth2TokenRelayFilter bearerOAuth2TokenRelayFilter(OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-        return new BearerOAuth2TokenRelayFilter(new OAuth2RefreshableTokenResolver(oAuth2AuthorizedClientService));
+    public OAuth2TokenResolver oAuth2TokenResolver(OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+        OAuth2RefreshableTokenResolver delegate =
+                new OAuth2RefreshableTokenResolver(oAuth2AuthorizedClientService);
+
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(new SimpleRetryPolicy());
+
+        return new RetryableOAuth2RefreshableTokenResolver(delegate, retryTemplate);
+    }
+
+    @Bean
+    public BearerOAuth2TokenRelayFilter bearerOAuth2TokenRelayFilter(OAuth2TokenResolver oAuth2TokenResolver) {
+        return new BearerOAuth2TokenRelayFilter(oAuth2TokenResolver);
     }
 
     @Bean
     @LoadBalanced
-    public RestTemplate accountRestTemplate(OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+    public RestTemplate accountRestTemplate(OAuth2TokenResolver oAuth2TokenResolver) {
         return new RestTemplateBuilder()
-                .additionalInterceptors(new BearerTokenInterceptor(new OAuth2RefreshableTokenResolver(oAuth2AuthorizedClientService)))
+                .additionalInterceptors(new BearerTokenInterceptor(oAuth2TokenResolver))
                 .build();
     }
 

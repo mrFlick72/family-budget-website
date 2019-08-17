@@ -39,8 +39,7 @@ public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
                                 currentUser.getName());
 
         if (isExpired(client.getAccessToken())) {
-            log.info("token to do refresh");
-
+            log.info("token have to refresh");
             refreshToken(client, currentUser);
         }
 
@@ -87,7 +86,7 @@ public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
             return restTemplate.exchange(requestEntity, OAuth2AccessTokenResponse.class)
                     .getBody();
         } catch (OAuth2AuthorizationException e) {
-            log.error(String.format("Unable to refresh token %s", e.getMessage()));
+            log.error(String.format("Unable to refresh token %s", e.getMessage()), e);
 
             throw new OAuth2AuthenticationException(e.getError(), e);
         }

@@ -13,10 +13,10 @@ import java.io.IOException;
 
 @Slf4j
 public class BearerTokenInterceptor implements ClientHttpRequestInterceptor {
-    private final OAuth2RefreshableTokenResolver oAuth2RefreshableTokenResolver;
+    private final OAuth2TokenResolver oAuth2TokenResolver;
 
-    public BearerTokenInterceptor(OAuth2RefreshableTokenResolver oAuth2RefreshableTokenResolver) {
-        this.oAuth2RefreshableTokenResolver = oAuth2RefreshableTokenResolver;
+    public BearerTokenInterceptor(OAuth2TokenResolver oAuth2TokenResolver) {
+        this.oAuth2TokenResolver = oAuth2TokenResolver;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class BearerTokenInterceptor implements ClientHttpRequestInterceptor {
 
 
         httpRequest.getHeaders()
-                .add(HttpHeaders.AUTHORIZATION, "Bearer " + oAuth2RefreshableTokenResolver.tokenFor(currentUser));
+                .add(HttpHeaders.AUTHORIZATION, "Bearer " + oAuth2TokenResolver.tokenFor(currentUser));
 
         return execution.execute(httpRequest, bytes);
     }

@@ -3,7 +3,7 @@ import Menu from "../../component/menu/Menu";
 import YearlySpentBudgetChart from "../spent-budget/chart/YearlySpentBudgetChart";
 import {FamilyBudgetPagesConfigMap} from "../spent-budget/FamilyBudgetPagesConfigMap";
 
-const BUDGET_EXPENSE_URI = (year) => `/family-budget/spent-budget-service/budget/expense/year/${year}`;
+const BUDGET_EXPENSE_URI = (year) => `/family-budget/budget-service/budget/expense/year/${year}`;
 
 export default class BudgetExpenseChartPage extends React.Component {
 

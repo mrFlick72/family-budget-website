@@ -1,6 +1,6 @@
 const BUDGET_EXPENSE_URI = (budgetExpenseId) => budgetExpenseId ?
-    `/family-budget/spent-budget-service/budget/expense/${budgetExpenseId}` :
-    "/family-budget/spent-budget-service/budget/expense"
+    `/family-budget/budget-service/budget/expense/${budgetExpenseId}` :
+    "/family-budget/budget-service/budget/expense"
 
 const QUERY_PART = (month, year, searchTags) => `q=month=${month};year=${year};searchTag=${searchTags}`;
 

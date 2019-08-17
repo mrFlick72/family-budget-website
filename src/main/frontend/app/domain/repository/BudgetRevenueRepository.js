@@ -1,8 +1,8 @@
 const BUDGET_REVENUE_URI = (budgetRevenueId) => budgetRevenueId ?
-    `/family-budget/spent-budget-service/budget/revenue/${budgetRevenueId}` :
-    "/family-budget/spent-budget-service/budget/revenue"
+    `/family-budget/budget-service/budget/revenue/${budgetRevenueId}` :
+    "/family-budget/budget-service/budget/revenue"
 
-const budgetRevenueWith = (year) => `/family-budget/spent-budget-service/budget/revenue?q=year=${year}`
+const budgetRevenueWith = (year) => `/family-budget/budget-service/budget/revenue?q=year=${year}`
 
 export default class BudgetRevenueRepository {
 

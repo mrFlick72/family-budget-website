@@ -18,29 +18,27 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
-
 @Slf4j
 public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
 
-    private final int maxAttempt;
     private final Duration amountToSubtract;
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
-    public OAuth2RefreshableTokenResolver(int maxAttempt,
-                                          Duration amountToSubtract,
+
+    public OAuth2RefreshableTokenResolver(Duration amountToSubtract,
                                           OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-        this.maxAttempt = maxAttempt;
         this.amountToSubtract = amountToSubtract;
         this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
     }
 
     @Override
     public String tokenFor(OAuth2AuthenticationToken currentUser) {
-
         OAuth2AuthorizedClient client =
                 oAuth2AuthorizedClientService.
                         loadAuthorizedClient(currentUser.getAuthorizedClientRegistrationId(),
@@ -50,17 +48,19 @@ public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
 
         if (isExpired(client.getAccessToken())) {
             log.debug("token have to refresh");
-            refreshToken(client, currentUser, maxAttempt);
+            refreshToken(client, currentUser);
         }
-
-        return client.getAccessToken().getTokenValue();
+        return oAuth2AuthorizedClientService.
+                loadAuthorizedClient(currentUser.getAuthorizedClientRegistrationId(),
+                        currentUser.getName())
+                .getAccessToken().getTokenValue();
     }
 
 
-    private void refreshToken(OAuth2AuthorizedClient client, OAuth2AuthenticationToken currentUser, int maxAttempt) {
+    private void refreshToken(OAuth2AuthorizedClient client, OAuth2AuthenticationToken currentUser) {
         OAuth2AccessTokenResponse oAuth2AccessTokenResponse = refreshTokenClient(client);
         if (oAuth2AccessTokenResponse == null || oAuth2AccessTokenResponse.getAccessToken() == null) {
-            log.debug("refresh goes in error");
+            log.debug("refresh goes in error: oAuth2AccessTokenResponse is null");
             return;
         }
 
@@ -79,13 +79,6 @@ public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
         );
 
         oAuth2AuthorizedClientService.saveAuthorizedClient(updatedClient, currentUser);
-
-        log.debug("isExpired after resfreshing");
-        if (isExpired(oAuth2AccessTokenResponse.getAccessToken()) && maxAttempt != 0) {
-            log.debug("isExpired after resfreshing more attempts: attempt # " + maxAttempt);
-
-            refreshToken(client, currentUser, --maxAttempt);
-        }
     }
 
     private OAuth2AccessTokenResponse refreshTokenClient(OAuth2AuthorizedClient currentClient) {

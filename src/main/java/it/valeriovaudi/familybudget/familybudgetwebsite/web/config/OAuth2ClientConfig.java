@@ -5,6 +5,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -19,7 +20,9 @@ public class OAuth2ClientConfig {
                 new OAuth2RefreshableTokenResolver(oAuth2AuthorizedClientService);
 
         RetryTemplate retryTemplate = new RetryTemplate();
-        retryTemplate.setRetryPolicy(new SimpleRetryPolicy());
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
+        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
 
         return new RetryableOAuth2RefreshableTokenResolver(delegate, retryTemplate);
     }

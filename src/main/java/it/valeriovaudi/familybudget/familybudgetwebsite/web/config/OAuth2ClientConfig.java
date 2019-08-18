@@ -11,13 +11,15 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
+
 @Configuration
 public class OAuth2ClientConfig {
 
     @Bean
     public OAuth2TokenResolver oAuth2TokenResolver(OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
         OAuth2RefreshableTokenResolver delegate =
-                new OAuth2RefreshableTokenResolver(oAuth2AuthorizedClientService);
+                new OAuth2RefreshableTokenResolver(0, Duration.ZERO, oAuth2AuthorizedClientService);
 
         RetryTemplate retryTemplate = new RetryTemplate();
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);

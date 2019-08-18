@@ -16,10 +16,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.TimeUnit;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
@@ -28,15 +26,16 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @Slf4j
 public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
 
-    private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
-    
     private final int maxAttempt;
     private final Duration amountToSubtract;
+    private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
-    public OAuth2RefreshableTokenResolver(OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+    public OAuth2RefreshableTokenResolver(int maxAttempt,
+                                          Duration amountToSubtract,
+                                          OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+        this.maxAttempt = maxAttempt;
+        this.amountToSubtract = amountToSubtract;
         this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
-        maxAttempt = 3;
-        amountToSubtract = Duration.ofMinutes(1);
     }
 
     @Override

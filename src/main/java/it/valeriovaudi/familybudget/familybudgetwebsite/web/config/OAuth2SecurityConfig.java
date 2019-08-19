@@ -17,7 +17,7 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().mvcMatchers("/actuator/**").permitAll().and()
                 .authorizeRequests().anyRequest().authenticated()
-                .and().oauth2Login()
+                .and().oauth2Login().defaultSuccessUrl("/index")
                 .userInfoEndpoint()
                 .customUserType(VAuthenticatorOAuth2User.class, familyBudgetClientRegistrationId);
     }

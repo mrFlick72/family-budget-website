@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -19,6 +20,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -46,6 +48,9 @@ public class OAuth2RefreshableTokenResolver implements OAuth2TokenResolver {
 
         log.debug("client : " + client);
 
+        if (client == null) {
+            return "";
+        }
         if (isExpired(client.getAccessToken())) {
             log.debug("token have to refresh");
             refreshToken(client, currentUser);

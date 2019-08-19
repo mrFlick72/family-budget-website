@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -19,9 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;

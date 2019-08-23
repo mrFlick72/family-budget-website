@@ -245,6 +245,10 @@ export default class BudgetExpensePage extends React.Component {
                         <PageNavigationMenuItem menuItemLabel="Diagram Chart"
                                                 link="/budget-expense/chart"
                                                 menuItemPrefixIcon="fas fa-chart-area fa-lg"/>
+
+                        <PageNavigationMenuItem menuItemLabel="Search Tags"
+                                                link="/search-tags"
+                                                menuItemPrefixIcon="fas fa-tags fa-lg"/>
                     </ul>
 
 

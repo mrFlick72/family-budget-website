@@ -9,7 +9,7 @@ import moment from "moment";
 import BudgetRevenueRepository from "../../domain/repository/BudgetRevenueRepository";
 import {SearchCriteriaOnUrl} from "../../domain/model/SearchCriteriaOnUrl";
 import ConfirmationPopUp from "../../component/layout/ConfirmationPopUp";
-import {FamilyBudgetPagesConfigMap} from "../spent-budget/FamilyBudgetPagesConfigMap";
+import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 
 export default class BudgetRevenuePage extends React.Component {
 

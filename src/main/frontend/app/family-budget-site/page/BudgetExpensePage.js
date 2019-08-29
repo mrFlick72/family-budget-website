@@ -21,7 +21,7 @@ import ImportExportInCsvPopUp from "../spent-budget/popup/ImportExportInCsvPopUp
 import moment from "moment";
 import AttachmentsPopUp from "../spent-budget/popup/AttachmentsPopUp";
 import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
-import {FamilyBudgetPagesConfigMap} from "../spent-budget/FamilyBudgetPagesConfigMap";
+import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 
 export default class BudgetExpensePage extends React.Component {
 

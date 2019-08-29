@@ -1,4 +1,4 @@
-import {MessageRepository} from "../../domain/repository/MessageRepository";
+import {MessageRepository} from "../domain/repository/MessageRepository";
 
 export class FamilyBudgetPagesConfigMap {
 
@@ -69,6 +69,16 @@ export class FamilyBudgetPagesConfigMap {
     }
 
     budgetCharts(bundle) {
+        return {
+            menuMessages: {
+                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
+                userProfileLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.userProfileLabel"),
+                logOutLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.logOutLabel")
+            }
+        }
+    }
+
+    searchTags(bundle) {
         return {
             menuMessages: {
                 title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),

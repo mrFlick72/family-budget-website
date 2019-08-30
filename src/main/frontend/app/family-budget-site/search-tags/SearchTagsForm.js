@@ -9,7 +9,7 @@ export default ({searchTag, handler}) => {
                    onChangeHandler={handler.valueHandler}/>
         <button type="button" className="btn btn-secondary"
                 onClick={handler.submitHandler.bind(this, searchTag.key, searchTag.value)}>
-            <i className="fas fa-trash-alt fa-lg"></i>
+            <i className="fas fa-save fa-lg"></i> Save
         </button>
     </div>
 }

@@ -26,18 +26,17 @@ export default class SearchTagsPage extends React.Component {
     handler() {
         return {
             keyHandler: (value) => {
-                console.log("key value: " + value.target.value)
                 this.setState({searchTagKey: value.target.value});
             },
             valueHandler: (value) => {
-                console.log("value value: " + value)
-
                 this.setState({searchTagValue: value.target.value});
             },
             submitHandler: (searchTagKey, searchTagValue) => {
-                console.log(searchTagKey)
-                console.log(searchTagValue)
                 this.searchTagRepository.saveSearchTag({key: searchTagKey, value: searchTagValue})
+                    .then(ignore => this.searchTagRepository.getSearchTagRegistry())
+                    .then(registry => {
+                        this.setState({searchTagsRegistry: registry})
+                    })
             }
         }
     }

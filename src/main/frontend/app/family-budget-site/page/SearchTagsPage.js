@@ -12,8 +12,6 @@ export default class SearchTagsPage extends React.Component {
 
         this.configMap = new FamilyBudgetPagesConfigMap()
         this.searchTagRepository = new SearchTagRepository()
-        this.formHandler = this.formHandler.bind(this)
-        this.tableHandler = this.tableHandler.bind(this)
         this.state = {searchTagsRegistry: [], searchTagKeyToDelete: "", searchTagKey: "", searchTagValue: ""}
     }
 
@@ -53,7 +51,7 @@ export default class SearchTagsPage extends React.Component {
                 $(`#${modalId}`).modal("show")
 
             },
-            confirmationHandler: () => {
+            confirmationHandler: (modalId) => {
                 this.searchTagRepository.deleteSearchTag(this.state.searchTagKeyToDelete)
                     .then(ignore => this.searchTagRepository.getSearchTagRegistry())
                     .then(registry => {

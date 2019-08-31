@@ -2,7 +2,7 @@ import React from "react"
 import ConfirmationPopUp from "../../component/layout/ConfirmationPopUp";
 
 export default ({searchTagsRegistry, handler, modal}) => {
-    return <div><ConfirmationPopUp confirmationHandler={handler.confirmationHandler}
+    return <div><ConfirmationPopUp confirmationHandler={handler.confirmationHandler.bind(this, modal.id)}
                                    modalId={modal.id}
                                    modalMessageBody={modal.message}
                                    modalTitle={modal.title}/>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Menu from "../../component/menu/Menu";
 import YearlySpentBudgetChart from "../spent-budget/chart/YearlySpentBudgetChart";
-import {FamilyBudgetPagesConfigMap} from "../spent-budget/FamilyBudgetPagesConfigMap";
+import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 
 const BUDGET_EXPENSE_URI = (year) => `/family-budget/budget-service/budget/expense/year/${year}`;
 

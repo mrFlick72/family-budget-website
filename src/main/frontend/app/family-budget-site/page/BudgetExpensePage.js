@@ -21,7 +21,7 @@ import ImportExportInCsvPopUp from "../spent-budget/popup/ImportExportInCsvPopUp
 import moment from "moment";
 import AttachmentsPopUp from "../spent-budget/popup/AttachmentsPopUp";
 import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
-import {FamilyBudgetPagesConfigMap} from "../spent-budget/FamilyBudgetPagesConfigMap";
+import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 
 export default class BudgetExpensePage extends React.Component {
 
@@ -245,6 +245,10 @@ export default class BudgetExpensePage extends React.Component {
                         <PageNavigationMenuItem menuItemLabel="Diagram Chart"
                                                 link="/budget-expense/chart"
                                                 menuItemPrefixIcon="fas fa-chart-area fa-lg"/>
+
+                        <PageNavigationMenuItem menuItemLabel="Search Tags"
+                                                link="/search-tags"
+                                                menuItemPrefixIcon="fas fa-tags fa-lg"/>
                     </ul>
 
 

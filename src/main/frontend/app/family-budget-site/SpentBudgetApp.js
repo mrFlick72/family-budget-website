@@ -6,6 +6,7 @@ import BudgetExpensePage from "./page/BudgetExpensePage";
 import BudgetRevenuePage from "./page/BudgetRevenuePage";
 import BudgetExpenseChartPage from "./page/BudgetExpenseChartPage";
 import {MessageRepository} from "../domain/repository/MessageRepository";
+import SearchTagsPage from "./page/SearchTagsPage";
 
 const links = {
     logOut: "/family-budget/logout",
@@ -44,6 +45,9 @@ export default class SpentBudgetApp extends React.Component {
 
                     <Route exact={true} path="/budget-revenue"
                            render={(props) => <BudgetRevenuePage{...props} links={links}
+                                                                messageRegistry={this.state.messageRegistry}/>}/>
+                    <Route exact={true} path="/search-tags"
+                           render={(props) => <SearchTagsPage{...props} links={links}
                                                                 messageRegistry={this.state.messageRegistry}/>}/>
                 </Switch>
             </HashRouter>)

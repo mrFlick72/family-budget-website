@@ -15,7 +15,7 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().mvcMatchers("/actuator/**").permitAll().and()
+                .authorizeRequests().mvcMatchers("/actuator/**", "/oidc_logout.html").permitAll().and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and().oauth2Login().defaultSuccessUrl("/index")
                 .userInfoEndpoint()

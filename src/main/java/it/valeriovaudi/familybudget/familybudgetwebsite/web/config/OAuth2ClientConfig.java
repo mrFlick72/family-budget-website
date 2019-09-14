@@ -1,9 +1,7 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.config;
 
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.BearerOAuth2TokenRelayFilter;
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.BearerTokenInterceptor;
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.OAuth2RefreshableTokenResolver;
-import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.OAuth2TokenResolver;
+import it.valeriovaudi.familybudget.familybudgetwebsite.web.security.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -34,4 +32,11 @@ public class OAuth2ClientConfig {
                 .build();
     }
 
+    @Bean
+    public GlobalFrontChannelLogoutProvider globalFrontChannelLogoutProvider(@Value("${postLogoutRedirectUri}") String postLogoutRedirectUri,
+                                                                             @Value("${auth.oidcIss}") String oidConnectDiscoveryEndPoint) {
+        return new GlobalFrontChannelLogoutProvider(postLogoutRedirectUri,
+                oidConnectDiscoveryEndPoint + "/.well-known/openid-configuration",
+                new RestTemplate());
+    }
 }

@@ -15,7 +15,6 @@ public class BudgetExpenseController {
 
     private final TimeProvider timeUtility;
 
-
     public BudgetExpenseController(TimeProvider timeUtility) {
         this.timeUtility = timeUtility;
     }
@@ -28,7 +27,7 @@ public class BudgetExpenseController {
         return "redirect:index";
     }
 
-    @GetMapping(value = "/index", params = {"choicedMonth","year"})
+    @GetMapping(value = "/index", params = {"choicedMonth", "year"})
     public String index(Model model, @RequestParam("choicedMonth") Integer choicedMonth,
                         @RequestParam("year") Integer year) {
         model.addAttribute("choicedMonth", choicedMonth);
@@ -36,5 +35,4 @@ public class BudgetExpenseController {
 
         return "index";
     }
-
 }

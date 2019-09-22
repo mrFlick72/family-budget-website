@@ -38,7 +38,7 @@ module.exports = {
         ]
     },
     output: {
-        filename: '[name]_bundle.js',
+        filename: 'family-budget/[name]_bundle.js',
         path: BUID_DIR
     }
 };

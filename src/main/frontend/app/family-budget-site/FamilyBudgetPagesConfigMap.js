@@ -11,9 +11,9 @@ export class FamilyBudgetPagesConfigMap {
             menuMessages: {
                 insertBudgetModal: "New Budget Expense",
                 searchByTagsModal: "Filter by tag",
-                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
-                userProfileLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.userProfileLabel"),
-                logOutLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.logOutLabel")
+                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
+                userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
+                logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             },
             loadCsvFile:{
                 id: "loadCsvFile",
@@ -25,15 +25,15 @@ export class FamilyBudgetPagesConfigMap {
 
             newBudgetExpenseModal: {
                 id: "insertBudgetModal",
-                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.newBudgetExpenseModal.title"),
-                closeButtonLable: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.newBudgetExpenseModal.closeButtonLable"),
-                saveButtonLable: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.newBudgetExpenseModal.saveButtonLable")
+                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
+                closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
+                saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label")
             },
             searchFilterModal: {
                 id: "searchByTagsModal",
-                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.searchCriteriaBudgetExpenseModal.title"),
-                closeButtonLable: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.searchCriteriaBudgetExpenseModal.closeButtonLable"),
-                saveButtonLable: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.searchCriteriaBudgetExpenseModal.saveButtonLable")
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.search.popup.title"),
+                closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
+                saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label")
             },
 
             deleteModal: {
@@ -45,8 +45,8 @@ export class FamilyBudgetPagesConfigMap {
             attachmentModal: {
                 id: "attachmentPopUp",
                 title: "attachmentPopUpTitle",
-                saveButtonLable: "Save",
-                closeButtonLable: "Close"
+                saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label"),
+                closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label")
             }
         }
     }
@@ -54,16 +54,16 @@ export class FamilyBudgetPagesConfigMap {
     budgetRevenue(bundle) {
         return {
             menuMessages: {
-                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
-                userProfileLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.userProfileLabel"),
-                logOutLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.logOutLabel")
+                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
+                userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
+                logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             },
             deleteModal: {id: "deleteBudgetRevenueModal"},
             saveBudgetRevenueModal: {
                 id: "saveBudgetRevenueModal",
-                title: this.messageRepository.getMessageFor(bundle, "BudgetRevenuePage.newBudgetRevenueModal.title"),
-                closeButtonLable: this.messageRepository.getMessageFor(bundle, "BudgetRevenuePage.newBudgetRevenueModal.closeButtonLable"),
-                saveButtonLable: this.messageRepository.getMessageFor(bundle, "BudgetRevenuePage.newBudgetRevenueModal.saveButtonLable")
+                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
+                closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
+                saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label")
             }
         }
     }
@@ -72,8 +72,8 @@ export class FamilyBudgetPagesConfigMap {
         return {
             menuMessages: {
                 title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
-                userProfileLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.userProfileLabel"),
-                logOutLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.logOutLabel")
+                userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
+                logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             }
         }
     }
@@ -82,8 +82,8 @@ export class FamilyBudgetPagesConfigMap {
         return {
             menuMessages: {
                 title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
-                userProfileLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.userProfileLabel"),
-                logOutLabel: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.logOutLabel")
+                userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
+                logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             }
         }
     }

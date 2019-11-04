@@ -1,7 +1,7 @@
 export class MessageRepository {
 
     getAllMessageRegistry() {
-        return fetch("/family-budget/messages", {
+        return fetch("/family-budget/v2/messages", {
             headers: {
                 'Accept': 'application/json'
             },

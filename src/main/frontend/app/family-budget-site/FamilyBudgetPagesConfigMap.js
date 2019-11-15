@@ -9,7 +9,7 @@ export class FamilyBudgetPagesConfigMap {
     budgetExpense(bundle) {
         return {
             menuMessages: {
-                insertBudgetModal: "New Budget Expense",
+                insertBudgetModal: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.newBudgetExpense"),
                 searchModal: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.search"),
                 diagrams: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.diagrams"),
                 searchTags: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.searchTags"),
@@ -44,13 +44,12 @@ export class FamilyBudgetPagesConfigMap {
 
             deleteModal: {
                 id: "deleteModal",
-                title:"Delete Budget Expense",
-                message:"Are you sure of delete the Budget Expense from the list?",
-
+                title:this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.title"),
+                message:this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.message")
             },
             attachmentModal: {
                 id: "attachmentPopUp",
-                title: "attachmentPopUpTitle",
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.attachment.title"),
                 saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label"),
                 closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label")
             }

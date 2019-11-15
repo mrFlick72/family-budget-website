@@ -231,7 +231,7 @@ export default class BudgetExpensePage extends React.Component {
                                            iconClassNames="fas fa-cart-plus fa-lg"/>
 
                         <OpenPopUpMenuItem key="searchByTagsModal"
-                                           label={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.insertBudgetModal}
+                                           label={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchModal}
                                            modalId={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal.id}
                                            iconClassNames="fas fa-search fa-lg"/>
 
@@ -242,13 +242,15 @@ export default class BudgetExpensePage extends React.Component {
                                               downloadStentBudgetAsFileUseCasePdfHandler={this.downloadSpentBudgetAsFile.bind(this, "application/pdf")}
                                               downloadStentBudgetAsFileUseCaseXlsxHandler={this.downloadSpentBudgetAsFile.bind(this, "application/xlsx")}/>
 
-                        <PageNavigationMenuItem menuItemLabel="Diagram Chart"
-                                                link="/budget-expense/chart"
-                                                menuItemPrefixIcon="fas fa-chart-area fa-lg"/>
+                        <PageNavigationMenuItem
+                            menuItemLabel={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.diagrams}
+                            link="/budget-expense/chart"
+                            menuItemPrefixIcon="fas fa-chart-area fa-lg"/>
 
-                        <PageNavigationMenuItem menuItemLabel="Search Tags"
-                                                link="/search-tags"
-                                                menuItemPrefixIcon="fas fa-tags fa-lg"/>
+                        <PageNavigationMenuItem
+                            menuItemLabel={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchTags}
+                            link="/search-tags"
+                            menuItemPrefixIcon="fas fa-tags fa-lg"/>
                     </ul>
 
 
@@ -304,7 +306,7 @@ export default class BudgetExpensePage extends React.Component {
 
                         <div className="row">
                             <div className="col-12 col-md-9">
-                                <ContentCard header="Daily detail">
+                                <ContentCard header={this.configMap.budgetExpense(this.props.messageRegistry).cards.dailyDetails}>
                                     <SpentBudgetContent spentBudget={this.state.spentBudget}
                                                         searchTagRegistry={this.state.searchTagRegistry}
                                                         openAttachmentPopUp={this.openAttachmentPopUp.bind(this)}
@@ -314,7 +316,8 @@ export default class BudgetExpensePage extends React.Component {
                             </div>
 
                             <div className="col-12 col-md-3">
-                                <ContentCard header="Total by categories">
+                                <ContentCard
+                                    header={this.configMap.budgetExpense(this.props.messageRegistry).cards.totalByCategories}>
                                     <TotalBySearchTags totals={this.state.spentBudget.totalDetailList || []}/>
                                 </ContentCard>
                             </div>

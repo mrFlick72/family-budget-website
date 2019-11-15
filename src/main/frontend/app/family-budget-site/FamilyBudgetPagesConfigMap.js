@@ -10,10 +10,16 @@ export class FamilyBudgetPagesConfigMap {
         return {
             menuMessages: {
                 insertBudgetModal: "New Budget Expense",
-                searchByTagsModal: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.search.popup.title"),
+                searchModal: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.search"),
+                diagrams: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.diagrams"),
+                searchTags: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.menu.searchTags"),
                 title: this.messageRepository.getMessageFor(bundle, "menu.title"),
                 userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
                 logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
+            },
+            cards:{
+                dailyDetails: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.cards.dailyDetails"),
+                totalByCategories: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.cards.totalByCategories")
             },
             loadCsvFile:{
                 id: "loadCsvFile",

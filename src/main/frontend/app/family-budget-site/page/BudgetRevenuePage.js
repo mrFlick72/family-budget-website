@@ -33,22 +33,12 @@ export default class BudgetRevenuePage extends React.Component {
     }
 
     componentDidMount() {
-        this.loadCommonData();
         this.budgetRevenue();
     }
 
     budgetRevenue() {
         this.budgetRevenueRepository.findSpentBudget(this.searchCriteria.getYear())
             .then(revenues => this.setState({revenues: revenues}))
-    }
-
-    loadCommonData() {
-        this.messageRepository.getMessageRegistry("BudgetRevenuePage")
-            .then(messages => {
-                this.setState({
-                    messageRegistry: messages
-                });
-            })
     }
 
     budgetRevenueHandlers() {

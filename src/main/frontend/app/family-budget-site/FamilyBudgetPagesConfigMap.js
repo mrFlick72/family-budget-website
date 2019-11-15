@@ -10,7 +10,7 @@ export class FamilyBudgetPagesConfigMap {
         return {
             menuMessages: {
                 insertBudgetModal: "New Budget Expense",
-                searchByTagsModal: "Filter by tag",
+                searchByTagsModal: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.search.popup.title"),
                 title: this.messageRepository.getMessageFor(bundle, "menu.title"),
                 userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
                 logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
@@ -25,7 +25,7 @@ export class FamilyBudgetPagesConfigMap {
 
             newBudgetExpenseModal: {
                 id: "insertBudgetModal",
-                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.newBudgetExpenseModal.title"),
                 closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
                 saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label")
             },
@@ -61,7 +61,7 @@ export class FamilyBudgetPagesConfigMap {
             deleteModal: {id: "deleteBudgetRevenueModal"},
             saveBudgetRevenueModal: {
                 id: "saveBudgetRevenueModal",
-                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
+                title: this.messageRepository.getMessageFor(bundle, "budgetRevenuePage.newBudgetRevenueModal.title"),
                 closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
                 saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label")
             }
@@ -71,7 +71,7 @@ export class FamilyBudgetPagesConfigMap {
     budgetCharts(bundle) {
         return {
             menuMessages: {
-                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
+                title:this.messageRepository.getMessageFor(bundle, "menu.title"),
                 userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
                 logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             }
@@ -81,7 +81,7 @@ export class FamilyBudgetPagesConfigMap {
     searchTags(bundle) {
         return {
             menuMessages: {
-                title: this.messageRepository.getMessageFor(bundle, "BudgetExpensePage.menuMessages.title"),
+                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
                 userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
                 logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             }

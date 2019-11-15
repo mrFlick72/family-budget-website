@@ -17,21 +17,21 @@ export class FamilyBudgetPagesConfigMap {
                 userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
                 logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             },
-            cards:{
+            cards: {
                 dailyDetails: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.cards.dailyDetails"),
                 totalByCategories: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.cards.totalByCategories")
             },
-            loadCsvFile:{
+            loadCsvFile: {
                 id: "loadCsvFile",
-                title: "Load data by a csv file",
-                saveButtonLabel:"Load File ...",
-                closeButtonLabel:"Close",
-                formUploadFileLabel:"File: "
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.loadCsvFile.popup.title"),
+                saveButtonLabel: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.loadCsvFile.popup.save"),
+                closeButtonLabel: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
+                formUploadFileLabel: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.loadCsvFile.popup.formUploadFileLabel")
             },
 
             newBudgetExpenseModal: {
                 id: "insertBudgetModal",
-                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.newBudgetExpenseModal.title"),
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.newBudgetExpense.popup.title"),
                 closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label"),
                 saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label")
             },
@@ -44,12 +44,12 @@ export class FamilyBudgetPagesConfigMap {
 
             deleteModal: {
                 id: "deleteModal",
-                title:this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.title"),
-                message:this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.message")
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.title"),
+                message: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.message")
             },
             attachmentModal: {
                 id: "attachmentPopUp",
-                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.attachment.title"),
+                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.attachment.popup.title"),
                 saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label"),
                 closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label")
             }
@@ -76,7 +76,7 @@ export class FamilyBudgetPagesConfigMap {
     budgetCharts(bundle) {
         return {
             menuMessages: {
-                title:this.messageRepository.getMessageFor(bundle, "menu.title"),
+                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
                 userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
                 logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
             }

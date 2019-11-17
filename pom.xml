@@ -5,7 +5,7 @@
 
     <groupId>it.valeriovaudi.familybudget</groupId>
     <artifactId>family-budget-website</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>family-budget-website</name>
@@ -52,13 +52,9 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
@@ -217,7 +213,7 @@
                 <configuration>
                     <imageName>mrflick72/${project.build.finalName}:latest</imageName>
                     <imageTags>
-                        <imageTag>1.0.0</imageTag>
+                        <imageTag>${pom.version}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
                     <dockerDirectory>src/main/docker</dockerDirectory>

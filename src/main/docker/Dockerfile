@@ -1,4 +1,4 @@
-FROM openjdk:12
+FROM openjdk:11
 
 ADD family-budget-website.jar /usr/local/family-budget-website/
 

@@ -1,4 +1,4 @@
-package it.valeriovaudi.familybudget.familybudgetwebsite.web.security;
+package it.valeriovaudi.vauthenticator.security;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 

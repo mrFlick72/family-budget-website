@@ -9,7 +9,7 @@ import {MessageRepository} from "../domain/repository/MessageRepository";
 import SearchTagsPage from "./page/SearchTagsPage";
 
 const links = {
-    logOut: "/family-budget/logout",
+    logOut: "/family-budget/oidc_logout.html",
     home: "/family-budget/index"
 };
 

@@ -1,4 +1,4 @@
-package it.valeriovaudi.familybudget.familybudgetwebsite.web.security;
+package it.valeriovaudi.vauthenticator.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;

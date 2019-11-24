@@ -1,4 +1,4 @@
-package it.valeriovaudi.familybudget.familybudgetwebsite.web.security;
+package it.valeriovaudi.vauthenticator.security;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;

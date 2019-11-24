@@ -1,5 +1,4 @@
 import React from "react"
-import {Link} from "react-router-dom";
 
 export default ({links, messages, children}) => (
     <div className="container-fluid" style={{"margin-bottom":"15px"}}>
@@ -18,7 +17,7 @@ export default ({links, messages, children}) => (
                         </a>
                     </li>
                 </ul>
-                <form action={links.logOut} method="post">
+                <form action={links.logOut} method="GET">
                     <button type="submit" className="btn btn-secondary"> {messages.logOutLabel}
                         <i className="fas fa-sign-out-alt fs-lg"></i></button>
                 </form>

@@ -9,7 +9,7 @@ import org.springframework.retry.annotation.EnableRetry;
 @EnableRetry
 @EnableCaching
 @EnableZuulProxy
-@SpringBootApplication(scanBasePackages = {"it.valeriovaudi.familybudget.familybudgetwebsite", "it.valeriovaudi.vauthenticator.security"})
+@SpringBootApplication
 public class FamilyBudgetWebsiteApplication {
 
     public static void main(String[] args) {

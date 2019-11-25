@@ -26,11 +26,17 @@
         <javax-jaxb.version>2.3.0</javax-jaxb.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>11</java.version>
+        <java.version>12</java.version>
         <spring-cloud.version>Greenwich.SR4</spring-cloud.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>it.valeriovaudi.vauthenticator.security</groupId>
+            <artifactId>client-security-starter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>

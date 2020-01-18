@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.userinfo.CustomUserTypesOAuth2UserService;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -34,9 +35,8 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public VAuthenticatorOidcUserService vAuthenticatorOidcUserService() {
-        return new VAuthenticatorOidcUserService(
-                Map.of(familyBudgetClientRegistrationId, VAuthenticatorOAuth2User.class),
-                new OidcUserService()
+        return new VAuthenticatorOidcUserService(new OidcUserService(),
+                new CustomUserTypesOAuth2UserService(Map.of(familyBudgetClientRegistrationId, VAuthenticatorOAuth2User.class))
         );
     }
 

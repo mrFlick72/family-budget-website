@@ -22,7 +22,7 @@ public class RestMessageRepository implements MessageRepository {
     }
 
     @Override
-    @Cacheable("family-budget-website.i18n.messages")
+    @Cacheable(cacheNames = "family-budget-website.i18n.messages", key = "'i18n.messages'")
     public Map<String, String> messages() {
         return restTemplate.getForObject(baseUrl + "/messages/" + applicationId, HashMap.class);
     }

@@ -1,10 +1,14 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite;
 
+import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.security.RedisOAuth2AuthorizedClientService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 @EnableRetry
 @EnableCaching
@@ -16,4 +20,9 @@ public class FamilyBudgetWebsiteApplication {
         SpringApplication.run(FamilyBudgetWebsiteApplication.class, args);
     }
 
+    @Bean
+    public RedisOAuth2AuthorizedClientService redisOAuth2AuthorizedClientService(RedisTemplate redisTemplate,
+                                                                                 ClientRegistrationRepository clientRegistrationRepository) {
+        return new RedisOAuth2AuthorizedClientService(redisTemplate, clientRegistrationRepository);
+    }
 }

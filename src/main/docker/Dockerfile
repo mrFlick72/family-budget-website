@@ -6,4 +6,4 @@ VOLUME /var/log/onlyone-portal
 
 WORKDIR /usr/local/family-budget-website/
 
-CMD ["java", "family-budget-website.jar"]
+CMD ["java", "-jar", "family-budget-website.jar"]

@@ -164,7 +164,7 @@
             <id>netflix</id>
 
             <properties>
-                <imageName>mrflick72/${project.build.finalName}-k8s:latest</imageName>
+                <imageName>mrflick72/${project.build.finalName}:latest</imageName>
             </properties>
 
             <dependencies>

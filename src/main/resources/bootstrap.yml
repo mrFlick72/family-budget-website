@@ -17,7 +17,6 @@ spring:
   thymeleaf:
     prefix: classpath:/static/
 
-
 logging:
   level:
     it.valeriovaudi.vauthenticator.security.clientsecuritystarter.filter: DEBUG

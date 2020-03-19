@@ -4,11 +4,13 @@ package it.valeriovaudi.familybudget.familybudgetwebsite.web.config;
 import it.valeriovaudi.familybudget.familybudgetwebsite.adapters.repository.RestMessageRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
+@RibbonClient("i18n-messages")
 public class RepositoryConfiguration {
 
     @Bean

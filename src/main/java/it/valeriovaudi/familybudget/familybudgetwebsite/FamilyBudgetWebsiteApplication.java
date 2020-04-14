@@ -1,7 +1,10 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.security.RedisOAuth2AuthorizedClientService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
@@ -25,4 +28,10 @@ public class FamilyBudgetWebsiteApplication {
                                                                                  ClientRegistrationRepository clientRegistrationRepository) {
         return new RedisOAuth2AuthorizedClientService(redisTemplate, clientRegistrationRepository);
     }
+
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> configurer(@Value("${spring.application.name:}") String applicationName) {
+        return (registry) -> registry.config().commonTags("application", applicationName);
+    }
+
 }

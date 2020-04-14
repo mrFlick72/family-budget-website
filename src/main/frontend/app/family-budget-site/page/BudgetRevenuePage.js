@@ -1,5 +1,4 @@
 import React from "react"
-import {MessageRepository} from "../../domain/repository/MessageRepository";
 import Menu from "../../component/menu/Menu";
 import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
 import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
@@ -23,7 +22,6 @@ export default class BudgetRevenuePage extends React.Component {
             currentBudgetRevenueAmount: "0.00",
             currentBudgetRevenueNote: ""
         };
-        this.messageRepository = new MessageRepository();
         this.budgetRevenueRepository = new BudgetRevenueRepository();
 
         this.configMap = new FamilyBudgetPagesConfigMap()

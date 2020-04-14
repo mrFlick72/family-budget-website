@@ -9,3 +9,9 @@
 .searchTagButton {
     margin-right: 5px; !important;
 }
+
+.searchBox {
+    position: absolute; !important;
+    border: #000000 2px; !important;
+    background-color: rgba(127, 127, 127, 0.38); !important;
+}

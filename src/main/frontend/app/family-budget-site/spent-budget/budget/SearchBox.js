@@ -38,7 +38,8 @@ class SearchBox extends React.Component {
 
     submitSearchCriteria() {
         let searchTag = this.state.searchTag.map(searchTag => searchTag.value).join(",");
-        window.location.href = `${this.props.action}?choicedMonth=${this.state.month.value}&year=${this.state.year}&searchTag=${searchTag}`;
+        let month = this.state.month.value || this.state.month;
+        window.location.href = `${this.props.action}?choicedMonth=${month}&year=${this.state.year}&searchTag=${searchTag}`;
     }
 
     dispose() {

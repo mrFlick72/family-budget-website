@@ -43,6 +43,9 @@ export default class BudgetExpensePage extends React.Component {
             monthRegistry: []
         };
 
+        this.searchTagRef = React.createRef();
+
+
         this.attachmentFileRef = React.createRef();
         this.monthRepository = new MonthRepository();
         this.searchTagRepository = new SearchTagRepository();
@@ -85,7 +88,11 @@ export default class BudgetExpensePage extends React.Component {
     }
 
     openSearchTab() {
-        this.setState({displaySearchTab: true})
+        let offsetLeft = this.searchTagRef.current.offsetLeft;
+        this.setState({
+            leftSearchTab: offsetLeft,
+            displaySearchTab: !this.state.displaySearchTab
+        })
     }
 
     openDeleteBudgetExpensePopUp(dailyBudgetExpense) {
@@ -238,6 +245,7 @@ export default class BudgetExpensePage extends React.Component {
                                            iconClassNames="fas fa-cart-plus fa-lg"/>
 
                         <OpenPopUpMenuItem key="searchByTagsModal"
+                                           reference={this.searchTagRef}
                                            callback={this.openSearchTab}
                                            label={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchModal}
                                            modalId={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal.id}
@@ -282,6 +290,7 @@ export default class BudgetExpensePage extends React.Component {
                     <div className="content">
 
                         <SearchBox
+                            left={this.state.leftSearchTab}
                             action={this.props.links.home}
                             searchTagRegistry={this.state.searchTagRegistry}
                             display={this.state.displaySearchTab}

@@ -4,7 +4,8 @@ import 'react-select/dist/react-select.css';
 import {SearchCriteriaOnUrl} from "../../../domain/model/SearchCriteriaOnUrl";
 import FormSelect from "../../../component/form/FormSelect";
 import YesAndNoButtonGroup from "../../../component/layout/YesAndNoButtonGroup";
-import FormNumberFormat from "../../../component/form/FormNumberFormat";
+import FormMoneyFormat from "../../../component/form/FormMoneyFormat";
+import FormNumberCounter from "../../../component/form/FormNumberCounter";
 
 class SearchBox extends React.Component {
 
@@ -37,7 +38,7 @@ class SearchBox extends React.Component {
 
     submitSearchCriteria() {
         let searchTag = this.state.searchTag.map(searchTag => searchTag.value).join(",");
-        window.location.href = `${this.props.action}?choicedMonth=${this.searchCriteriaOnUrl.getMonth()}&year=${this.searchCriteriaOnUrl.getYear()}&searchTag=${searchTag}`;
+        window.location.href = `${this.props.action}?choicedMonth=${this.state.month.value}&year=${this.state.year}&searchTag=${searchTag}`;
     }
 
     dispose() {
@@ -45,7 +46,7 @@ class SearchBox extends React.Component {
     }
 
     render() {
-        return <div className="searchBox" id="searchBox" style={{display: this.state.display ? "initial" : "none"}}>
+        return <div className="searchBox" id="searchBox" style={{left: this.props.left, display: this.state.display ? "initial" : "none"}}>
             <FormSelect multi={true}
                         componentLabel="Search Tag:"
                         componentId="searchTagFilter"
@@ -64,8 +65,7 @@ class SearchBox extends React.Component {
                             return {value: month.monthValue, label: month.monthLabel}
                         })}/>
 
-            <FormNumberFormat multi={false}
-                              componentLabel="Year:"
+            <FormNumberCounter componentLabel="Year:"
                               componentId="year"
                               value={this.state.year}
                               onChangeHandler={this.onChangeYearHandler.bind(this)}/>

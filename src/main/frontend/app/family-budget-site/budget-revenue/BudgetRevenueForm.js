@@ -1,6 +1,6 @@
 import React from "react"
 
-import FormNumberFormat from "../../component/form/FormNumberFormat";
+import FormMoneyFormat from "../../component/form/FormMoneyFormat";
 import FormDatePicker from "../../component/form/FormDatePicker";
 import FormTextArea from "../../component/form/FormTextArea";
 import uuidv1 from 'uuid/v1';
@@ -13,7 +13,7 @@ export default ({budgetRevenueComponentId, budgetRevenueData, budgetRevenueHandl
                         value={budgetRevenueData.date}
                         onChangeHandler={budgetRevenueHandlers.date}/>
 
-        <FormNumberFormat componentId={budgetRevenueComponentIdAux.amount || uuidv1()}
+        <FormMoneyFormat componentId={budgetRevenueComponentIdAux.amount || uuidv1()}
                           componentLabel="Amount:"
                           value={budgetRevenueData.amount}
                           onChangeHandler={budgetRevenueHandlers.amount}/>

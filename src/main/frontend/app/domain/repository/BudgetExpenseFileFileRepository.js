@@ -3,7 +3,6 @@ const BUDGET_EXPENSE_ATTACHMENT_URI = (budgetExpenseId) => `/family-budget/budge
 export class BudgetExpenseFileFileRepository {
 
     loadBudgetExpenseAttachment(budgetExpenseId, attachment) {
-        console.log(attachment.files[0])
         let data = new FormData();
         data.append('attachment', attachment.files[0]);
 
@@ -33,16 +32,6 @@ export class BudgetExpenseFileFileRepository {
         });
     }
 
-    loadBudgetExpenseFile(fileContent) {
-        let data = new FormData();
-        data.append('file', fileContent);
-
-        return fetch("/family-budget/budget-service/budget-expense", {
-            method: "POST",
-            body: data,
-            credentials: 'same-origin'
-        });
-    }
 
     getBudgetExpenseFile(searchCriteria, mediaType) {
         let month = searchCriteria.month;

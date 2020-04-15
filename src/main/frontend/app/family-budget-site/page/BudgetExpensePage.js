@@ -15,13 +15,13 @@ import {BudgetExpenseFileFileRepository} from "../../domain/repository/BudgetExp
 import TotalBySearchTags from "../spent-budget/menu/TotalBySearchTags";
 import ContentCard from "../../component/layout/ContentCard";
 import CreateNewBudgetExpensePopup from "../spent-budget/popup/CreateNewBudgetExpensePopup";
-import SearchFilterPopUp from "../spent-budget/popup/SearchFilterPopUp";
 import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
 import ImportExportInCsvPopUp from "../spent-budget/popup/ImportExportInCsvPopUp";
 import moment from "moment";
 import AttachmentsPopUp from "../spent-budget/popup/AttachmentsPopUp";
 import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
+import SearchBox from "../spent-budget/budget/SearchBox";
 
 export default class BudgetExpensePage extends React.Component {
 
@@ -35,11 +35,16 @@ export default class BudgetExpensePage extends React.Component {
             searchTag: "",
             attachments: [],
 
+            displaySearchTab: false,
+
             spentBudget: {},
             deletableItem: {},
             searchTagRegistry: [],
             monthRegistry: []
         };
+
+        this.searchTagRef = React.createRef();
+
 
         this.attachmentFileRef = React.createRef();
         this.monthRepository = new MonthRepository();
@@ -56,6 +61,7 @@ export default class BudgetExpensePage extends React.Component {
         this.saveBudgetExpense = this.saveBudgetExpense.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.savePopupEventHandlers = this.savePopupEventHandlers.bind(this);
+        this.openSearchTab = this.openSearchTab.bind(this);
     }
 
     spentBudget() {
@@ -79,6 +85,14 @@ export default class BudgetExpensePage extends React.Component {
                     searchTagRegistry: searchTagRegistryValue,
                 });
             });
+    }
+
+    openSearchTab() {
+        let offsetLeft = this.searchTagRef.current.offsetLeft;
+        this.setState({
+            leftSearchTab: offsetLeft,
+            displaySearchTab: !this.state.displaySearchTab
+        })
     }
 
     openDeleteBudgetExpensePopUp(dailyBudgetExpense) {
@@ -231,6 +245,8 @@ export default class BudgetExpensePage extends React.Component {
                                            iconClassNames="fas fa-cart-plus fa-lg"/>
 
                         <OpenPopUpMenuItem key="searchByTagsModal"
+                                           reference={this.searchTagRef}
+                                           callback={this.openSearchTab}
                                            label={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchModal}
                                            modalId={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal.id}
                                            iconClassNames="fas fa-search fa-lg"/>
@@ -272,6 +288,16 @@ export default class BudgetExpensePage extends React.Component {
                 </Menu>
                 <div className="container-fluid">
                     <div className="content">
+
+                        <SearchBox
+                            left={this.state.leftSearchTab}
+                            action={this.props.links.home}
+                            searchTagRegistry={this.state.searchTagRegistry}
+                            display={this.state.displaySearchTab}
+                            monthRegistry={this.state.monthRegistry}
+                            modal={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal}/>
+
+
                         <ImportExportInCsvPopUp
                             modal={this.configMap.budgetExpense(this.props.messageRegistry).loadCsvFile}/>
                         <CreateNewBudgetExpensePopup spentBudgetHandlers={this.savePopupEventHandlers()}
@@ -285,10 +311,6 @@ export default class BudgetExpensePage extends React.Component {
                                                      saveCallback={this.saveBudgetExpense}
                                                      searchTagRegistry={this.state.searchTagRegistry}
                                                      modal={this.configMap.budgetExpense(this.props.messageRegistry).newBudgetExpenseModal}/>
-
-                        <SearchFilterPopUp action={this.props.links.home}
-                                           searchTagRegistry={this.state.searchTagRegistry}
-                                           modal={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal}/>
 
                         <DeleteBudgetExpenseConfirmationPopUp deleteBudgetExpenseAction={this.deleteItem}
                                                               modal={this.configMap.budgetExpense(this.props.messageRegistry).deleteModal}/>
@@ -306,7 +328,8 @@ export default class BudgetExpensePage extends React.Component {
 
                         <div className="row">
                             <div className="col-12 col-md-9">
-                                <ContentCard header={this.configMap.budgetExpense(this.props.messageRegistry).cards.dailyDetails}>
+                                <ContentCard
+                                    header={this.configMap.budgetExpense(this.props.messageRegistry).cards.dailyDetails}>
                                     <SpentBudgetContent spentBudget={this.state.spentBudget}
                                                         searchTagRegistry={this.state.searchTagRegistry}
                                                         openAttachmentPopUp={this.openAttachmentPopUp.bind(this)}

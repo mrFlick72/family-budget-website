@@ -4,7 +4,6 @@ import 'react-select/dist/react-select.css';
 import {SearchCriteriaOnUrl} from "../../../domain/model/SearchCriteriaOnUrl";
 import FormSelect from "../../../component/form/FormSelect";
 import YesAndNoButtonGroup from "../../../component/layout/YesAndNoButtonGroup";
-import FormMoneyFormat from "../../../component/form/FormMoneyFormat";
 import FormNumberCounter from "../../../component/form/FormNumberCounter";
 
 class SearchBox extends React.Component {

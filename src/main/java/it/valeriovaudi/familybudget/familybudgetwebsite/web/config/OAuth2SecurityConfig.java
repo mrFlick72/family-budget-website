@@ -20,8 +20,8 @@ import java.util.Map;
 @EnableWebSecurity
 public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${spring.security.oauth2.client.registration.client.client-id}")
-    private String familyBudgetClientRegistrationId;
+    @Value("${vauthenticator.client.registrationId}")
+    private String registrationId;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -36,7 +36,7 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public VAuthenticatorOidcUserService vAuthenticatorOidcUserService() {
         return new VAuthenticatorOidcUserService(new OidcUserService(),
-                new CustomUserTypesOAuth2UserService(Map.of(familyBudgetClientRegistrationId, VAuthenticatorOAuth2User.class))
+                new CustomUserTypesOAuth2UserService(Map.of(registrationId, VAuthenticatorOAuth2User.class))
         );
     }
 

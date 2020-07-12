@@ -1,22 +1,5 @@
 spring:
   application:
     name: family-budget-website
-  cloud:
-    config:
-      discovery:
-        enabled: true
-      fail-fast: true
-    kubernetes:
-      reload:
-        enabled: true
-        mode: polling
-        period: 5000
-      config:
-        sources:
-          - name: ${spring.application.name}
   thymeleaf:
     prefix: classpath:/static/
-
-logging:
-  level:
-    it.valeriovaudi.vauthenticator.security.clientsecuritystarter.filter: DEBUG

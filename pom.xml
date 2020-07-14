@@ -208,7 +208,6 @@
                 <configuration>
                     <imageName>${imageName}</imageName>
                     <imageTags>
-                        <imageTag>${pom.version}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
                     <dockerDirectory>src/main/docker</dockerDirectory>

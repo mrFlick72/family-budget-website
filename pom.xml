@@ -19,7 +19,7 @@
     </parent>
 
     <properties>
-        <imageName>mrflick72/${project.build.finalName}:latest</imageName>
+        <imageName>mrflick72/${project.build.finalName}-k8s:latest</imageName>
         <jaxb.version>2.3.0</jaxb.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

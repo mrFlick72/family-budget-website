@@ -1,5 +1,18 @@
 version: 2.1
 
+workflows:
+  build-master:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+
+executors:
+  machine-executor:
+    machine:
+      image: ubuntu-2004:202008-01
 jobs:
   build:
     machine:

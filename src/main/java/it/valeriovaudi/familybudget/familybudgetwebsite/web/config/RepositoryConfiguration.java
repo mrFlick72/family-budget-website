@@ -3,6 +3,7 @@ package it.valeriovaudi.familybudget.familybudgetwebsite.web.config;
 
 import it.valeriovaudi.familybudget.familybudgetwebsite.adapters.repository.RestMessageRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,11 @@ public class RepositoryConfiguration {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public RestTemplate oauth2RestTemplate() {
+        return new RestTemplateBuilder().build();
     }
 
     @Bean

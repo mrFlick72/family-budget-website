@@ -7,7 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.retry.annotation.EnableRetry;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 @EnableRetry
 @EnableCaching
-@EnableZuulProxy
 @SpringBootApplication
 public class FamilyBudgetWebsiteApplication {
 

@@ -36,7 +36,7 @@ public class BudgetEndPoint {
     }
 
     @RequestMapping("/budget-service/**")
-    public ResponseEntity<String> proxy(WebRequest webRequest,
+    public ResponseEntity proxy(WebRequest webRequest,
                                         HttpMethod method,
                                         @RequestHeader MultiValueMap<String, String> headers,
                                         @RequestBody(required = false) String body) {
@@ -46,8 +46,10 @@ public class BudgetEndPoint {
 
         log(method, body, path, requestEntity);
 
-        ResponseEntity<String> response = budgetRestTemplate.exchange(path, method, requestEntity, String.class);
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+        ResponseEntity response = budgetRestTemplate.exchange(path, method, requestEntity, byte[].class);
+        return ResponseEntity.status(response.getStatusCode())
+                .headers(response.getHeaders())
+                .body(response.getBody());
     }
 
     private HttpEntity<?> httpEntityFor(String body, MultiValueMap<String, String> headers) {

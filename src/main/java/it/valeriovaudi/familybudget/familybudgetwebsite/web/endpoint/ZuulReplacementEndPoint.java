@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -13,12 +15,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 
 @Slf4j
@@ -37,52 +37,41 @@ public class ZuulReplacementEndPoint {
     @RequestMapping("/budget-service/**")
     public ResponseEntity<String> proxy(WebRequest webRequest,
                                         HttpMethod method,
+                                        @RequestHeader MultiValueMap<String, String> headers,
                                         @RequestBody(required = false) String body) {
 
-        Map<String, List<String>> parameters = requestParameterFor(webRequest);
+        Map<String, String[]> parameters = webRequest.getParameterMap();
         String path = budgetServiceUri + pathFor(webRequest, parameters);
-        HttpEntity<?> requestEntity = httpEntityFor(body);
+        HttpEntity<?> requestEntity = httpEntityFor(body, headers);
 
-        log(method, body, path, requestEntity, parameters);
+        log(method, body, path, requestEntity);
 
         ResponseEntity<String> response = budgetRestTemplate.exchange(path, method, requestEntity, String.class);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
-    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity, Map<String, List<String>> parameters) {
+    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity) {
         log.debug("path: " + path);
         log.debug("method: " + method);
         log.debug("body: " + body);
-        log.debug("parameters: " + parameters);
         log.debug("requestEntity: " + requestEntity);
     }
 
-    private HttpEntity<?> httpEntityFor(String body) {
+    private HttpEntity<?> httpEntityFor(String body, MultiValueMap<String, String> headers) {
         HttpEntity<?> requestEntity = HttpEntity.EMPTY;
         if (body != null) {
-            requestEntity = new HttpEntity<>(body);
+            requestEntity = new HttpEntity(body, headers);
         }
         return requestEntity;
     }
 
-    private Map<String, List<String>> requestParameterFor(WebRequest webRequest) {
-
-        return webRequest.getParameterMap().
-                entrySet().stream()
-                .map(entry -> Map.of(entry.getKey(), Arrays.stream(entry.getValue()).collect(Collectors.toList())))
-                .reduce(new HashMap(), (i, j) -> {
-                    i.putAll(j);
-                    return i;
-                });
-    }
-
-    private String pathFor(WebRequest webRequest, Map<String, List<String>> parameters) {
+    private String pathFor(WebRequest webRequest, Map<String, String[]> parameters) {
         String path = (String) webRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, SCOPE_REQUEST);
         path = path.substring("/budget-service".length());
 
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(path);
 
-        parameters.forEach(uriComponentsBuilder::queryParam);
+        parameters.forEach((name, values) -> uriComponentsBuilder.queryParam(name, stream(values).collect(toList())));
 
         return uriComponentsBuilder.build().toUriString();
     }

@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 
@@ -21,34 +26,34 @@ import static org.springframework.web.context.request.RequestAttributes.SCOPE_RE
 public class ZuulReplacementEndPoint {
 
     private final String budgetServiceUri;
-    private final RestTemplate oauth2RestTemplate;
+    private final RestTemplate budgetRestTemplate;
 
     public ZuulReplacementEndPoint(@Value("${budgetServiceUri:http://budget-service:8080}") String budgetServiceUri,
-                                   RestTemplate oauth2RestTemplate) {
+                                   RestTemplate budgetRestTemplate) {
         this.budgetServiceUri = budgetServiceUri;
-        this.oauth2RestTemplate = oauth2RestTemplate;
+        this.budgetRestTemplate = budgetRestTemplate;
     }
 
     @RequestMapping("/budget-service/**")
     public ResponseEntity<String> proxy(WebRequest webRequest,
                                         HttpMethod method,
-                                        @RequestBody String body) {
+                                        @RequestBody(required = false) String body) {
 
-        String path = budgetServiceUri + pathFor(webRequest);
-        Map<String, String[]> parameters = requestParameterFor(webRequest);
+        Map<String, List<String>> parameters = requestParameterFor(webRequest);
+        String path = budgetServiceUri + pathFor(webRequest, parameters);
         HttpEntity<?> requestEntity = httpEntityFor(body);
 
-        log(method, body, path, requestEntity);
+        log(method, body, path, requestEntity, parameters);
 
-        ResponseEntity<String> response = oauth2RestTemplate.exchange(path, method, requestEntity, String.class, parameters);
+        ResponseEntity<String> response = budgetRestTemplate.exchange(path, method, requestEntity, String.class);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
-    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity) {
+    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity, Map<String, List<String>> parameters) {
         log.debug("path: " + path);
         log.debug("method: " + method);
         log.debug("body: " + body);
-        log.debug("body: " + body);
+        log.debug("parameters: " + parameters);
         log.debug("requestEntity: " + requestEntity);
     }
 
@@ -60,13 +65,25 @@ public class ZuulReplacementEndPoint {
         return requestEntity;
     }
 
-    private Map<String, String[]> requestParameterFor(WebRequest webRequest) {
-        return webRequest.getParameterMap();
+    private Map<String, List<String>> requestParameterFor(WebRequest webRequest) {
+
+        return webRequest.getParameterMap().
+                entrySet().stream()
+                .map(entry -> Map.of(entry.getKey(), Arrays.stream(entry.getValue()).collect(Collectors.toList())))
+                .reduce(new HashMap(), (i, j) -> {
+                    i.putAll(j);
+                    return i;
+                });
     }
 
-    private String pathFor(WebRequest webRequest) {
+    private String pathFor(WebRequest webRequest, Map<String, List<String>> parameters) {
         String path = (String) webRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, SCOPE_REQUEST);
         path = path.substring("/budget-service".length());
-        return path;
+
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(path);
+
+        parameters.forEach(uriComponentsBuilder::queryParam);
+
+        return uriComponentsBuilder.build().toUriString();
     }
 }

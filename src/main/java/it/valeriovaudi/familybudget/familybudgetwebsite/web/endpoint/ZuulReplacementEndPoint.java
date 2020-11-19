@@ -20,6 +20,7 @@ import java.util.Map;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
+import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 @Slf4j
 @RestController
@@ -40,21 +41,13 @@ public class ZuulReplacementEndPoint {
                                         @RequestHeader MultiValueMap<String, String> headers,
                                         @RequestBody(required = false) String body) {
 
-        Map<String, String[]> parameters = webRequest.getParameterMap();
-        String path = budgetServiceUri + pathFor(webRequest, parameters);
+        String path = budgetServiceUri + pathFor(webRequest);
         HttpEntity<?> requestEntity = httpEntityFor(body, headers);
 
         log(method, body, path, requestEntity);
 
         ResponseEntity<String> response = budgetRestTemplate.exchange(path, method, requestEntity, String.class);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    }
-
-    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity) {
-        log.debug("path: " + path);
-        log.debug("method: " + method);
-        log.debug("body: " + body);
-        log.debug("requestEntity: " + requestEntity);
     }
 
     private HttpEntity<?> httpEntityFor(String body, MultiValueMap<String, String> headers) {
@@ -65,14 +58,22 @@ public class ZuulReplacementEndPoint {
         return requestEntity;
     }
 
-    private String pathFor(WebRequest webRequest, Map<String, String[]> parameters) {
+    private String pathFor(WebRequest webRequest) {
         String path = (String) webRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, SCOPE_REQUEST);
-        path = path.substring("/budget-service".length());
+        String strippedPath = path.substring("/budget-service".length());
+        Map<String, String[]> parameters = webRequest.getParameterMap();
 
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(path);
+        UriComponentsBuilder uriComponentsBuilder = fromUriString(strippedPath);
 
         parameters.forEach((name, values) -> uriComponentsBuilder.queryParam(name, stream(values).collect(toList())));
 
         return uriComponentsBuilder.build().toUriString();
+    }
+
+    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity) {
+        log.debug("path: " + path);
+        log.debug("method: " + method);
+        log.debug("body: " + body);
+        log.debug("requestEntity: " + requestEntity);
     }
 }

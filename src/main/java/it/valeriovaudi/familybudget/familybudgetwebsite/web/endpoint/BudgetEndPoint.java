@@ -24,13 +24,13 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 @Slf4j
 @RestController
-public class ZuulReplacementEndPoint {
+public class BudgetEndPoint {
 
     private final String budgetServiceUri;
     private final RestTemplate budgetRestTemplate;
 
-    public ZuulReplacementEndPoint(@Value("${budgetServiceUri:http://budget-service:8080}") String budgetServiceUri,
-                                   RestTemplate budgetRestTemplate) {
+    public BudgetEndPoint(@Value("${budgetServiceUri:http://budget-service:8080}") String budgetServiceUri,
+                          RestTemplate budgetRestTemplate) {
         this.budgetServiceUri = budgetServiceUri;
         this.budgetRestTemplate = budgetRestTemplate;
     }

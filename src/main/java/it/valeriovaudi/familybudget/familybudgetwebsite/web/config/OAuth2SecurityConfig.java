@@ -43,13 +43,6 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public RestTemplate accountRestTemplate(OAuth2TokenResolver oAuth2TokenResolver) {
-        return new RestTemplateBuilder()
-                .additionalInterceptors(new BearerTokenInterceptor(oAuth2TokenResolver))
-                .build();
-    }
-
-    @Bean
     public RestTemplate budgetRestTemplate(OAuth2TokenResolver oAuth2TokenResolver) {
         return new RestTemplateBuilder()
                 .additionalInterceptors(new BearerTokenInterceptor(oAuth2TokenResolver))

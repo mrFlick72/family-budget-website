@@ -39,7 +39,7 @@ public class BudgetEndPoint {
     public ResponseEntity proxy(WebRequest webRequest,
                                         HttpMethod method,
                                         @RequestHeader MultiValueMap<String, String> headers,
-                                        @RequestBody(required = false) String body) {
+                                        @RequestBody(required = false) Object body) {
 
         String path = budgetServiceUri + pathFor(webRequest);
         HttpEntity<?> requestEntity = httpEntityFor(body, headers);
@@ -52,7 +52,7 @@ public class BudgetEndPoint {
                 .body(response.getBody());
     }
 
-    private HttpEntity<?> httpEntityFor(String body, MultiValueMap<String, String> headers) {
+    private HttpEntity<?> httpEntityFor(Object body, MultiValueMap<String, String> headers) {
         HttpEntity<?> requestEntity = HttpEntity.EMPTY;
         if (body != null) {
             requestEntity = new HttpEntity(body, headers);
@@ -72,7 +72,7 @@ public class BudgetEndPoint {
         return uriComponentsBuilder.build().toUriString();
     }
 
-    private void log(HttpMethod method, String body, String path, HttpEntity<?> requestEntity) {
+    private void log(HttpMethod method, Object body, String path, HttpEntity<?> requestEntity) {
         log.debug("path: " + path);
         log.debug("method: " + method);
         log.debug("body: " + body);

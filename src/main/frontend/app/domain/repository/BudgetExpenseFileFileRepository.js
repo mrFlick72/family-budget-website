@@ -9,9 +9,6 @@ export class BudgetExpenseFileFileRepository {
         return fetch(BUDGET_EXPENSE_ATTACHMENT_URI(budgetExpenseId), {
             method: "POST",
             body: data,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
             credentials: 'same-origin'
         })
     }

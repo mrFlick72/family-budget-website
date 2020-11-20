@@ -2,23 +2,22 @@ package it.valeriovaudi.familybudget.familybudgetwebsite.web.endpoint;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
@@ -35,11 +34,48 @@ public class BudgetEndPoint {
         this.budgetRestTemplate = budgetRestTemplate;
     }
 
-    @RequestMapping("/budget-service/**")
+    @PostMapping(value = "/budget-service/**", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity multipartProxy(WebRequest webRequest,
+                                         @RequestHeader MultiValueMap<String, String> headers,
+                                         @RequestParam("attachment") MultipartFile attachment) throws IOException {
+        String path = budgetServiceUri + pathFor(webRequest);
+
+        LinkedMultiValueMap<String, Object> body = multipartBodyFor(attachment);
+        HttpEntity<?> requestEntity = httpEntityFor(body, headers);
+
+        log(POST, body, path, requestEntity);
+
+        ResponseEntity response = budgetRestTemplate.exchange(path, POST, requestEntity, Void.class);
+        return ResponseEntity.status(response.getStatusCode())
+                .headers(response.getHeaders())
+                .build();
+    }
+
+    private LinkedMultiValueMap<String, Object> multipartBodyFor(MultipartFile attachment) throws IOException {
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("attachment", filePartFor(attachment));
+        return body;
+    }
+
+    private HttpEntity<byte[]> filePartFor(MultipartFile attachment) throws IOException {
+        MultiValueMap<String, String> fileMetadata = new LinkedMultiValueMap<>();
+        ContentDisposition contentDisposition = ContentDisposition
+                .builder("form-data")
+                .name("attachment")
+                .filename(attachment.getOriginalFilename())
+                .build();
+        fileMetadata.add(HttpHeaders.CONTENT_TYPE, attachment.getContentType());
+        fileMetadata.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(attachment.getSize()));
+        fileMetadata.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        HttpEntity<byte[]> attachmentEntity = new HttpEntity<>(attachment.getBytes(), fileMetadata);
+        return attachmentEntity;
+    }
+
+    @RequestMapping(value = "/budget-service/**", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity proxy(WebRequest webRequest,
-                                        HttpMethod method,
-                                        @RequestHeader MultiValueMap<String, String> headers,
-                                        @RequestBody(required = false) Object body) {
+                                HttpMethod method,
+                                @RequestHeader MultiValueMap<String, String> headers,
+                                @RequestBody(required = false) Object body) {
 
         String path = budgetServiceUri + pathFor(webRequest);
         HttpEntity<?> requestEntity = httpEntityFor(body, headers);
@@ -53,7 +89,7 @@ public class BudgetEndPoint {
     }
 
     private HttpEntity<?> httpEntityFor(Object body, MultiValueMap<String, String> headers) {
-        HttpEntity<?> requestEntity = HttpEntity.EMPTY;
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         if (body != null) {
             requestEntity = new HttpEntity(body, headers);
         }
@@ -73,9 +109,10 @@ public class BudgetEndPoint {
     }
 
     private void log(HttpMethod method, Object body, String path, HttpEntity<?> requestEntity) {
-        log.debug("path: " + path);
-        log.debug("method: " + method);
-        log.debug("body: " + body);
-        log.debug("requestEntity: " + requestEntity);
+        log.info("path: " + path);
+        log.info("method: " + method);
+        log.info("body: " + body);
+        log.info("requestEntity: " + requestEntity.getBody());
+        log.info("requestEntity: " + requestEntity.getHeaders());
     }
 }

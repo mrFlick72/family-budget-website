@@ -1,34 +1,38 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.model;
 
-import lombok.*;
-
 import java.io.Serializable;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
-@Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 public class MonthRepresentation implements Serializable {
 
-    private String monthLabel;
-    private Integer monthValue;
+    public String monthLabel;
+    public Integer monthValue;
 
-    public static List<MonthRepresentation> newMonthRepresentationList(){
-        return asList(new MonthRepresentation("January",1),
-                new MonthRepresentation("February",2),
-                new MonthRepresentation("March", 3),
-                new MonthRepresentation("April",4),
-                new MonthRepresentation("May",5),
-                new MonthRepresentation("June",6),
-                new MonthRepresentation("July",7),
-                new MonthRepresentation("August",8),
-                new MonthRepresentation("September",9),
-                new MonthRepresentation("October",10),
-                new MonthRepresentation("November",11),
-                new MonthRepresentation("December", 12));
-        }
+
+    private static MonthRepresentation newMonthRepresentation(String monthLabel, Integer monthValue) {
+        MonthRepresentation monthRepresentation = new MonthRepresentation();
+        monthRepresentation.monthLabel = monthLabel;
+        monthRepresentation.monthValue = monthValue;
+        return monthRepresentation;
+    }
+
+    public static List<MonthRepresentation> newMonthRepresentationList() {
+        return asList(
+                newMonthRepresentation("January", 1),
+                newMonthRepresentation("February", 2),
+                newMonthRepresentation("March", 3),
+                newMonthRepresentation("April", 4),
+                newMonthRepresentation("May", 5),
+                newMonthRepresentation("June", 6),
+                newMonthRepresentation("July", 7),
+                newMonthRepresentation("August", 8),
+                newMonthRepresentation("September", 9),
+                newMonthRepresentation("October", 10),
+                newMonthRepresentation("November", 11),
+                newMonthRepresentation("December", 12)
+        );
+    }
+
 }

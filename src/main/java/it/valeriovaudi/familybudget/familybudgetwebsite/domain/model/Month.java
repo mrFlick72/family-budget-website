@@ -1,17 +1,10 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Optional;
 
-@Getter
-@ToString
-@EqualsAndHashCode
 public final class Month {
 
     public static final Month JANUARY               = new Month(1);
@@ -44,5 +37,32 @@ public final class Month {
 
     public static Month now() {
         return new Month(LocalDate.now().getMonthValue());
+    }
+
+    public Integer getMonthValue() {
+        return this.monthValue;
+    }
+
+    public boolean equals(final Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Month)) return false;
+        final Month other = (Month) o;
+        final Object this$monthValue = this.getMonthValue();
+        final Object other$monthValue = other.getMonthValue();
+        if (this$monthValue == null ? other$monthValue != null : !this$monthValue.equals(other$monthValue))
+            return false;
+        return true;
+    }
+
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        final Object $monthValue = this.getMonthValue();
+        result = result * PRIME + ($monthValue == null ? 43 : $monthValue.hashCode());
+        return result;
+    }
+
+    public String toString() {
+        return "Month(monthValue=" + this.getMonthValue() + ")";
     }
 }

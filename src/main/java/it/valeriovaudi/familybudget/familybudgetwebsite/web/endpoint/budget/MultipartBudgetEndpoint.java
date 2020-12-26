@@ -1,6 +1,6 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.endpoint.budget;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,10 +18,10 @@ import java.util.Optional;
 
 import static org.springframework.http.HttpMethod.POST;
 
-@Slf4j
 @RestController
 public class MultipartBudgetEndpoint {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(MultipartBudgetEndpoint.class);
     private final String budgetServiceUri;
     private final BudgetProxyService budgetProxyService;
     private final RestTemplate budgetRestTemplate;

@@ -1,6 +1,6 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.endpoint.budget;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -16,9 +16,10 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
-@Slf4j
 @Service
 class BudgetProxyService {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(BudgetProxyService.class);
 
     String pathFor(WebRequest webRequest) {
         String path = (String) webRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, SCOPE_REQUEST);

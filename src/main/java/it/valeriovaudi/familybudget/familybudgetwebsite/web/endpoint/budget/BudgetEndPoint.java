@@ -1,6 +1,6 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.endpoint.budget;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.WebRequest;
 
-@Slf4j
 @RestController
 public class BudgetEndPoint {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(BudgetEndPoint.class);
     private final String budgetServiceUri;
     private final BudgetProxyService budgetProxyService;
     private final RestTemplate budgetRestTemplate;

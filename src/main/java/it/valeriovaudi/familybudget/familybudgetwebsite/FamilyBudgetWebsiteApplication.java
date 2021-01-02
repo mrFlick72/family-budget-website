@@ -9,10 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
-@EnableRetry
 @EnableCaching
 @SpringBootApplication
 public class FamilyBudgetWebsiteApplication {

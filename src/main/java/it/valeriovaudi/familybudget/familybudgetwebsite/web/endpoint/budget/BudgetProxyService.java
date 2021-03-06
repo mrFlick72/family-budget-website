@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerMapping;
@@ -18,7 +17,6 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
-@Service
 class BudgetProxyService {
 
     private final List<String> headersToSkip;
@@ -36,11 +34,7 @@ class BudgetProxyService {
 
         UriComponentsBuilder uriComponentsBuilder = fromUriString(strippedPath);
 
-        parameters.forEach((name, values) -> {
-            if (!headersToSkip.contains(name)) {
-                uriComponentsBuilder.queryParam(name, stream(values).collect(toList()));
-            }
-        });
+        parameters.forEach((name, values) -> uriComponentsBuilder.queryParam(name, stream(values).collect(toList())));
 
         return uriComponentsBuilder.build().toUriString();
     }
@@ -54,6 +48,12 @@ class BudgetProxyService {
     }
 
     HttpEntity<?> httpEntityFor(Object body, MultiValueMap<String, String> headers) {
+        headers.forEach((name, values) -> {
+            if(headersToSkip.contains(name)){
+                headers.remove(name);
+            }
+        });
+
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         if (body != null) {
             requestEntity = new HttpEntity(body, headers);

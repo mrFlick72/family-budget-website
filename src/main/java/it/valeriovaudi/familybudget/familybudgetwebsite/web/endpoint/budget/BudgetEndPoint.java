@@ -23,7 +23,8 @@ public class BudgetEndPoint {
     private final RestTemplate budgetRestTemplate;
 
     public BudgetEndPoint(@Value("${budgetServiceUri:http://budget-service:8080}") String budgetServiceUri,
-                          BudgetProxyService budgetProxyService, RestTemplate budgetRestTemplate) {
+                          BudgetProxyService budgetProxyService,
+                          RestTemplate budgetRestTemplate) {
         this.budgetServiceUri = budgetServiceUri;
         this.budgetProxyService = budgetProxyService;
         this.budgetRestTemplate = budgetRestTemplate;

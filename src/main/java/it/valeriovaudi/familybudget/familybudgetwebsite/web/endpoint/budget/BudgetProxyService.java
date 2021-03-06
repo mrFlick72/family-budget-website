@@ -66,9 +66,9 @@ public class BudgetProxyService {
         });
         log.debug("header after filtering: " + filteredHeaders);
 
-        HttpEntity<?> requestEntity = HttpEntity.EMPTY;
+        HttpEntity<?> requestEntity = new HttpEntity<>(filteredHeaders);
         if (body != null) {
-            requestEntity = new HttpEntity(body);
+            requestEntity = new HttpEntity(body, filteredHeaders);
         }
         return requestEntity;
     }

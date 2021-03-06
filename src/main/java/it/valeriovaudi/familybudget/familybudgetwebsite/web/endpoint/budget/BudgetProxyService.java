@@ -2,6 +2,7 @@ package it.valeriovaudi.familybudget.familybudgetwebsite.web.endpoint.budget;
 
 import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.WebRequest;
@@ -48,18 +49,19 @@ public class BudgetProxyService {
     }
 
     HttpEntity<?> httpEntityFor(Object body, MultiValueMap<String, String> headers) {
+        HttpHeaders filteredHeaders = new HttpHeaders();
         log.debug("header before filtering: " + headers);
 
         headers.forEach((name, values) -> {
-            if (headersToSkip.contains(name)) {
-                headers.remove(name);
+            if (!headersToSkip.contains(name)) {
+                filteredHeaders.addAll(name, values);
             }
         });
-        log.debug("header before filtering: " + headers);
+        log.debug("header after filtering: " + filteredHeaders);
 
-        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        HttpEntity<?> requestEntity = new HttpEntity<>(filteredHeaders);
         if (body != null) {
-            requestEntity = new HttpEntity(body, headers);
+            requestEntity = new HttpEntity(body, filteredHeaders);
         }
         return requestEntity;
     }

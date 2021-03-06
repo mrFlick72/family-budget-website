@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties(BudgetProxyService.class)
+@EnableConfigurationProperties(BudgetProxyServiceConfigProperties.class)
 public class BudgetProxyServiceConfig {
 
     @Bean

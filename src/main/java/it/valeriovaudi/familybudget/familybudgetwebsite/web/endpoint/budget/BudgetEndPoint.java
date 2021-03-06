@@ -45,7 +45,7 @@ public class BudgetEndPoint {
         budgetProxyService.log(response);
 
         return ResponseEntity.status(response.getStatusCode())
-                .headers(response.getHeaders())
+//                .headers(response.getHeaders())
                 .body(response.getBody());
     }
 

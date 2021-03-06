@@ -47,7 +47,7 @@ public class MultipartBudgetEndpoint {
 
         ResponseEntity response = budgetRestTemplate.exchange(path, POST, requestEntity, Void.class);
         return ResponseEntity.status(response.getStatusCode())
-                .headers(response.getHeaders())
+//                .headers(response.getHeaders())
                 .build();
     }
 

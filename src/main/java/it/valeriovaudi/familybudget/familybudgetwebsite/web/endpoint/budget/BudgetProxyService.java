@@ -1,6 +1,7 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.endpoint.budget;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.stream;
@@ -19,7 +21,13 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 @Service
 class BudgetProxyService {
 
+    private final List<String> headersToSkip;
+
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(BudgetProxyService.class);
+
+    BudgetProxyService(@Value("${headersToSkip:[]") List<String> headersToSkip) {
+        this.headersToSkip = headersToSkip;
+    }
 
     String pathFor(WebRequest webRequest) {
         String path = (String) webRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, SCOPE_REQUEST);
@@ -28,7 +36,11 @@ class BudgetProxyService {
 
         UriComponentsBuilder uriComponentsBuilder = fromUriString(strippedPath);
 
-        parameters.forEach((name, values) -> uriComponentsBuilder.queryParam(name, stream(values).collect(toList())));
+        parameters.forEach((name, values) -> {
+            if (!headersToSkip.contains(name)) {
+                uriComponentsBuilder.queryParam(name, stream(values).collect(toList()));
+            }
+        });
 
         return uriComponentsBuilder.build().toUriString();
     }

@@ -25,7 +25,7 @@ class BudgetProxyService {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(BudgetProxyService.class);
 
-    BudgetProxyService(@Value("${headersToSkip:[]}") List<String> headersToSkip) {
+    BudgetProxyService(@Value("${headersToSkip}") List<String> headersToSkip) {
         this.headersToSkip = headersToSkip;
     }
 

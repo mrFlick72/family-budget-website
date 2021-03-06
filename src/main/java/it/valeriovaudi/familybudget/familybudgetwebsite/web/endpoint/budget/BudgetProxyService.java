@@ -45,16 +45,20 @@ class BudgetProxyService {
         log.debug("path: " + path);
         log.debug("method: " + method);
         log.debug("body: " + body);
-        log.debug("requestEntity: " + requestEntity.getBody());
-        log.debug("requestEntity: " + requestEntity.getHeaders());
+        log.debug("requestEntity.body: " + requestEntity.getBody());
+        log.debug("requestEntity.header: " + requestEntity.getHeaders());
+        log.debug("header to be skipped: " + headersToSkip);
     }
 
     HttpEntity<?> httpEntityFor(Object body, MultiValueMap<String, String> headers) {
+        log.debug("header before filtering: " + headers);
+
         headers.forEach((name, values) -> {
-            if(headersToSkip.contains(name)){
+            if (headersToSkip.contains(name)) {
                 headers.remove(name);
             }
         });
+        log.debug("header before filtering: " + headers);
 
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         if (body != null) {

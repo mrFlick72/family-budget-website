@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerMapping;
@@ -17,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
+@Service
 class BudgetProxyService {
 
     private final List<String> headersToSkip;

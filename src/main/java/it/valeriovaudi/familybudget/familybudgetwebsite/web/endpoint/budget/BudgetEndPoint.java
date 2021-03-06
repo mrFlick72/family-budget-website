@@ -41,6 +41,8 @@ public class BudgetEndPoint {
         budgetProxyService.log(method, body, path, requestEntity);
 
         ResponseEntity response = budgetRestTemplate.exchange(path, method, requestEntity, byte[].class);
+        budgetProxyService.log(response);
+
         return ResponseEntity.status(response.getStatusCode())
                 .headers(response.getHeaders())
                 .body(response.getBody());

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerMapping;
@@ -46,6 +47,12 @@ public class BudgetProxyService {
         log.debug("requestEntity.body: " + requestEntity.getBody());
         log.debug("requestEntity.header: " + requestEntity.getHeaders());
         log.debug("header to be skipped: " + headersToSkip);
+    }
+
+    void log(ResponseEntity responseEntity) {
+        log.debug("responseEntity.body: " + responseEntity.getBody());
+        log.debug("responseEntity.header: " + responseEntity.getHeaders());
+        log.debug("responseEntity.statusCode: " + responseEntity.getStatusCode());
     }
 
     HttpEntity<?> httpEntityFor(Object body, MultiValueMap<String, String> headers) {

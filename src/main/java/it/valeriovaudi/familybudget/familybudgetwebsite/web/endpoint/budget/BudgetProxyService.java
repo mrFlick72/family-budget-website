@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
@@ -47,7 +48,6 @@ public class BudgetProxyService {
     }
 
     HttpEntity<?> httpEntityFor(Object body) {
-
         HttpEntity<?> requestEntity = HttpEntity.EMPTY;
         if (body != null) {
             requestEntity = new HttpEntity(body);
@@ -57,14 +57,25 @@ public class BudgetProxyService {
 
     HttpHeaders responseHeadersFrom(HttpHeaders responseHeaders) {
         HttpHeaders result = new HttpHeaders();
-
-        Optional.ofNullable(responseHeaders.getContentType())
-                .ifPresent(mediaType -> result.add(HttpHeaders.CONTENT_TYPE, mediaType.toString()));
-
-        result.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(responseHeaders.getContentLength()));
-
-        ContentDisposition contentDisposition = responseHeaders.getContentDisposition();
-        result.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        setContentLengthHeader(responseHeaders, result);
+        setContentTypeHeader(responseHeaders, result);
+        setContentDispositionHeader(responseHeaders, result);
         return result;
+    }
+
+    private void setContentLengthHeader(HttpHeaders responseHeaders, HttpHeaders result) {
+        result.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(responseHeaders.getContentLength()));
+    }
+
+    private void setContentDispositionHeader(HttpHeaders responseHeaders, HttpHeaders result) {
+        if (responseHeaders.containsKey(HttpHeaders.CONTENT_DISPOSITION)) {
+            ContentDisposition contentDisposition = responseHeaders.getContentDisposition();
+            result.set(HttpHeaders.CONTENT_DISPOSITION, format("inline; filename=%s", contentDisposition.getFilename()));
+        }
+    }
+
+    private void setContentTypeHeader(HttpHeaders responseHeaders, HttpHeaders result) {
+        Optional.ofNullable(responseHeaders.getContentType())
+                .ifPresent(mediaType -> result.set(HttpHeaders.CONTENT_TYPE, mediaType.toString()));
     }
 }

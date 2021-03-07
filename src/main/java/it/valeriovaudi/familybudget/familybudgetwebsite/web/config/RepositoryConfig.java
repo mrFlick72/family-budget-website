@@ -19,7 +19,7 @@ import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import java.time.Duration;
 
 @Configuration
-public class RepositoryConfiguration {
+public class RepositoryConfig {
 
     @Bean
     public RestTemplate restTemplate() {

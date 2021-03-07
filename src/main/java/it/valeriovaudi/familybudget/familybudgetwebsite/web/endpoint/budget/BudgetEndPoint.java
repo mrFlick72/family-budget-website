@@ -6,9 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -33,11 +31,10 @@ public class BudgetEndPoint {
     @RequestMapping(value = "/budget-service/**", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity proxy(WebRequest webRequest,
                                 HttpMethod method,
-                                @RequestHeader MultiValueMap<String, String> headers,
                                 @RequestBody(required = false) Object body) {
 
         String path = budgetServiceUri + budgetProxyService.pathFor(webRequest);
-        HttpEntity<?> requestEntity = budgetProxyService.httpEntityFor(body, headers);
+        HttpEntity<?> requestEntity = budgetProxyService.httpEntityFor(body);
 
         budgetProxyService.log(method, body, path, requestEntity);
 
@@ -45,7 +42,7 @@ public class BudgetEndPoint {
         budgetProxyService.log(response);
 
         return ResponseEntity.status(response.getStatusCode())
-//                .headers(response.getHeaders())
+                .headers(budgetProxyService.responseHeadersFrom(response.getHeaders()))
                 .body(response.getBody());
     }
 

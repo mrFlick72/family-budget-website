@@ -45,7 +45,6 @@ public class MultipartBudgetEndpoint {
 
         ResponseEntity response = budgetRestTemplate.exchange(path, POST, requestEntity, Void.class);
         return ResponseEntity.status(response.getStatusCode())
-//                .headers(response.getHeaders())
                 .build();
     }
 
@@ -54,10 +53,8 @@ public class MultipartBudgetEndpoint {
         multiparts.forEach(
                 (partName, multipartFiles) ->
                         multipartFiles.forEach(
-                                multipartFile -> {
-                                    filePartFor(multipartFile)
-                                            .ifPresent(httpEntity -> body.add(partName, httpEntity));
-                                }
+                                multipartFile -> filePartFor(multipartFile)
+                                        .ifPresent(httpEntity -> body.add(partName, httpEntity))
                         )
         );
         return body;

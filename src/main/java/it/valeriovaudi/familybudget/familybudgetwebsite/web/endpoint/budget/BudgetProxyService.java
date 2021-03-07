@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
@@ -57,13 +58,13 @@ public class BudgetProxyService {
     HttpHeaders responseHeadersFrom(HttpHeaders responseHeaders) {
         HttpHeaders result = new HttpHeaders();
 
-        result.add(HttpHeaders.CONTENT_TYPE, responseHeaders.getContentType().toString());
+        Optional.ofNullable(responseHeaders.getContentType())
+                .ifPresent(mediaType -> result.add(HttpHeaders.CONTENT_TYPE, mediaType.toString()));
+
         result.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(responseHeaders.getContentLength()));
 
         ContentDisposition contentDisposition = responseHeaders.getContentDisposition();
-        if (contentDisposition != null) {
-            result.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
-        }
+        result.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
         return result;
     }
 }

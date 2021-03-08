@@ -6,7 +6,6 @@ import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.user.VAuthe
 import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.user.VAuthenticatorOidcUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cloud.sleuth.instrument.web.mvc.TracingClientHttpRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,10 +43,9 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public RestTemplate budgetRestTemplate(TracingClientHttpRequestInterceptor tracingClientHttpRequestInterceptor,
-                                           OAuth2TokenResolver oAuth2TokenResolver) {
+    public RestTemplate budgetRestTemplate(OAuth2TokenResolver oAuth2TokenResolver) {
         return new RestTemplateBuilder()
-                .additionalInterceptors(new BearerTokenInterceptor(oAuth2TokenResolver), tracingClientHttpRequestInterceptor)
+                .additionalInterceptors(new BearerTokenInterceptor(oAuth2TokenResolver))
                 .build();
     }
 

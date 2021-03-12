@@ -77,10 +77,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.opentracing.brave</groupId>
-            <artifactId>brave-opentracing</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>software.amazon.awssdk</groupId>

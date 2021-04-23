@@ -66,7 +66,14 @@ public class I18nMessagesCacheRefresher implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        listen().subscribe();
+        listen().doOnError(Exception.class, (e) -> {
+            try {
+                this.run(null);
+            } catch (Exception exception) {
+                logger.error("subscription error: ", e);
+                logger.error("going to resubscribe again ");
+            }
+        }).subscribe();
     }
 
 }

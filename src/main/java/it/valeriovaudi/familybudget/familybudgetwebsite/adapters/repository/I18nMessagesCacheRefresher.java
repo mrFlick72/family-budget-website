@@ -44,6 +44,7 @@ public class I18nMessagesCacheRefresher implements ApplicationRunner {
                 .delayElements(sleepingTime)
                 .log()
                 .flatMap(req -> handleMessage())
+                .log()
                 .flatMap(signal -> Mono.fromCallable(() -> {
                             logger.info("cache refresh event received ");
                             return Objects.requireNonNull(cacheManager.getCache("family-budget-website.i18n.messages")).invalidate();
@@ -59,7 +60,8 @@ public class I18nMessagesCacheRefresher implements ApplicationRunner {
         return Flux.from(fromCompletionStage(sqsAsyncClient.receiveMessage(factory.makeAReceiveMessageRequest())))
                 .flatMap(response -> Flux.fromIterable(response.messages()))
                 .flatMap(message -> fromCompletionStage(sqsAsyncClient.deleteMessage(factory.makeADeleteMessageRequest(message.receiptHandle()))))
-                .collectList();
+                .collectList()
+                .flatMap(deleteMessageResponses -> deleteMessageResponses.size() == 0 ? Mono.empty() : Mono.just(deleteMessageResponses));
     }
 
     @Override

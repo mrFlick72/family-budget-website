@@ -30,7 +30,7 @@ jobs:
 
       - name: docker push
         run: |
-          if [[ ${GITHUB_REF##*/} == 'main' ]]
+          if [[ ${GITHUB_REF##*/} == 'master' ]]
           then
             DOCKER_TAG="latest"
           else

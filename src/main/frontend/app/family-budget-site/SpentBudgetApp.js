@@ -39,10 +39,6 @@ export default class SpentBudgetApp extends React.Component {
                            render={(props) => <BudgetExpensePage {...props} links={links}
                                                                  messageRegistry={this.state.messageRegistry}/>}/>
 
-                    <Route exact={true} path="/budget-expense/chart"
-                           render={(props) => <BudgetExpenseChartPage {...props} links={links}
-                                                                      messageRegistry={this.state.messageRegistry}/>}/>
-
                     <Route exact={true} path="/budget-revenue"
                            render={(props) => <BudgetRevenuePage{...props} links={links}
                                                                 messageRegistry={this.state.messageRegistry}/>}/>

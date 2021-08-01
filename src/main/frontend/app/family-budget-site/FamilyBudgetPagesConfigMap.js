@@ -73,16 +73,6 @@ export class FamilyBudgetPagesConfigMap {
         }
     }
 
-    budgetCharts(bundle) {
-        return {
-            menuMessages: {
-                title: this.messageRepository.getMessageFor(bundle, "menu.title"),
-                userProfileLabel: this.messageRepository.getMessageFor(bundle, "menu.userProfile.label"),
-                logOutLabel: this.messageRepository.getMessageFor(bundle, "menu.logOut.label")
-            }
-        }
-    }
-
     searchTags(bundle) {
         return {
             menuMessages: {

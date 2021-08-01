@@ -4,7 +4,6 @@ import {Route, Switch} from "react-router";
 import {HashRouter} from "react-router-dom";
 import BudgetExpensePage from "./page/BudgetExpensePage";
 import BudgetRevenuePage from "./page/BudgetRevenuePage";
-import BudgetExpenseChartPage from "./page/BudgetExpenseChartPage";
 import {MessageRepository} from "../domain/repository/MessageRepository";
 import SearchTagsPage from "./page/SearchTagsPage";
 
@@ -38,10 +37,6 @@ export default class SpentBudgetApp extends React.Component {
                     <Route exact={true} path="/"
                            render={(props) => <BudgetExpensePage {...props} links={links}
                                                                  messageRegistry={this.state.messageRegistry}/>}/>
-
-                    <Route exact={true} path="/budget-expense/chart"
-                           render={(props) => <BudgetExpenseChartPage {...props} links={links}
-                                                                      messageRegistry={this.state.messageRegistry}/>}/>
 
                     <Route exact={true} path="/budget-revenue"
                            render={(props) => <BudgetRevenuePage{...props} links={links}

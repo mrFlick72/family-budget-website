@@ -4,7 +4,6 @@ import {Route, Switch} from "react-router";
 import {HashRouter} from "react-router-dom";
 import BudgetExpensePage from "./page/BudgetExpensePage";
 import BudgetRevenuePage from "./page/BudgetRevenuePage";
-import BudgetExpenseChartPage from "./page/BudgetExpenseChartPage";
 import {MessageRepository} from "../domain/repository/MessageRepository";
 import SearchTagsPage from "./page/SearchTagsPage";
 

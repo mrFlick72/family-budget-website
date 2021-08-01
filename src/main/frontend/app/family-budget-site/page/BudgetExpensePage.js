@@ -259,11 +259,6 @@ export default class BudgetExpensePage extends React.Component {
                                               downloadStentBudgetAsFileUseCaseXlsxHandler={this.downloadSpentBudgetAsFile.bind(this, "application/xlsx")}/>
 
                         <PageNavigationMenuItem
-                            menuItemLabel={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.diagrams}
-                            link="/budget-expense/chart"
-                            menuItemPrefixIcon="fas fa-chart-area fa-lg"/>
-
-                        <PageNavigationMenuItem
                             menuItemLabel={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchTags}
                             link="/search-tags"
                             menuItemPrefixIcon="fas fa-tags fa-lg"/>

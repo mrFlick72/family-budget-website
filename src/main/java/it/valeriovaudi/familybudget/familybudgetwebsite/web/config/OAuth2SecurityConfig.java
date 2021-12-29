@@ -20,8 +20,8 @@ import java.util.Map;
 
 @EnableWebSecurity
 public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState;
+//    @Autowired
+//    private OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState;
 
     @Value("${vauthenticator.client.registrationId}")
     private String registrationId;
@@ -37,9 +37,9 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().anyRequest().hasAnyRole(grantedRole)
                 .and().oauth2Login().defaultSuccessUrl("/index")
                 .userInfoEndpoint()
-                .oidcUserService(vAuthenticatorOidcUserService())
-                .and()
-                .authorizationEndpoint().authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
+                .oidcUserService(vAuthenticatorOidcUserService());
+//                .and()
+//                .authorizationEndpoint().authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
     }
 
     public VAuthenticatorOidcUserService vAuthenticatorOidcUserService() {

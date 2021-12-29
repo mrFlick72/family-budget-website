@@ -28,6 +28,7 @@ jobs:
 
       - name: Build
         run: |
+          apt-get -y install build-essential libpng-dev
           export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
           mvn clean install
 

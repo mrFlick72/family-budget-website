@@ -11,13 +11,6 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx"]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            chunks: ['familyBudget'],
-            filename: "index.html",
-            template: path.resolve(__dirname, "../resources/static/index.html")
-        })
-    ],
     module: {
         rules: [
             {

@@ -1,5 +1,3 @@
 spring:
   application:
     name: family-budget-website
-  thymeleaf:
-    prefix: classpath:/static/

@@ -1,7 +1,7 @@
 var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const BUID_DIR = path.resolve(__dirname + "../../../../target/classes/templates");
+const BUID_DIR = path.resolve(__dirname + "../../../../target/classes/static");
 
 module.exports = {
     mode: 'production',
@@ -11,13 +11,6 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx"]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            chunks: ['familyBudget'],
-            filename: "index.html",
-            template: path.resolve(__dirname, "../resources/templates/index.html")
-        })
-    ],
     module: {
         rules: [
             {

@@ -20,8 +20,7 @@ import java.util.Map;
 
 @EnableWebSecurity
 public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Autowired
-//    private OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState;
+    private final OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState;
 
     @Value("${vauthenticator.client.registrationId}")
     private String registrationId;
@@ -29,17 +28,21 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${granted-role.family-budget-website}")
     private String grantedRole;
 
+    public OAuth2SecurityConfig(OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState) {
+        this.oAuth2AuthorizationRequestResolverWithSessionState = oAuth2AuthorizationRequestResolverWithSessionState;
+    }
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().headers().frameOptions().sameOrigin().and()
+        http.csrf().disable().headers().frameOptions().disable().and()
                 .authorizeRequests().mvcMatchers("/actuator/**", "/oidc_logout.html").permitAll()
                 .and()
                 .authorizeRequests().anyRequest().hasAnyRole(grantedRole)
                 .and().oauth2Login().defaultSuccessUrl("/index")
                 .userInfoEndpoint()
-                .oidcUserService(vAuthenticatorOidcUserService());
-//                .and()
-//                .authorizationEndpoint().authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
+                .oidcUserService(vAuthenticatorOidcUserService())
+                .and()
+                .authorizationEndpoint().authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
     }
 
     public VAuthenticatorOidcUserService vAuthenticatorOidcUserService() {

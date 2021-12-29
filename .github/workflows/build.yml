@@ -11,13 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: install nodejs
+        run: |
+          sudo apt -y update
+          sudo apt -y install nodejs
+          sudo apt -y install npm
+
       - name: install openjdk
         run: |
           sudo apt-get update && sudo apt-get install openjdk-17-jdk
           sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
           sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
-          sudo apt-get -y install build-essential libpng-dev
-
           java -version
 
       - name: build testing environment
@@ -28,10 +32,16 @@ jobs:
           cd client-security-starter
           mvn clean install -q
 
+      - name: Build frontend artifacts
+        run: |
+          cd src/main/frontend
+          npm install
+          npm run-script build
+
       - name: Build
         run: |
           export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-          mvn clean install
+          mvn install
 
       - name: docker push
         run: |

@@ -16,6 +16,8 @@ jobs:
           sudo apt-get update && sudo apt-get install openjdk-17-jdk
           sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
           sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+          sudo apt-get -y install build-essential libpng-dev
+
           java -version
 
       - name: build testing environment
@@ -28,7 +30,6 @@ jobs:
 
       - name: Build
         run: |
-          apt-get -y install build-essential libpng-dev
           export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
           mvn clean install
 

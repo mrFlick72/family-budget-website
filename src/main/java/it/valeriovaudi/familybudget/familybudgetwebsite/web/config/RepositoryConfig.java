@@ -10,9 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Flux;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
@@ -53,9 +52,8 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public AwsCredentialsProvider awsCredentialsProvider(@Value("${aws.access-key}") String accessKey,
-                                                         @Value("${aws.secret-key}") String awsSecretKey) {
-        return StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, awsSecretKey));
+    public AwsCredentialsProvider awsCredentialsProvider() {
+        return EnvironmentVariableCredentialsProvider.create();
     }
 
 

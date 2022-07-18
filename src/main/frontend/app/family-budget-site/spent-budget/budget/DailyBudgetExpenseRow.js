@@ -24,10 +24,6 @@ export default (props) => {
                 <a className="btn btn-secondary budget-expense-deletable-item" href="#"
                    onClick={props.openDeleteBudgetExpensePopUp.bind(this, props.dailyBudgetExpense)}>
                     <i className="fas fa-trash-alt fa-lg"></i> Delete</a>
-
-                <a className="btn btn-secondary budget-expense-deletable-item" href="#"
-                   onClick={props.openAttachmentPopUp.bind(this, props.dailyBudgetExpense)}>
-                    <i className="fas fa-file-alt fa-lg"></i> Attachments</a>
             </div>
         </td>
     </tr>

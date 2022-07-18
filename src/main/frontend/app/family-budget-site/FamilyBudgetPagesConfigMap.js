@@ -46,12 +46,6 @@ export class FamilyBudgetPagesConfigMap {
                 id: "deleteModal",
                 title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.title"),
                 message: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.delete.popup.message")
-            },
-            attachmentModal: {
-                id: "attachmentPopUp",
-                title: this.messageRepository.getMessageFor(bundle, "budgetExpensePage.attachment.popup.title"),
-                saveButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.save.label"),
-                closeButtonLable: this.messageRepository.getMessageFor(bundle, "common.button.close.label")
             }
         }
     }

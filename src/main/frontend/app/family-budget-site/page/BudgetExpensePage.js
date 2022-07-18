@@ -18,7 +18,6 @@ import CreateNewBudgetExpensePopup from "../spent-budget/popup/CreateNewBudgetEx
 import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
 import ImportExportInCsvPopUp from "../spent-budget/popup/ImportExportInCsvPopUp";
 import moment from "moment";
-import AttachmentsPopUp from "../spent-budget/popup/AttachmentsPopUp";
 import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import SearchBox from "../spent-budget/budget/SearchBox";
@@ -33,7 +32,6 @@ export default class BudgetExpensePage extends React.Component {
             amount: "0.00",
             note: "",
             searchTag: "",
-            attachments: [],
 
             displaySearchTab: false,
 
@@ -46,7 +44,6 @@ export default class BudgetExpensePage extends React.Component {
         this.searchTagRef = React.createRef();
 
 
-        this.attachmentFileRef = React.createRef();
         this.monthRepository = new MonthRepository();
         this.searchTagRepository = new SearchTagRepository();
         this.searchCriteriaOnUrl = new SearchCriteriaOnUrl();
@@ -176,56 +173,6 @@ export default class BudgetExpensePage extends React.Component {
         })
     }
 
-    openAttachmentPopUp(budgetExpense) {
-        this.setState({id: budgetExpense.id, attachments: budgetExpense.attachments})
-        $(`#${this.configMap.budgetExpense(this.props.messageRegistry).attachmentModal.id}`).modal("show");
-    }
-
-    saveAttachment() {
-        this.budgetExpenseFileFileRepository.loadBudgetExpenseAttachment(this.state.id, this.attachmentFileRef.current)
-            .then(response => {
-                if (response.status === 201) {
-                    this.setState((state, props) => {
-                            state.attachments.push(this.attachmentFileRef.current.files[0].name);
-                            return {attachments: state.attachments}
-                        }
-                    )
-                }
-            })
-    }
-
-    deleteAttachment(attachmentFileName) {
-        this.budgetExpenseFileFileRepository.deleteBudgetExpenseAttachment(this.state.id, attachmentFileName)
-            .then(response => {
-                if (response.status === 204) {
-                    this.setState((state, props) => {
-                        let attachemnts = state.attachments.filter(attachment => attachment !== attachmentFileName);
-                        return {attachments: attachemnts}
-                    })
-                }
-            })
-
-    }
-
-    closeAttachmentPopup() {
-        this.spentBudget();
-        $(`#${this.configMap.budgetExpense(this.props.messageRegistry).newBudgetExpenseModal.id}`).modal("hide");
-    }
-
-    downloadAttachment(attachmentFileName) {
-        this.budgetExpenseFileFileRepository.getBudgetExpenseAttachmentFile(this.state.id, attachmentFileName)
-            .then(content => {
-                content.content.then(blob => {
-                    let url = window.URL.createObjectURL(blob);
-                    let a = this.downloadLink.current;
-                    a.href = url;
-                    a.download = content.fileName;
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                })
-            });
-    }
-
     componentDidMount() {
         this.loadCommonData();
         this.spentBudget();
@@ -311,23 +258,12 @@ export default class BudgetExpensePage extends React.Component {
                                                               modal={this.configMap.budgetExpense(this.props.messageRegistry).deleteModal}/>
 
 
-                        <AttachmentsPopUp attachments={this.state.attachments}
-                                          attachmentFileRef={this.attachmentFileRef}
-                                          actionHandler={{
-                                              saveFun: this.saveAttachment.bind(this),
-                                              noFun: this.closeAttachmentPopup.bind(this),
-                                              downloadFun: this.downloadAttachment.bind(this),
-                                              deleteFun: this.deleteAttachment.bind(this)
-                                          }}
-                                          modal={this.configMap.budgetExpense(this.props.messageRegistry).attachmentModal}/>
-
                         <div className="row">
                             <div className="col-12 col-md-9">
                                 <ContentCard
                                     header={this.configMap.budgetExpense(this.props.messageRegistry).cards.dailyDetails}>
                                     <SpentBudgetContent spentBudget={this.state.spentBudget}
                                                         searchTagRegistry={this.state.searchTagRegistry}
-                                                        openAttachmentPopUp={this.openAttachmentPopUp.bind(this)}
                                                         openUpdateBudgetExpensePopUp={this.openUpdateBudgetExpensePopUp.bind(this)}
                                                         openDeleteBudgetExpensePopUp={this.openDeleteBudgetExpensePopUp.bind(this)}/>
                                 </ContentCard>

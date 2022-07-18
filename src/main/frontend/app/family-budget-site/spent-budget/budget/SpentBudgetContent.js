@@ -13,7 +13,6 @@ export default (props) => {
         dailySpentBudget.budgetExpenseRepresentationList.forEach((budgetExpenseRepresentation, dailyBudgetColumnIndex) => {
             tableContent.push(<DailyBudgetExpenseRow key={"C-" + dailyBudgetHeaderIndex + "-" + dailyBudgetColumnIndex}
                                                      dailyBudgetExpense={budgetExpenseRepresentation}
-                                                     openAttachmentPopUp={props.openAttachmentPopUp.bind(budgetExpenseRepresentation)}
                                                      openUpdateBudgetExpensePopUp={props.openUpdateBudgetExpensePopUp.bind(budgetExpenseRepresentation)}
                                                      openDeleteBudgetExpensePopUp={props.openDeleteBudgetExpensePopUp.bind(budgetExpenseRepresentation)}/>)
         })

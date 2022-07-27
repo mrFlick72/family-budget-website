@@ -16,7 +16,6 @@ import TotalBySearchTags from "../spent-budget/menu/TotalBySearchTags";
 import ContentCard from "../../component/layout/ContentCard";
 import CreateNewBudgetExpensePopup from "../spent-budget/popup/CreateNewBudgetExpensePopup";
 import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
-import ImportExportInCsvPopUp from "../spent-budget/popup/ImportExportInCsvPopUp";
 import moment from "moment";
 import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
@@ -239,9 +238,6 @@ export default class BudgetExpensePage extends React.Component {
                             monthRegistry={this.state.monthRegistry}
                             modal={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal}/>
 
-
-                        <ImportExportInCsvPopUp
-                            modal={this.configMap.budgetExpense(this.props.messageRegistry).loadCsvFile}/>
                         <CreateNewBudgetExpensePopup spentBudgetHandlers={this.savePopupEventHandlers()}
                                                      budgetExpense={{
                                                          id: this.state.id,

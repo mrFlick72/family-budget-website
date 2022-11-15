@@ -21,8 +21,10 @@ import java.time.Duration;
 public class RepositoryConfig {
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public RestTemplate restTemplate(OAuth2TokenResolver oAuth2TokenResolver) {
+        return new RestTemplateBuilder()
+                .additionalInterceptors(new BearerTokenInterceptor(oAuth2TokenResolver))
+                .build();
     }
 
     @Bean

@@ -10,7 +10,7 @@ export class SearchTagRepository {
     }
 
     saveSearchTag(searchTag) {
-        return fetch("/family-budget/budget-service/budget-expense/search-tag/v2", {
+        return fetch("/family-budget/budget-service/budget-expense/search-tag", {
             method: "PUT",
             body: JSON.stringify(searchTag),
             headers: {

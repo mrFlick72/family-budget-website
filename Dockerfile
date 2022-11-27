@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM amazoncorretto:17.0.4
 
 ADD target/family-budget-website.jar /usr/local/family-budget-website/
 

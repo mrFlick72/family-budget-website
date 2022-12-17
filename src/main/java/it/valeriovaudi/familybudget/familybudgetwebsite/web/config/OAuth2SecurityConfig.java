@@ -35,7 +35,7 @@ public class OAuth2SecurityConfig {
         http.logout()
                 .deleteCookies("opbs")
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/secure/admin/index");
+                .logoutSuccessUrl("/index");
 
 
         http.oauth2Login().defaultSuccessUrl("/index")

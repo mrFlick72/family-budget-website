@@ -17,10 +17,10 @@ jobs:
           java-version: 17
           distribution: 'corretto'
 
-      - name: build testing environment
+      - name: build sso client LIBRARY
         run: |
-          git clone https://github.com/mrFlick72/client-security-starter.git
-          cd client-security-starter
+          git clone https://github.com/VAuthenticator/spring-boot-client-starter.git
+          cd spring-boot-client-starter
           mvn clean install -q
 
       - name: Build frontend artifacts

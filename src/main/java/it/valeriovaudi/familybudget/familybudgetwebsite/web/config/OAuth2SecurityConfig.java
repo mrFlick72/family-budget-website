@@ -1,55 +1,60 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.config;
 
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.filter.BearerTokenInterceptor;
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.filter.OAuth2TokenResolver;
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.session.management.OAuth2AuthorizationRequestResolverWithSessionState;
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.user.VAuthenticatorOAuth2User;
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.user.VAuthenticatorOidcUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vauthenticator.springbootclientstarter.filter.BearerTokenInterceptor;
+import com.vauthenticator.springbootclientstarter.filter.OAuth2TokenResolver;
+import com.vauthenticator.springbootclientstarter.session.management.OAuth2AuthorizationRequestResolverWithSessionState;
+import com.vauthenticator.springbootclientstarter.user.VAuthenticatorOidcUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.CustomUserTypesOAuth2UserService;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-
 @EnableWebSecurity
-public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration(proxyBeanMethods = false)
+public class OAuth2SecurityConfig {
+    private final VAuthenticatorOidcUserService vAuthenticatorOidcUserService;
     private final OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState;
-
-    @Value("${vauthenticator.client.registrationId}")
-    private String registrationId;
 
     @Value("${granted-role.family-budget-website}")
     private String grantedRole;
 
-    public OAuth2SecurityConfig(OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState) {
+    public OAuth2SecurityConfig(VAuthenticatorOidcUserService vAuthenticatorOidcUserService,
+                                OAuth2AuthorizationRequestResolverWithSessionState oAuth2AuthorizationRequestResolverWithSessionState) {
+        this.vAuthenticatorOidcUserService = vAuthenticatorOidcUserService;
         this.oAuth2AuthorizationRequestResolverWithSessionState = oAuth2AuthorizationRequestResolverWithSessionState;
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().headers().frameOptions().sameOrigin().and()
-                .authorizeRequests().mvcMatchers("/actuator/**", "/oidc_logout.html").permitAll()
-                .and()
-                .authorizeRequests().anyRequest().hasAnyRole(grantedRole)
-                .and().oauth2Login().defaultSuccessUrl("/index")
+    @Bean
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable().headers().frameOptions().disable();
+
+        http.logout()
+                .deleteCookies("opbs")
+                .invalidateHttpSession(true)
+                .logoutSuccessUrl("/secure/admin/index");
+
+
+        http.oauth2Login().defaultSuccessUrl("/index")
                 .userInfoEndpoint()
-                .oidcUserService(vAuthenticatorOidcUserService())
+                .oidcUserService(vAuthenticatorOidcUserService)
                 .and()
-                .authorizationEndpoint().authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
+                .authorizationEndpoint()
+                .authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
+
+        http.authorizeHttpRequests(
+                authz ->
+                        authz.requestMatchers("/actuator/**", "/oidc_logout.html").permitAll()
+                                .anyRequest().hasAnyAuthority(grantedRole)
+        );
+
+        return http.build();
+
     }
 
-    public VAuthenticatorOidcUserService vAuthenticatorOidcUserService() {
-        return new VAuthenticatorOidcUserService(new OidcUserService(),
-                new CustomUserTypesOAuth2UserService(Map.of(registrationId, VAuthenticatorOAuth2User.class))
-        );
-    }
 
     @Bean
     public RestTemplate budgetRestTemplate(OAuth2TokenResolver oAuth2TokenResolver) {

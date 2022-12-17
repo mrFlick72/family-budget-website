@@ -17,9 +17,10 @@ jobs:
           java-version: 17
           distribution: 'corretto'
 
-      - name: build sso client LIBRARY
+      - name: build sso client library
         run: |
           git clone https://github.com/VAuthenticator/spring-boot-client-starter.git
+          git checkout 0.4
           cd spring-boot-client-starter
           mvn clean install -q
 

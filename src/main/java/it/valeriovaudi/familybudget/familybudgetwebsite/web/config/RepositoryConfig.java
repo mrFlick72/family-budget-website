@@ -1,11 +1,11 @@
 package it.valeriovaudi.familybudget.familybudgetwebsite.web.config;
 
 
+import com.vauthenticator.springbootclientstarter.filter.BearerTokenInterceptor;
+import com.vauthenticator.springbootclientstarter.filter.OAuth2TokenResolver;
 import it.valeriovaudi.familybudget.familybudgetwebsite.adapters.repository.I18nMessagesCacheRefresher;
 import it.valeriovaudi.familybudget.familybudgetwebsite.adapters.repository.ReceiveMessageRequestFactory;
 import it.valeriovaudi.familybudget.familybudgetwebsite.adapters.repository.RestMessageRepository;
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.filter.BearerTokenInterceptor;
-import it.valeriovaudi.vauthenticator.security.clientsecuritystarter.filter.OAuth2TokenResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.CacheManager;

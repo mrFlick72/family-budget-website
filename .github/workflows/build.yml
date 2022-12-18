@@ -20,8 +20,8 @@ jobs:
       - name: build sso client library
         run: |
           git clone https://github.com/VAuthenticator/spring-boot-client-starter.git
-          git checkout 0.4
           cd spring-boot-client-starter
+          git checkout 0.4
           mvn clean install -q
 
       - name: Build frontend artifacts

@@ -48,7 +48,7 @@ public class OAuth2SecurityConfig {
         http.authorizeHttpRequests(
                 authz ->
                         authz.requestMatchers("/actuator/**", "/oidc_logout.html").permitAll()
-                                .anyRequest().hasAnyAuthority(grantedRole)
+                                .anyRequest().hasAnyRole(grantedRole)
         );
 
         return http.build();

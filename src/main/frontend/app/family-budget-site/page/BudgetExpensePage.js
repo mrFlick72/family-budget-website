@@ -3,24 +3,16 @@ import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
 import Menu from "../../component/menu/Menu";
 import SelectMonthlySpentBudget from "../../component/menu/SelectMonthlySpentBudget";
 import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
-import {SearchCriteriaOnUrl} from "../../domain/model/SearchCriteriaOnUrl";
-import ExportImportMenuItem from "../../component/menu/ExportImportMenuItem";
-import {BudgetExpenseRepository} from "../../domain/repository/BudgetExpenseRepository";
-import {MonthRepository} from "../../domain/repository/MonthRepository";
-import {SearchTagRepository} from "../../domain/repository/SearchTagRepository";
+import {getMonth, getSearchTags, getYear} from "../../domain/model/SearchCriteriaOnUrl";
+import {findBudgetExpense, saveBudgetExpense} from "../../domain/repository/BudgetExpenseRepository";
 
-import {from, zip as zipStatic} from 'rxjs';
-import DownloadSpentBudgetAsFileUseCase from "../../domain/usecase/DownloadSpentBudgetAsFileUseCase";
-import {BudgetExpenseFileFileRepository} from "../../domain/repository/BudgetExpenseFileFileRepository";
 import TotalBySearchTags from "../spent-budget/menu/TotalBySearchTags";
 import ContentCard from "../../component/layout/ContentCard";
 import CreateNewBudgetExpensePopup from "../spent-budget/popup/CreateNewBudgetExpensePopup";
 import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
-import ImportExportInCsvPopUp from "../spent-budget/popup/ImportExportInCsvPopUp";
 import moment from "moment";
 import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
-import SearchBox from "../spent-budget/budget/SearchBox";
 
 export default class BudgetExpensePage extends React.Component {
 
@@ -43,16 +35,6 @@ export default class BudgetExpensePage extends React.Component {
 
         this.searchTagRef = React.createRef();
 
-
-        this.monthRepository = new MonthRepository();
-        this.searchTagRepository = new SearchTagRepository();
-        this.searchCriteriaOnUrl = new SearchCriteriaOnUrl();
-        this.budgetExpenseRepository = new BudgetExpenseRepository();
-
-        this.downloadLink = React.createRef();
-        this.budgetExpenseFileFileRepository = new BudgetExpenseFileFileRepository();
-        this.downloadStentBudgetAsFileUseCase = new DownloadSpentBudgetAsFileUseCase(this.budgetExpenseFileFileRepository);
-
         this.configMap = new FamilyBudgetPagesConfigMap();
         this.openSaveBudgetExpensePopUp = this.openSaveBudgetExpensePopUp.bind(this);
         this.saveBudgetExpense = this.saveBudgetExpense.bind(this);
@@ -62,10 +44,10 @@ export default class BudgetExpensePage extends React.Component {
     }
 
     spentBudget() {
-        from(this.budgetExpenseRepository.findSpentBudget({
-            month: this.searchCriteriaOnUrl.getMonth(),
-            year: this.searchCriteriaOnUrl.getYear(),
-            searchTags: this.searchCriteriaOnUrl.getSearchTags()
+        from(findBudgetExpense({
+            month: getMonth(),
+            year: getYear(),
+            searchTags: getSearchTags()
         })).subscribe(data => {
             this.setState({spentBudget: data})
         });
@@ -99,7 +81,7 @@ export default class BudgetExpensePage extends React.Component {
     }
 
     deleteItem() {
-        this.budgetExpenseRepository.deleteBudgetExpense(this.state.deletableItem.id)
+        this.deleteBudgetExpense(this.state.deletableItem.id)
             .then((response) => {
                 if (response.status === 204) {
                     this.spentBudget();
@@ -155,22 +137,13 @@ export default class BudgetExpensePage extends React.Component {
             tagKey: this.state.searchTag.value
         };
 
-        this.budgetExpenseRepository.saveBudgetExpense(budgetExpense)
+        saveBudgetExpense(budgetExpense)
             .then(response => {
                 if (response.status === 201 || response.status === 204) {
                     this.spentBudget();
                     $(`#${this.configMap.budgetExpense(this.props.messageRegistry).newBudgetExpenseModal.id}`).modal("hide");
                 }
             })
-    }
-
-    downloadSpentBudgetAsFile(mediaType) {
-        this.downloadStentBudgetAsFileUseCase.getFileFor({
-            mediaType: mediaType,
-            link: this.downloadLink.current,
-            month: this.searchCriteriaOnUrl.getMonth(),
-            year: this.searchCriteriaOnUrl.getYear()
-        })
     }
 
     componentDidMount() {
@@ -196,14 +169,6 @@ export default class BudgetExpensePage extends React.Component {
                                            callback={this.openSearchTab}
                                            label={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchModal}
                                            modalId={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal.id}
-                                           iconClassNames="fas fa-search fa-lg"/>
-
-                        <ExportImportMenuItem key="exportImportMenuItem"
-                                              downloadLink={this.downloadLink}
-                                              search={this.searchCriteriaOnUrl}
-                                              downloadStentBudgetAsFileUseCaseCsvHandler={this.downloadSpentBudgetAsFile.bind(this, "application/csv")}
-                                              downloadStentBudgetAsFileUseCasePdfHandler={this.downloadSpentBudgetAsFile.bind(this, "application/pdf")}
-                                              downloadStentBudgetAsFileUseCaseXlsxHandler={this.downloadSpentBudgetAsFile.bind(this, "application/xlsx")}/>
 
                         <PageNavigationMenuItem
                             menuItemLabel={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchTags}
@@ -220,8 +185,8 @@ export default class BudgetExpensePage extends React.Component {
                             <SelectMonthlySpentBudget action={this.props.links.home}
                                                       name="selectMonthlySpentBudget"
                                                       monthRegistry={this.state.monthRegistry}
-                                                      month={this.searchCriteriaOnUrl.getMonth()}
-                                                      year={this.searchCriteriaOnUrl.getYear()}/>
+                                                      month={getMonth()}
+                                                      year={getYear()}/>
                         </li>
                         <PageNavigationMenuItem menuItemLabel="Revenue"
                                                 link="/budget-revenue"
@@ -231,17 +196,6 @@ export default class BudgetExpensePage extends React.Component {
                 <div className="container-fluid">
                     <div className="content">
 
-                        <SearchBox
-                            left={this.state.leftSearchTab}
-                            action={this.props.links.home}
-                            searchTagRegistry={this.state.searchTagRegistry}
-                            display={this.state.displaySearchTab}
-                            monthRegistry={this.state.monthRegistry}
-                            modal={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal}/>
-
-
-                        <ImportExportInCsvPopUp
-                            modal={this.configMap.budgetExpense(this.props.messageRegistry).loadCsvFile}/>
                         <CreateNewBudgetExpensePopup spentBudgetHandlers={this.savePopupEventHandlers()}
                                                      budgetExpense={{
                                                          id: this.state.id,

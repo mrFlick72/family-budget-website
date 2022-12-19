@@ -5,10 +5,14 @@ import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
 import BudgetRevenueForm from "../budget-revenue/BudgetRevenueForm";
 import PopupContainer from "../../component/layout/PopupContainer";
 import moment from "moment";
-import BudgetRevenueRepository from "../../domain/repository/BudgetRevenueRepository";
-import {SearchCriteriaOnUrl} from "../../domain/model/SearchCriteriaOnUrl";
 import ConfirmationPopUp from "../../component/layout/ConfirmationPopUp";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
+import * as searchCriteria from "../../domain/model/SearchCriteriaOnUrl";
+import {
+    deleteBudgetRevenue,
+    findBudgetRevenue,
+    saveBudgetRevenue
+} from "../../domain/repository/BudgetRevenueRepository";
 
 export default class BudgetRevenuePage extends React.Component {
 
@@ -22,10 +26,8 @@ export default class BudgetRevenuePage extends React.Component {
             currentBudgetRevenueAmount: "0.00",
             currentBudgetRevenueNote: ""
         };
-        this.budgetRevenueRepository = new BudgetRevenueRepository();
 
         this.configMap = new FamilyBudgetPagesConfigMap()
-        this.searchCriteria = new SearchCriteriaOnUrl();
         this.budgetRevenueHandlers = this.budgetRevenueHandlers.bind(this);
         this.saveBudgetRevenue = this.saveBudgetRevenue.bind(this);
     }
@@ -35,7 +37,7 @@ export default class BudgetRevenuePage extends React.Component {
     }
 
     budgetRevenue() {
-        this.budgetRevenueRepository.findSpentBudget(this.searchCriteria.getYear())
+        findBudgetRevenue(searchCriteria.getYear())
             .then(revenues => this.setState({revenues: revenues}))
     }
 
@@ -77,7 +79,7 @@ export default class BudgetRevenuePage extends React.Component {
     }
 
     deleteItem() {
-        this.budgetRevenueRepository.deleteBudgetRevenue(this.state.deletableItem.id)
+        deleteBudgetRevenue(this.state.deletableItem.id)
             .then((response) => {
                 if (response.status === 204) {
                     $(`#${this.configMap.budgetRevenue(this.props.messageRegistry).deleteModal.id}`).modal("hide");
@@ -87,7 +89,7 @@ export default class BudgetRevenuePage extends React.Component {
     }
 
     saveBudgetRevenue() {
-        this.budgetRevenueRepository.saveBudgetRevenue({
+        saveBudgetRevenue({
             id: this.state.currentBudgetRevenueId,
             date: this.state.currentBudgetRevenueDate.format("DD/MM/YYYY"),
             amount: this.state.currentBudgetRevenueAmount,

@@ -164,12 +164,6 @@ export default class BudgetExpensePage extends React.Component {
                                            modalId={this.configMap.budgetExpense(this.props.messageRegistry).newBudgetExpenseModal.id}
                                            iconClassNames="fas fa-cart-plus fa-lg"/>
 
-                        <OpenPopUpMenuItem key="searchByTagsModal"
-                                           reference={this.searchTagRef}
-                                           callback={this.openSearchTab}
-                                           label={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchModal}
-                                           modalId={this.configMap.budgetExpense(this.props.messageRegistry).searchFilterModal.id}
-
                         <PageNavigationMenuItem
                             menuItemLabel={this.configMap.budgetExpense(this.props.messageRegistry).menuMessages.searchTags}
                             link="/search-tags"

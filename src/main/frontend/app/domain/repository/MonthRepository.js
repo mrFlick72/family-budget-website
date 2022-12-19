@@ -1,4 +1,4 @@
-export function getMonthRegistry() {
+export async function getMonthRegistry() {
     return fetch("/family-budget/month", {
         headers: {
             'Accept': 'application/json'

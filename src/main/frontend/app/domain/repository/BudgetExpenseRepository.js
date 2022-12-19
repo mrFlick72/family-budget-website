@@ -4,8 +4,7 @@ const BUDGET_EXPENSE_URI = (budgetExpenseId) => budgetExpenseId ?
 
 const QUERY_PART = (month, year, searchTags) => `q=month=${month};year=${year};searchTag=${searchTags}`;
 
-
-export function saveBudgetExpense(budgetExpense) {
+export async function saveBudgetExpense(budgetExpense) {
     return fetch(BUDGET_EXPENSE_URI(budgetExpense.id), {
         method: budgetExpense.id ? "PUT" : "POST",
         headers: {
@@ -16,7 +15,7 @@ export function saveBudgetExpense(budgetExpense) {
     })
 }
 
-export function findBudgetExpense(searchCriteria) {
+export async function findBudgetExpense(searchCriteria) {
     let baseUri = BUDGET_EXPENSE_URI();
     let query = QUERY_PART(searchCriteria.month, searchCriteria.year, searchCriteria.searchTags);
     return fetch([baseUri, query].join("?"), {
@@ -29,7 +28,7 @@ export function findBudgetExpense(searchCriteria) {
     })
 }
 
-export function deleteBudgetExpense(budgetExpenseId) {
+export async function deleteBudgetExpense(budgetExpenseId) {
     return fetch([BUDGET_EXPENSE_URI(), budgetExpenseId].join("/"), {
         method: "delete",
         credentials: 'same-origin'

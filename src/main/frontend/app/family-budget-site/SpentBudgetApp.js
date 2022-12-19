@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react"
 import 'url-search-params-polyfill';
 import {Route, Switch} from "react-router";
 import {HashRouter} from "react-router-dom";
-import BudgetExpensePage from "./page/BudgetExpensePage";
-import BudgetRevenuePage from "./page/BudgetRevenuePage";
 import SearchTagsPage from "./page/SearchTagsPage";
 import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
 
@@ -12,7 +10,7 @@ const links = {
     home: "/family-budget/index"
 };
 
-export function SpentBudgetApp() {
+const SpentBudgetApp = () => {
 
     useEffect(() => {
             getAllMessageRegistry()
@@ -24,16 +22,18 @@ export function SpentBudgetApp() {
     return (
         <HashRouter>
             <Switch>
-                <Route exact={true} path="/"
+                {/*                <Route exact={true} path="/"
                        render={(props) => <BudgetExpensePage {...props} links={links}
                                                              messageRegistry={messageRegistry}/>}/>
 
                 <Route exact={true} path="/budget-revenue"
                        render={(props) => <BudgetRevenuePage{...props} links={links}
-                                                            messageRegistry={messageRegistry}/>}/>
+                                                            messageRegistry={messageRegistry}/>}/>*/}
                 <Route exact={true} path="/search-tags"
                        render={(props) => <SearchTagsPage{...props} links={links}
                                                          messageRegistry={messageRegistry}/>}/>
             </Switch>
         </HashRouter>)
 }
+
+export default SpentBudgetApp

@@ -1,21 +1,19 @@
-export async function getAllMessageRegistry() {
-    let responsePromise = await fetch("/family-budget/v2/messages", {
+export function getAllMessageRegistry() {
+    return fetch("/family-budget/v2/messages", {
         headers: {
             'Accept': 'application/json'
         },
         credentials: 'same-origin',
-    });
-    return responsePromise.json();
+    }).then(response => response.json());
 }
 
-export async function getMessageRegistry(page) {
-    let responsePromise = await fetch("/family-budget/messages/" + page, {
+export function getMessageRegistry(page) {
+    return fetch("/family-budget/messages/" + page, {
         headers: {
             'Accept': 'application/json'
         },
         credentials: 'same-origin',
-    });
-    return responsePromise.json();
+    }).then(response => response.json());
 }
 
 export async function getMessageFor(bundle, key) {

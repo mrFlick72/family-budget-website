@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import Menu from "../../component/menu/Menu";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import SearchTagsTable from "../search-tags/SearchTagsTable";
 import SearchTagsForm from "../search-tags/SearchTagsForm";
 import {getSearchTagRegistry, saveSearchTag} from "../../domain/repository/SearchTagRepository";
+import Menu from "../../component/menu/Menu";
 
 const SearchTagsPage = (props) => {
-    let {messageRegistry} = props
+    console.log("SearchTagsPage")
+
+    let {messageRegistry, links} = props
 
     const configMap = new FamilyBudgetPagesConfigMap()
 
@@ -16,43 +18,40 @@ const SearchTagsPage = (props) => {
 
     useEffect(() => {
         getSearchTagRegistry().then(registry => {
+            console.log(registry)
             setSearchTagsRegistry(registry)
         })
-    })
+    }, [])
 
-    function formHandler() {
-        return {
-            valueHandler: (value) => {
-                this.setState({searchTagValue: value.target.value});
-            },
-            submitHandler: (searchTagKey, searchTagValue) => {
-                saveSearchTag({key: searchTagKey, value: searchTagValue})
-                    .then(ignore => getSearchTagRegistry())
-                    .then(registry => {
-                        this.setState({searchTagsRegistry: registry})
-                    })
-            }
+    const formHandler = {
+        valueHandler: (value) => {
+            setSearchTagValue(value.target.value);
+        },
+        submitHandler: (searchTagKey, searchTagValue) => {
+            saveSearchTag({key: searchTagKey, value: searchTagValue})
+                .then(ignore => getSearchTagRegistry())
+                .then(registry => {
+                    setSearchTagsRegistry(registry)
+                })
         }
     }
 
-    function tableHandler() {
-        return {
-            editHandler: (searchTagKey, searchTagValue) => {
-                setSearchTagKey(searchTagKey)
-                setSearchTagValue(searchTagValue)
-            }
+
+    const tableHandler = {
+        editHandler: (searchTagKey, searchTagValue) => {
+            setSearchTagKey(searchTagKey)
+            setSearchTagValue(searchTagValue)
         }
     }
 
     return <div>
-        <Menu messages={configMap.searchTags(messageRegistry).menuMessages}
-              links={this.props.links}></Menu>
+        <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}></Menu>
+
         <div className="container-fluid">
             <div className="content">
                 <div className="row">
                     <div className="col-12">
-                        <SearchTagsForm searchTag={{key: searchTagKey, value: searchTagValue}}
-                                        handler={formHandler()}/>
+                        <SearchTagsForm searchTag={{key: searchTagKey, value: searchTagValue}} handler={formHandler}/>
                     </div>
                 </div>
                 <div className="row">
@@ -62,13 +61,7 @@ const SearchTagsPage = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <SearchTagsTable searchTagsRegistry={searchTagsRegistry}
-                                         modal={{
-                                             id: "deleteSearchTagModalId",
-                                             message: "Are you sure to delete this search tag?",
-                                             title: "Search Tag delete confirmation modal"
-                                         }}
-                                         handler={tableHandler()}/>
+                        <SearchTagsTable searchTagsRegistry={searchTagsRegistry} handler={tableHandler}/>
                     </div>
                 </div>
             </div>

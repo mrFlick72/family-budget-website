@@ -1,14 +1,13 @@
-export async function getSearchTagRegistry() {
-    let responsePromise = await fetch("/family-budget/budget-service/budget-expense/search-tag", {
+export function getSearchTagRegistry() {
+    return fetch("/family-budget/budget-service/budget-expense/search-tag", {
         headers: {
             'Accept': 'application/json'
         },
         credentials: 'same-origin',
-    });
-    return responsePromise.json();
+    }).then(response => response.json())
 }
 
-export async function saveSearchTag(searchTag) {
+export function saveSearchTag(searchTag) {
     return fetch("/family-budget/budget-service/budget-expense/search-tag", {
         method: "PUT",
         body: JSON.stringify(searchTag),

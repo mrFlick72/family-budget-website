@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
+import {useEffect, useState} from "react"
 import 'url-search-params-polyfill';
-import {Route, Switch} from "react-router";
+import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./page/SearchTagsPage";
 import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
@@ -12,16 +13,22 @@ const links = {
 
 const SpentBudgetApp = () => {
 
-    useEffect(() => {
-            getAllMessageRegistry()
-                .then(r => setMessageRegistry(r))
-        }
-    )
+    let [messageRegistry, setMessageRegistry] = useState({})
+    console.log("SpentBudgetApp")
 
-    let [messageRegistry, setMessageRegistry] = useState([])
+    useEffect(() => {
+            console.log("useEffect SpentBudgetApp")
+
+            getAllMessageRegistry()
+                .then(r => {
+                    console.log(r)
+                    setMessageRegistry(r)
+                })
+        }, []
+    )
     return (
         <HashRouter>
-            <Switch>
+            <Routes>
                 {/*                <Route exact={true} path="/"
                        render={(props) => <BudgetExpensePage {...props} links={links}
                                                              messageRegistry={messageRegistry}/>}/>
@@ -29,10 +36,9 @@ const SpentBudgetApp = () => {
                 <Route exact={true} path="/budget-revenue"
                        render={(props) => <BudgetRevenuePage{...props} links={links}
                                                             messageRegistry={messageRegistry}/>}/>*/}
-                <Route exact={true} path="/search-tags"
-                       render={(props) => <SearchTagsPage{...props} links={links}
-                                                         messageRegistry={messageRegistry}/>}/>
-            </Switch>
+                <Route index path="/" exact={true}
+                       element={<SearchTagsPage links={links} messageRegistry={messageRegistry}/>}/>
+            </Routes>
         </HashRouter>)
 }
 

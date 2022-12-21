@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import Menu from "../../component/menu/Menu";
 import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
 import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
@@ -14,135 +14,114 @@ import {
     saveBudgetRevenue
 } from "../../domain/repository/BudgetRevenueRepository";
 
-export default class BudgetRevenuePage extends React.Component {
+const BudgetRevenuePage = (props) => {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            deletableItem: {},
-            revenues: [],
-            currentBudgetRevenueId: "",
-            currentBudgetRevenueDate: moment(),
-            currentBudgetRevenueAmount: "0.00",
-            currentBudgetRevenueNote: ""
-        };
+    const [deletableItem, setDeletableItem] = useState({})
+    const [revenues, setRevenues] = useState([])
+    const [currentBudgetRevenueId, setCurrentBudgetRevenueId] = useState("")
+    const [currentBudgetRevenueDate, setCurrentBudgetRevenueDate] = useState(moment())
+    const [currentBudgetRevenueAmount, setCurrentBudgetRevenueAmount] = useState("0.00")
+    const [currentBudgetRevenueNote, setCurrentBudgetRevenueNote] = useState("")
 
-        this.configMap = new FamilyBudgetPagesConfigMap()
-        this.budgetRevenueHandlers = this.budgetRevenueHandlers.bind(this);
-        this.saveBudgetRevenue = this.saveBudgetRevenue.bind(this);
-    }
+    let configMap = new FamilyBudgetPagesConfigMap()
+    useEffect(() => budgetRevenue(), [])
 
-    componentDidMount() {
-        this.budgetRevenue();
-    }
-
-    budgetRevenue() {
+    const budgetRevenue = () => {
         findBudgetRevenue(searchCriteria.getYear())
-            .then(revenues => this.setState({revenues: revenues}))
+            .then(revenues => setRevenues(revenues))
     }
 
-    budgetRevenueHandlers() {
-        return {
-            date: (value) => this.setState({currentBudgetRevenueDate: value}),
-            amount: (event) => this.setState({currentBudgetRevenueAmount: event.target.value}),
-            note: (event) => this.setState({currentBudgetRevenueNote: event.target.value})
-        }
+    const budgetRevenueHandlers = {
+        date: (value) => setCurrentBudgetRevenueDate(value),
+        amount: (event) => setCurrentBudgetRevenueAmount(event.target.value),
+        note: (event) => setCurrentBudgetRevenueNote(event.target.value)
+    }
+    const openSaveBudgetRevenuePopUp = () => {
+        setCurrentBudgetRevenueId("")
+        setCurrentBudgetRevenueDate(moment())
+        setCurrentBudgetRevenueAmount("0.00")
+        setCurrentBudgetRevenueNote("")
+        $(`#${configMap.budgetRevenue(props.messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
     }
 
-    openSaveBudgetRevenuePopUp() {
-        console.debug("openSaveBudgetRevenuePopUp")
-        this.setState({
-            currentBudgetRevenueId: "",
-            currentBudgetRevenueDate: moment(),
-            currentBudgetRevenueAmount: "0.00",
-            currentBudgetRevenueNote: ""
-        })
-        $(`#${this.configMap.budgetRevenue(this.props.messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
+    const openDeleteBudgetRevenuePopUp = (revenue) => {
+        setDeletableItem(revenue)
+        $(`#${configMap.budgetRevenue(props.messageRegistry).deleteModal.id}`).modal("show");
     }
 
-    openDeleteBudgetRevenuePopUp(revenue) {
-        console.debug("openDeleteBudgetRevenuePopUp")
-        this.setState({deletableItem: revenue})
-        $(`#${this.configMap.budgetRevenue(this.props.messageRegistry).deleteModal.id}`).modal("show");
+    const openUpdateBudgetRevenuePopUp = (revenue) => {
+        setCurrentBudgetRevenueId(revenue.id)
+        setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
+        setCurrentBudgetRevenueAmount(revenue.amount)
+        setCurrentBudgetRevenueNote(revenue.note)
+        $(`#${configMap.budgetRevenue(props.messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
     }
 
-    openUpdateBudgetRevenuePopUp(revenue) {
-        console.debug(revenue)
-        this.setState({
-            currentBudgetRevenueId: revenue.id,
-            currentBudgetRevenueDate: moment(revenue.date, "DD/MM/YYYY"),
-            currentBudgetRevenueAmount: revenue.amount,
-            currentBudgetRevenueNote: revenue.note
-        })
-
-        $(`#${this.configMap.budgetRevenue(this.props.messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
-    }
-
-    deleteItem() {
-        deleteBudgetRevenue(this.state.deletableItem.id)
+    const deleteItem = () => {
+        deleteBudgetRevenue(deletableItem.id)
             .then((response) => {
                 if (response.status === 204) {
-                    $(`#${this.configMap.budgetRevenue(this.props.messageRegistry).deleteModal.id}`).modal("hide");
-                    this.budgetRevenue()
+                    $(`#${configMap.budgetRevenue(props.messageRegistry).deleteModal.id}`).modal("hide");
+                    budgetRevenue()
                 }
             })
     }
 
-    saveBudgetRevenue() {
+    const saveRevenue = () => {
         saveBudgetRevenue({
-            id: this.state.currentBudgetRevenueId,
-            date: this.state.currentBudgetRevenueDate.format("DD/MM/YYYY"),
-            amount: this.state.currentBudgetRevenueAmount,
-            note: this.state.currentBudgetRevenueNote
+            id: currentBudgetRevenueId,
+            date: currentBudgetRevenueDate.format("DD/MM/YYYY"),
+            amount: currentBudgetRevenueAmount,
+            note: currentBudgetRevenueNote
         }).then(response => {
             if (response.status === 201 || response.status === 204) {
-                $(`#${this.configMap.budgetRevenue(this.props.messageRegistry).saveBudgetRevenueModal.id}`).modal("hide");
-                this.budgetRevenue()
+                $(`#${configMap.budgetRevenue(props.messageRegistry).saveBudgetRevenueModal.id}`).modal("hide");
+                budgetRevenue()
             }
         })
     }
 
-    render() {
-        let budgetRevenueForm = <BudgetRevenueForm budgetRevenueData={{
-            date: this.state.currentBudgetRevenueDate,
-            amount: this.state.currentBudgetRevenueAmount,
-            note: this.state.currentBudgetRevenueNote
-        }} budgetRevenueHandlers={this.budgetRevenueHandlers()}/>;
+    let budgetRevenueForm = <BudgetRevenueForm budgetRevenueData={{
+        date: currentBudgetRevenueDate,
+        amount: currentBudgetRevenueAmount,
+        note: currentBudgetRevenueNote
+    }} budgetRevenueHandlers={budgetRevenueHandlers}/>;
 
-        return <div>
-            <Menu messages={this.configMap.budgetRevenue(this.props.messageRegistry).menuMessages}
-                  links={this.props.links}>
-                <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <OpenPopUpMenuItem key="saveBudgetRevenueModal"
-                                       label="New Budget Expense"
-                                       modalId="saveBudgetRevenueModal"
-                                       callback={this.openSaveBudgetRevenuePopUp.bind(this)}
-                                       iconClassNames="fas fa-money-bill-alt fa-lg"/>
-                </ul>
-            </Menu>
+    return <div>
+        <Menu messages={configMap.budgetRevenue(props.messageRegistry).menuMessages}
+              links={props.links}>
+            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                <OpenPopUpMenuItem key="saveBudgetRevenueModal"
+                                   label="New Budget Expense"
+                                   modalId="saveBudgetRevenueModal"
+                                   callback={openSaveBudgetRevenuePopUp}
+                                   iconClassNames="fas fa-money-bill-alt fa-lg"/>
+            </ul>
+        </Menu>
 
 
-            <div className="container-fluid">
-                <div className="content">
-                    <PopupContainer
-                        modal={this.configMap.budgetRevenue(this.props.messageRegistry).saveBudgetRevenueModal}
-                        form={budgetRevenueForm}
-                        saveFun={this.saveBudgetRevenue}/>
+        <div className="container-fluid">
+            <div className="content">
+                <PopupContainer
+                    modal={configMap.budgetRevenue(props.messageRegistry).saveBudgetRevenueModal}
+                    form={budgetRevenueForm}
+                    saveFun={saveRevenue}/>
 
-                    <ConfirmationPopUp confirmationHandler={this.deleteItem.bind(this)}
-                                       modalId="deleteBudgetRevenueModal"
-                                       modalMessageBody="Are you sure of delete the Budget Revenue from the list?"
-                                       modalTitle="Delete Budget Revenue"/>
+                <ConfirmationPopUp confirmationHandler={deleteItem}
+                                   modalId="deleteBudgetRevenueModal"
+                                   modalMessageBody="Are you sure of delete the Budget Revenue from the list?"
+                                   modalTitle="Delete Budget Revenue"/>
 
-                    <div className="row justify-content-md-center">
-                        <div className="col-8">
-                            <BudgetRevenueContent openUpdatePopUp={this.openUpdateBudgetRevenuePopUp.bind(this)}
-                                                  openDeletePopUp={this.openDeleteBudgetRevenuePopUp.bind(this)}
-                                                  revenues={this.state.revenues}/>
-                        </div>
+                <div className="row justify-content-md-center">
+                    <div className="col-8">
+                        <BudgetRevenueContent openUpdatePopUp={openUpdateBudgetRevenuePopUp}
+                                              openDeletePopUp={openDeleteBudgetRevenuePopUp}
+                                              revenues={revenues}/>
                     </div>
                 </div>
             </div>
         </div>
-    }
+    </div>
 }
+
+export default BudgetRevenuePage

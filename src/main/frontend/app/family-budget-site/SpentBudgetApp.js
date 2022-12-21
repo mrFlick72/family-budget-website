@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./page/SearchTagsPage";
 import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
+import BudgetRevenuePage from "./page/BudgetRevenuePage";
 
 const links = {
     logOut: "/family-budget/oidc_logout.html",
@@ -12,26 +13,27 @@ const links = {
 
 export default (props) => {
 
-    let [messages, setMessages] = useState({})
+    let [messageRegistry, setMessageRegistry] = useState({})
     useEffect(() => {
         getAllMessageRegistry()
-            .then(r => {
-                setMessages(r)
+            .then(data => {
+                setMessageRegistry(data)
             })
     }, [])
 
     return (
         <HashRouter>
-            <Routes>
-                {/*                <Route exact={true} path="/"
+            {/*                <Route exact={true} path="/"
                        render={(props) => <BudgetExpensePage {...props} links={links}
                                                              messageRegistry={messageRegistry}/>}/>
+*/}
+            <Routes>
 
-                <Route exact={true} path="/budget-revenue"
-                       render={(props) => <BudgetRevenuePage{...props} links={links}
-                                                            messageRegistry={messageRegistry}/>}/>*/}
-                <Route index path="/" exact={true}
-                       element={<SearchTagsPage links={links} messageRegistry={messages}/>}/>
+                {/*path="/budget-revenue"*/}
+                <Route exact={true} path="/"
+                       element={<BudgetRevenuePage links={links} messageRegistry={messageRegistry}/>}/>
+                <Route path="/search-tags" exact={true}
+                       element={<SearchTagsPage links={links} messageRegistry={messageRegistry}/>}/>
             </Routes>
         </HashRouter>)
 }

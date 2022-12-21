@@ -1,50 +1,36 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import 'url-search-params-polyfill';
-import {Route, Switch} from "react-router";
+import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
-import BudgetExpensePage from "./page/BudgetExpensePage";
-import BudgetRevenuePage from "./page/BudgetRevenuePage";
-import {MessageRepository} from "../domain/repository/MessageRepository";
 import SearchTagsPage from "./page/SearchTagsPage";
+import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
+import BudgetRevenuePage from "./page/BudgetRevenuePage";
+import BudgetExpensePage from "./page/BudgetExpensePage";
 
 const links = {
     logOut: "/family-budget/oidc_logout.html",
     home: "/family-budget/index"
 };
 
-export default class SpentBudgetApp extends React.Component {
+export default () => {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {messageRegistry: []}
-
-        this.messageRepository = new MessageRepository();
-    }
-
-    componentDidMount() {
-        this.messageRepository.getAllMessageRegistry()
+    let [messageRegistry, setMessageRegistry] = useState({})
+    useEffect(() => {
+        getAllMessageRegistry()
             .then(data => {
-                console.log("messageRepository.getAllMessageRegistry")
-                this.setState({messageRegistry: data})
+                setMessageRegistry(data)
             })
-    }
+    }, [])
 
-    render() {
-        return (
-            <HashRouter>
-                <Switch>
-                    <Route exact={true} path="/"
-                           render={(props) => <BudgetExpensePage {...props} links={links}
-                                                                 messageRegistry={this.state.messageRegistry}/>}/>
-
-                    <Route exact={true} path="/budget-revenue"
-                           render={(props) => <BudgetRevenuePage{...props} links={links}
-                                                                messageRegistry={this.state.messageRegistry}/>}/>
-                    <Route exact={true} path="/search-tags"
-                           render={(props) => <SearchTagsPage{...props} links={links}
-                                                                messageRegistry={this.state.messageRegistry}/>}/>
-                </Switch>
-            </HashRouter>)
-    }
+    return (
+        <HashRouter>
+            <Routes>
+                <Route exact={true} path="/"
+                       element={<BudgetExpensePage links={links} messageRegistry={messageRegistry}/>}/>
+                <Route exact={true} path="/budget-revenue"
+                       element={<BudgetRevenuePage links={links} messageRegistry={messageRegistry}/>}/>
+                <Route path="/search-tags" exact={true}
+                       element={<SearchTagsPage links={links} messageRegistry={messageRegistry}/>}/>
+            </Routes>
+        </HashRouter>)
 }

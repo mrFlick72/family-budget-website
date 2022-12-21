@@ -3,7 +3,7 @@ var path = require('path');
 const BUID_DIR = path.resolve(__dirname + "../../../../target/classes/static");
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     entry: {
         familyBudget: path.resolve(__dirname, './app/family-budget-site/index.js')
     },
@@ -22,7 +22,7 @@ module.exports = {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ["env", "react"]
+                        presets: ['@babel/env', '@babel/react']
                     }
                 }
 

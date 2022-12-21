@@ -1,20 +1,16 @@
 import 'url-search-params-polyfill';
 
-export class SearchCriteriaOnUrl {
+export function getMonth() {
+    const search = new URLSearchParams(window.location.search)
+    return search.get("choicedMonth");
+}
 
-    constructor() {
-        this.search = new URLSearchParams(window.location.search);
-    }
+export function getYear() {
+    const search = new URLSearchParams(window.location.search)
+    return search.get("year");
+}
 
-    getMonth() {
-        return this.search.get("choicedMonth");
-    }
-
-    getYear() {
-        return this.search.get("year");
-    }
-
-    getSearchTags() {
-        return this.search.get("searchTag") || "";
-    }
+export function getSearchTags() {
+    const search = new URLSearchParams(window.location.search)
+    return search.get("searchTag") || "";
 }

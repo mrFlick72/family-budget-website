@@ -1,7 +1,7 @@
 import React from "react"
 
-export default ({links, messages, children}) => (
-    <div className="container-fluid" style={{"margin-bottom":"15px"}}>
+export default ({links, messages, children}) => {
+    return <div className="container-fluid" style={{"marginBottom": "15px"}}>
         <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBar"
                     aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,10 +18,11 @@ export default ({links, messages, children}) => (
                     </li>
                 </ul>
                 <form action={links.logOut} method="GET">
-                    <button type="submit" className="btn btn-secondary"> {messages.logOutLabel}
-                        <i className="fas fa-sign-out-alt fs-lg"></i></button>
+                    <button type="submit" className="btn btn-secondary">
+                        {messages.logOutLabel}  <i className="fas fa-sign-out-alt fs-lg"></i>
+                    </button>
                 </form>
             </div>
         </nav>
     </div>
-);
+}

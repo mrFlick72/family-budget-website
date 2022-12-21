@@ -3,7 +3,7 @@ import React from "react"
 import FormMoneyFormat from "../../../component/form/FormMoneyFormat";
 import FormDatePicker from "../../../component/form/FormDatePicker";
 import FormTextArea from "../../../component/form/FormTextArea";
-import uuidv1 from 'uuid/v1';
+import {v1 as uuidv1} from 'uuid';
 import FormSelect from "../../../component/form/FormSelect";
 
 export default ({spentBudgetComponentId, spentBudgetData, spentBudgetHandlers, searchTagRegistry}) => {

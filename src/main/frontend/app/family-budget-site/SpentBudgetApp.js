@@ -5,13 +5,14 @@ import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./page/SearchTagsPage";
 import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
 import BudgetRevenuePage from "./page/BudgetRevenuePage";
+import BudgetExpensePage from "./page/BudgetExpensePage";
 
 const links = {
     logOut: "/family-budget/oidc_logout.html",
     home: "/family-budget/index"
 };
 
-export default (props) => {
+export default () => {
 
     let [messageRegistry, setMessageRegistry] = useState({})
     useEffect(() => {
@@ -23,14 +24,10 @@ export default (props) => {
 
     return (
         <HashRouter>
-            {/*                <Route exact={true} path="/"
-                       render={(props) => <BudgetExpensePage {...props} links={links}
-                                                             messageRegistry={messageRegistry}/>}/>
-*/}
             <Routes>
-
-                {/*path="/budget-revenue"*/}
                 <Route exact={true} path="/"
+                       element={<BudgetExpensePage links={links} messageRegistry={messageRegistry}/>}/>
+                <Route exact={true} path="/budget-revenue"
                        element={<BudgetRevenuePage links={links} messageRegistry={messageRegistry}/>}/>
                 <Route path="/search-tags" exact={true}
                        element={<SearchTagsPage links={links} messageRegistry={messageRegistry}/>}/>

@@ -1,5 +1,4 @@
-import React from "react"
-import {useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import 'url-search-params-polyfill';
 import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
@@ -11,21 +10,16 @@ const links = {
     home: "/family-budget/index"
 };
 
-const SpentBudgetApp = () => {
+export default (props) => {
 
-    let [messageRegistry, setMessageRegistry] = useState({})
-    console.log("SpentBudgetApp")
-
+    let [messages, setMessages] = useState({})
     useEffect(() => {
-            console.log("useEffect SpentBudgetApp")
+        getAllMessageRegistry()
+            .then(r => {
+                setMessages(r)
+            })
+    }, [])
 
-            getAllMessageRegistry()
-                .then(r => {
-                    console.log(r)
-                    setMessageRegistry(r)
-                })
-        }, []
-    )
     return (
         <HashRouter>
             <Routes>
@@ -37,9 +31,7 @@ const SpentBudgetApp = () => {
                        render={(props) => <BudgetRevenuePage{...props} links={links}
                                                             messageRegistry={messageRegistry}/>}/>*/}
                 <Route index path="/" exact={true}
-                       element={<SearchTagsPage links={links} messageRegistry={messageRegistry}/>}/>
+                       element={<SearchTagsPage links={links} messageRegistry={messages}/>}/>
             </Routes>
         </HashRouter>)
 }
-
-export default SpentBudgetApp

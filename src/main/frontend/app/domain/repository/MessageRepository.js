@@ -16,6 +16,6 @@ export function getMessageRegistry(page) {
     }).then(response => response.json());
 }
 
-export async function getMessageFor(bundle, key) {
+export function getMessageFor(bundle, key) {
     return bundle[key] || "";
 }

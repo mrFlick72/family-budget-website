@@ -6,10 +6,7 @@ import {getSearchTagRegistry, saveSearchTag} from "../../domain/repository/Searc
 import Menu from "../../component/menu/Menu";
 
 const SearchTagsPage = (props) => {
-    console.log("SearchTagsPage")
-
     let {messageRegistry, links} = props
-
     const configMap = new FamilyBudgetPagesConfigMap()
 
     const [searchTagsRegistry, setSearchTagsRegistry] = useState([])
@@ -18,7 +15,6 @@ const SearchTagsPage = (props) => {
 
     useEffect(() => {
         getSearchTagRegistry().then(registry => {
-            console.log(registry)
             setSearchTagsRegistry(registry)
         })
     }, [])

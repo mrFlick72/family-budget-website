@@ -64,19 +64,17 @@ const BudgetExpensePage = (props) => {
             })
     }
 
-    function savePopupEventHandlers() {
-        return {
-            date: (value) => {
-                setDate(value)
-            },
-            amount: (event) => {
-                setAmount(event.target.value)
-            },
-            searchTag: (searchTag) => {
-                setSearchTag(searchTag)
-            },
-            note: (event) => setNote(event.target.value)
-        }
+    const savePopupEventHandlers = {
+        date: (value) => {
+            setDate(value)
+        },
+        amount: (event) => {
+            setAmount(event.target.value)
+        },
+        searchTag: (searchTag) => {
+            setSearchTag(searchTag)
+        },
+        note: (event) => setNote(event.target.value)
     }
 
     function openSaveBudgetExpensePopUp() {
@@ -157,7 +155,7 @@ const BudgetExpensePage = (props) => {
         <div className="container-fluid">
             <div className="content">
 
-                <CreateNewBudgetExpensePopup spentBudgetHandlers={savePopupEventHandlers()}
+                <CreateNewBudgetExpensePopup spentBudgetHandlers={savePopupEventHandlers}
                                              budgetExpense={{
                                                  id: id,
                                                  date: date,

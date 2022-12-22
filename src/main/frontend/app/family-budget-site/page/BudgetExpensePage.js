@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
 import Menu from "../../component/menu/Menu";
 import SelectMonthlySpentBudget from "../../component/menu/SelectMonthlySpentBudget";
@@ -48,13 +48,13 @@ const BudgetExpensePage = (props) => {
         getSearchTagRegistry().then(data => setSearchTagRegistry(data));
     }
 
-    function openDeleteBudgetExpensePopUp(dailyBudgetExpense) {
+    const openDeleteBudgetExpensePopUp = useCallback((dailyBudgetExpense) => {
         setDeletableItem(dailyBudgetExpense)
         $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("show");
 
-    }
+    }, [])
 
-    function deleteItem() {
+    const deleteItem = useCallback(() => {
         deleteBudgetExpense(deletableItem.id)
             .then((response) => {
                 if (response.status === 204) {
@@ -62,7 +62,7 @@ const BudgetExpensePage = (props) => {
                     $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("hide");
                 }
             })
-    }
+    }, [deletableItem])
 
     const savePopupEventHandlers = {
         date: (value) => {
@@ -77,25 +77,26 @@ const BudgetExpensePage = (props) => {
         note: (event) => setNote(event.target.value)
     }
 
-    function openSaveBudgetExpensePopUp() {
+    const openSaveBudgetExpensePopUp = useCallback(() => {
         setId("")
         setDate(moment())
         setAmount("0.00")
         setNote("")
         setSearchTag("")
         $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
-    }
+    }, [])
 
-    function openUpdateBudgetExpensePopUp(expense) {
+    const openUpdateBudgetExpensePopUp = useCallback((expense) => {
         setId(expense.id)
         setDate(moment(expense.date, "DD/MM/YYYY"))
         setAmount(expense.amount)
         setNote(expense.note)
         setSearchTag(expense.searchTag)
         $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
-    }
+    }, [])
 
-    function saveExpense() {
+
+    const saveExpense = useCallback(() => {
         let budgetExpense = {
             id: id,
             date: date.format("DD/MM/YYYY"),
@@ -111,7 +112,7 @@ const BudgetExpensePage = (props) => {
                     $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("hide");
                 }
             })
-    }
+    }, [id, date, amount, note, searchTag])
 
     useEffect(() => {
         loadCommonData();
@@ -177,8 +178,8 @@ const BudgetExpensePage = (props) => {
                             header={configMap.budgetExpense(props.messageRegistry).cards.dailyDetails}>
                             <SpentBudgetContent spentBudget={spentBudget}
                                                 searchTagRegistry={searchTagRegistry}
-                                                openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp.bind(this)}
-                                                openDeleteBudgetExpensePopUp={openDeleteBudgetExpensePopUp.bind(this)}/>
+                                                openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp}
+                                                openDeleteBudgetExpensePopUp={openDeleteBudgetExpensePopUp}/>
                         </ContentCard>
                     </div>
 

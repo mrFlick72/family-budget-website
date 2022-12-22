@@ -52,7 +52,7 @@ const BudgetExpensePage = (props) => {
         setDeletableItem(dailyBudgetExpense)
         $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("show");
 
-    }, [])
+    }, [deletableItem])
 
     const deleteItem = useCallback(() => {
         deleteBudgetExpense(deletableItem.id)
@@ -62,21 +62,19 @@ const BudgetExpensePage = (props) => {
                     $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("hide");
                 }
             })
-    }, [])
+    }, [deletableItem])
 
-    function savePopupEventHandlers() {
-        return {
-            date: (value) => {
-                setDate(value)
-            },
-            amount: (event) => {
-                setAmount(event.target.value)
-            },
-            searchTag: (searchTag) => {
-                setSearchTag(searchTag)
-            },
-            note: (event) => setNote(event.target.value)
-        }
+    const savePopupEventHandlers = {
+        date: (value) => {
+            setDate(value)
+        },
+        amount: (event) => {
+            setAmount(event.target.value)
+        },
+        searchTag: (searchTag) => {
+            setSearchTag(searchTag)
+        },
+        note: (event) => setNote(event.target.value)
     }
 
     const openSaveBudgetExpensePopUp = useCallback(() => {
@@ -86,7 +84,7 @@ const BudgetExpensePage = (props) => {
         setNote("")
         setSearchTag("")
         $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
-    }, [])
+    }, [id, date, amount, note, searchTag])
 
     const openUpdateBudgetExpensePopUp = useCallback((expense) => {
         setId(expense.id)
@@ -95,7 +93,8 @@ const BudgetExpensePage = (props) => {
         setNote(expense.note)
         setSearchTag(expense.searchTag)
         $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
-    }, [])
+    }, [id, date, amount, note, searchTag])
+
 
     const saveExpense = useCallback(() => {
         let budgetExpense = {
@@ -113,7 +112,7 @@ const BudgetExpensePage = (props) => {
                     $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("hide");
                 }
             })
-    }, [])
+    }, [id, date, amount, note, searchTag])
 
     useEffect(() => {
         loadCommonData();
@@ -157,7 +156,7 @@ const BudgetExpensePage = (props) => {
         <div className="container-fluid">
             <div className="content">
 
-                <CreateNewBudgetExpensePopup spentBudgetHandlers={savePopupEventHandlers()}
+                <CreateNewBudgetExpensePopup spentBudgetHandlers={savePopupEventHandlers}
                                              budgetExpense={{
                                                  id: id,
                                                  date: date,

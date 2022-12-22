@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useCallback, useEffect, useState} from "react"
 import Menu from "../../component/menu/Menu";
 import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
 import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
@@ -36,28 +36,28 @@ const BudgetRevenuePage = (props) => {
         amount: (event) => setCurrentBudgetRevenueAmount(event.target.value),
         note: (event) => setCurrentBudgetRevenueNote(event.target.value)
     }
-    const openSaveBudgetRevenuePopUp = () => {
+    const openSaveBudgetRevenuePopUp = useCallback(() => {
         setCurrentBudgetRevenueId("")
         setCurrentBudgetRevenueDate(moment())
         setCurrentBudgetRevenueAmount("0.00")
         setCurrentBudgetRevenueNote("")
         $(`#${configMap.budgetRevenue(props.messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
-    }
+    },[])
 
-    const openDeleteBudgetRevenuePopUp = (revenue) => {
+    const openDeleteBudgetRevenuePopUp = useCallback((revenue) => {
         setDeletableItem(revenue)
         $(`#${configMap.budgetRevenue(props.messageRegistry).deleteModal.id}`).modal("show");
-    }
+    }, [])
 
-    const openUpdateBudgetRevenuePopUp = (revenue) => {
+    const openUpdateBudgetRevenuePopUp = useCallback((revenue) => {
         setCurrentBudgetRevenueId(revenue.id)
         setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
         setCurrentBudgetRevenueAmount(revenue.amount)
         setCurrentBudgetRevenueNote(revenue.note)
         $(`#${configMap.budgetRevenue(props.messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
-    }
+    }, [])
 
-    const deleteItem = () => {
+    const deleteItem = useCallback(() => {
         deleteBudgetRevenue(deletableItem.id)
             .then((response) => {
                 if (response.status === 204) {
@@ -65,9 +65,9 @@ const BudgetRevenuePage = (props) => {
                     budgetRevenue()
                 }
             })
-    }
+    }, [deletableItem])
 
-    const saveRevenue = () => {
+    const saveRevenue = useCallback(() => {
         saveBudgetRevenue({
             id: currentBudgetRevenueId,
             date: currentBudgetRevenueDate.format("DD/MM/YYYY"),
@@ -79,7 +79,7 @@ const BudgetRevenuePage = (props) => {
                 budgetRevenue()
             }
         })
-    }
+    }, [currentBudgetRevenueId, currentBudgetRevenueDate, currentBudgetRevenueAmount, currentBudgetRevenueNote])
 
     let budgetRevenueForm = <BudgetRevenueForm budgetRevenueData={{
         date: currentBudgetRevenueDate,

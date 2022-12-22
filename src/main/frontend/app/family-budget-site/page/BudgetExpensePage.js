@@ -52,7 +52,7 @@ const BudgetExpensePage = (props) => {
         setDeletableItem(dailyBudgetExpense)
         $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("show");
 
-    }, [deletableItem])
+    }, [])
 
     const deleteItem = useCallback(() => {
         deleteBudgetExpense(deletableItem.id)
@@ -84,7 +84,7 @@ const BudgetExpensePage = (props) => {
         setNote("")
         setSearchTag("")
         $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
-    }, [id, date, amount, note, searchTag])
+    }, [])
 
     const openUpdateBudgetExpensePopUp = useCallback((expense) => {
         setId(expense.id)
@@ -93,7 +93,7 @@ const BudgetExpensePage = (props) => {
         setNote(expense.note)
         setSearchTag(expense.searchTag)
         $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
-    }, [id, date, amount, note, searchTag])
+    }, [])
 
 
     const saveExpense = useCallback(() => {

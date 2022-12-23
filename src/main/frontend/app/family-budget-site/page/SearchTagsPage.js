@@ -7,6 +7,7 @@ import themeProvider from "../../v2/theme/ThemeProvider";
 import {Container, Paper, ThemeProvider} from "@mui/material";
 import Separator from "../../v2/form/Separator";
 import Menu from "../../v2/menu/Menu";
+import AccountPageMenuItem from "../../v2/menu/AccountPageMenuItem";
 
 const SearchTagsPage = (props) => {
     let {messageRegistry, links} = props
@@ -46,7 +47,9 @@ const SearchTagsPage = (props) => {
 
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
-            <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}></Menu>
+            <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}>
+                <AccountPageMenuItem text={configMap.searchTags(messageRegistry).menuMessages.userProfileLabel}/>
+            </Menu>
 
             <Container>
                 <SearchTagsForm searchTag={{key: searchTagKey, value: searchTagValue}} handler={formHandler}/>

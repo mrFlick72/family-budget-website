@@ -14,7 +14,7 @@ import AccountPageMenuItem from "../../v2/menu/AccountPageMenuItem";
 import themeProvider from "../../v2/theme/ThemeProvider";
 import {BudgetRevenuePageMenuItem} from "../../v2/menu/BudgetRevenuePageMenuItem";
 import {SearchTagsPageMenuItem} from "../../v2/menu/SearchTagsPageMenuItem";
-import CreateNewBudgetExpensePopupv2 from "../spent-budget/popup/CreateNewBudgetExpensePopupv2";
+import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";
 import OpenPopUpMenuItemV2 from "../../v2/menu/OpenPopUpMenuItemV2";
 import {LocalGroceryStore} from "@mui/icons-material";
 import Menu from "../../v2/menu/Menu";
@@ -108,7 +108,7 @@ const BudgetExpensePage = (props) => {
         setAmount(expense.amount)
         setNote(expense.note)
         setSearchTag(expense.searchTag)
-        $(`#${configMap.budgetExpense(messageRegistry).newBudgetExpenseModal.id}`).modal("show");
+        setOpenSaveBudgetExpensePopUp(true)
     }, [])
 
 
@@ -125,7 +125,7 @@ const BudgetExpensePage = (props) => {
             .then(response => {
                 if (response.status === 201 || response.status === 204) {
                     getSpentBudget();
-                    $(`#${configMap.budgetExpense(messageRegistry).newBudgetExpenseModal.id}`).modal("hide");
+                    setOpenSaveBudgetExpensePopUp(false)
                 }
             })
     }, [id, date, amount, note, searchTag])
@@ -248,7 +248,7 @@ const BudgetExpensePage = (props) => {
 
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
-            <CreateNewBudgetExpensePopupv2
+            <CreateNewBudgetExpensePopUp
                 open={openSaveBudgetExpensePopUp}
                 handleClose={saveBudgetExpensePopUpCloseHandler}
                 spentBudgetHandlers={savePopupEventHandlers}

@@ -2,16 +2,17 @@ import React from "react"
 import SpentBudgetForm from "../budget/SpentBudgetForm";
 import YesAndNoButtonGroup from "../../../component/layout/YesAndNoButtonGroup";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {AddShoppingCart} from "@mui/icons-material";
 
-const CreateNewBudgetExpensePopupV2 = ({
-                                           open,
-                                           handleClose,
-                                           modal,
-                                           searchTagRegistry,
-                                           spentBudgetHandlers,
-                                           budgetExpense,
-                                           saveCallback
-                                       }) => {
+const CreateNewBudgetExpensePopUp = ({
+                                         open,
+                                         handleClose,
+                                         modal,
+                                         searchTagRegistry,
+                                         spentBudgetHandlers,
+                                         budgetExpense,
+                                         saveCallback
+                                     }) => {
     return <Dialog onClose={handleClose} open={open} fullWidth scroll="paper">
         <DialogTitle>{modal.title}</DialogTitle>
 
@@ -25,8 +26,9 @@ const CreateNewBudgetExpensePopupV2 = ({
             </DialogContentText>
         </DialogContent>
         <DialogActions>
-            <YesAndNoButtonGroup yesIcon="fas fa-cart-plus fa-lg"
+            <YesAndNoButtonGroup yesIcon={<AddShoppingCart/>}
                                  yesFun={saveCallback}
+                                 noFun={handleClose}
                                  buttonMessages={{
                                      "noLabel": modal.closeButtonLable,
                                      "yesLabel": modal.saveButtonLable
@@ -35,4 +37,4 @@ const CreateNewBudgetExpensePopupV2 = ({
     </Dialog>
 }
 
-export default CreateNewBudgetExpensePopupV2
+export default CreateNewBudgetExpensePopUp

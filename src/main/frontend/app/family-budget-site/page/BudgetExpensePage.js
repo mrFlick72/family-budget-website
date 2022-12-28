@@ -18,6 +18,7 @@ import CreateNewBudgetExpensePopupv2 from "../spent-budget/popup/CreateNewBudget
 import OpenPopUpMenuItemV2 from "../../v2/menu/OpenPopUpMenuItemV2";
 import {LocalGroceryStore} from "@mui/icons-material";
 import Menu from "../../v2/menu/Menu";
+import {DateFormatPattern} from "../../v2/form/FormDatePicker";
 
 const BudgetExpensePage = (props) => {
     const {messageRegistry, links} = props
@@ -67,7 +68,12 @@ const BudgetExpensePage = (props) => {
 
     const savePopupEventHandlers = {
         date: (value) => {
-            setDate(value)
+            let date = moment();
+            try {
+                date = value.format(DateFormatPattern);
+            } catch (e) {
+            }
+            setDate(date)
         },
         amount: (event) => {
             setAmount(event.target.value)
@@ -260,7 +266,7 @@ const BudgetExpensePage = (props) => {
             <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}>
                 <OpenPopUpMenuItemV2 icon={<LocalGroceryStore/>}
                                      openPopupHandler={makeSaveBudgetExpensePopUpOpen}
-                                     text={configMap.budgetExpense(messageRegistry).menuMessages.userProfileLabel}/>
+                                     text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
                 <SearchTagsPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.searchTags}/>
                 <BudgetRevenuePageMenuItem text="Revenue"/>
                 <AccountPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.userProfileLabel}/>

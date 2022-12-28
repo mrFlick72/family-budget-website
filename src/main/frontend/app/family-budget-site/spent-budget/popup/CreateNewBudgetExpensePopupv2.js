@@ -12,7 +12,7 @@ const CreateNewBudgetExpensePopupV2 = ({
                                            budgetExpense,
                                            saveCallback
                                        }) => {
-    return <Dialog onClose={handleClose} open={open}>
+    return <Dialog onClose={handleClose} open={open} fullWidth scroll="paper">
         <DialogTitle>{modal.title}</DialogTitle>
 
         <DialogContent>

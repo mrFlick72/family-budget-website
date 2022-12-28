@@ -1,6 +1,7 @@
 import React from "react"
 import DailyBudgetExpenseHeader from "./DailyBudgetExpenseHeader";
 import DailyBudgetExpenseRow from "./DailyBudgetExpenseRow";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 export default (props) => {
     let tableContent = [];
@@ -18,7 +19,7 @@ export default (props) => {
         })
     });
 
-    return (<div className="table-responsive">
+    let table = (<div className="table-responsive">
         <table className="table">
             <thead>
             <tr scope="row">
@@ -46,4 +47,21 @@ export default (props) => {
             </tfoot>
         </table>
     </div>)
+
+    return <TableContainer component={Paper}>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell>Note</TableCell>
+                    <TableCell>Type</TableCell>
+                    <TableCell>Details</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {tableContent}
+            </TableBody>
+        </Table>
+    </TableContainer>
 }

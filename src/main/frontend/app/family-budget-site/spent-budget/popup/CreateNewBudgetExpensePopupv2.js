@@ -5,22 +5,13 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} fr
 
 const CreateNewBudgetExpensePopupV2 = ({
                                            open,
+                                           handleClose,
                                            modal,
                                            searchTagRegistry,
                                            spentBudgetHandlers,
                                            budgetExpense,
                                            saveCallback
                                        }) => {
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return <Dialog onClose={handleClose} open={open}>
         <DialogTitle>{modal.title}</DialogTitle>
 

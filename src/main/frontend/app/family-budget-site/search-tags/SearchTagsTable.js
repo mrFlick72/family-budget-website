@@ -1,7 +1,7 @@
 import React from "react"
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import FormButton from "../../v2/form/FormButton";
 import {ModeEdit} from "@mui/icons-material";
+import FormButton from "../../component/form/FormButton";
 
 export default ({searchTagsRegistry, handler}) => {
     return <TableContainer component={Paper}>

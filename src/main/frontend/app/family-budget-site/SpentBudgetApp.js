@@ -4,7 +4,6 @@ import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./page/SearchTagsPage";
 import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
-import BudgetRevenuePage from "./page/BudgetRevenuePage";
 import BudgetExpensePage from "./page/BudgetExpensePage";
 
 const links = {
@@ -27,8 +26,8 @@ export default () => {
             <Routes>
                 <Route exact={true} path="/"
                        element={<BudgetExpensePage links={links} messageRegistry={messageRegistry}/>}/>
-                <Route exact={true} path="/budget-revenue"
-                       element={<BudgetRevenuePage links={links} messageRegistry={messageRegistry}/>}/>
+                {/*<Route exact={true} path="/budget-revenue"
+                       element={<BudgetRevenuePage links={links} messageRegistry={messageRegistry}/>}/>*/}
                 <Route path="/search-tags" exact={true}
                        element={<SearchTagsPage links={links} messageRegistry={messageRegistry}/>}/>
             </Routes>

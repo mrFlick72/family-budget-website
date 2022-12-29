@@ -2,11 +2,11 @@ import React from "react"
 
 import {v1 as uuidv1} from 'uuid';
 import {Box} from "@mui/material";
-import FormDatePicker, {DateFormatPattern} from "../../../v2/form/FormDatePicker";
 import moment from "moment";
-import FormMoneyFormat from "../../../v2/form/FormMoneyFormat";
-import FormTextArea from "../../../v2/form/FormTextArea";
-import FormSelect from "../../../v2/form/FormSelect";
+import FormDatePicker, {DateFormatPattern} from "../../../component/form/FormDatePicker";
+import FormMoneyFormat from "../../../component/form/FormMoneyFormat";
+import FormSelect from "../../../component/form/FormSelect";
+import FormTextArea from "../../../component/form/FormTextArea";
 
 export default ({spentBudgetComponentId, spentBudgetData, spentBudgetHandlers, searchTagRegistry}) => {
     let spentBudgetComponentIdAux = spentBudgetComponentId || {}

@@ -3,11 +3,11 @@ import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import SearchTagsTable from "../search-tags/SearchTagsTable";
 import SearchTagsForm from "../search-tags/SearchTagsForm";
 import {getSearchTagRegistry, saveSearchTag} from "../../domain/repository/SearchTagRepository";
-import themeProvider from "../../v2/theme/ThemeProvider";
 import {Container, Paper, ThemeProvider} from "@mui/material";
-import Separator from "../../v2/form/Separator";
-import Menu from "../../v2/menu/Menu";
-import AccountPageMenuItem from "../../v2/menu/AccountPageMenuItem";
+import themeProvider from "../../theme/ThemeProvider";
+import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";
+import Separator from "../../component/form/Separator";
+import Menu from "../../component/menu/Menu";
 
 const SearchTagsPage = (props) => {
     let {messageRegistry, links} = props

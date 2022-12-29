@@ -9,7 +9,7 @@ import moment from "moment";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import {getMonthRegistry} from "../../domain/repository/MonthRepository";
 import {getSearchTagRegistry} from "../../domain/repository/SearchTagRepository";
-import {Container, Paper, ThemeProvider} from "@mui/material";
+import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
 import themeProvider from "../../theme/ThemeProvider";
 import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";
 import {LocalGroceryStore} from "@mui/icons-material";
@@ -20,9 +20,14 @@ import {BudgetRevenuePageMenuItem} from "../../component/menu/BudgetRevenuePageM
 import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";
 import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
 import Menu from "../../component/menu/Menu";
+import {TabPanel} from "../../component/layout/TabPanel";
+import TotalBySearchTags from "../spent-budget/budget/TotalBySearchTags";
 
 const BudgetExpensePage = (props) => {
     const {messageRegistry, links} = props
+    const [tabPanel, setTabPanel] = React.useState(0);
+
+
     const [id, setId] = useState("")
     const [date, setDate] = useState(moment())
     const [amount, setAmount] = useState("0.00")
@@ -143,6 +148,10 @@ const BudgetExpensePage = (props) => {
 
     let theme = themeProvider
 
+    const handleTabPanelChange = (event, newValue) => {
+        setTabPanel(newValue);
+    };
+
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
             <CreateNewBudgetExpensePopUp
@@ -168,18 +177,32 @@ const BudgetExpensePage = (props) => {
 
             <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}>
                 <OpenPopUpMenuItem icon={<LocalGroceryStore/>}
-                                     openPopupHandler={makeSaveBudgetExpensePopUpOpen}
-                                     text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
+                                   openPopupHandler={makeSaveBudgetExpensePopUpOpen}
+                                   text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
                 <SearchTagsPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.searchTags}/>
                 <BudgetRevenuePageMenuItem text="Revenue"/>
                 <AccountPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.userProfileLabel}/>
             </Menu>
 
             <Container>
-                <SpentBudgetContent spentBudget={spentBudget}
-                                    searchTagRegistry={searchTagRegistry}
-                                    openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp}
-                                    openDeleteBudgetExpensePopUp={makeDeleteBudgetExpensePopUpOpen}/>
+                <Tabs
+                    value={tabPanel}
+                    onChange={handleTabPanelChange}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    aria-label="secondary tabs example"
+                >
+                    <Tab value={0} label="Budget Expense Daily View"/>
+                    <Tab value={1} label="Budget Expense By Tags View"/>
+                </Tabs>
+                <TabPanel value={tabPanel} index={0}>
+                    <SpentBudgetContent spentBudget={spentBudget}
+                                        searchTagRegistry={searchTagRegistry}
+                                        openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp}
+                                        openDeleteBudgetExpensePopUp={makeDeleteBudgetExpensePopUpOpen}/> </TabPanel>
+                <TabPanel value={tabPanel} index={1}>
+                    <TotalBySearchTags totals={spentBudget.totalDetailList || []}/>
+                </TabPanel>
             </Container>
         </Paper>
     </ThemeProvider>

@@ -22,6 +22,9 @@ import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
 import Menu from "../../component/menu/Menu";
 import {TabPanel} from "../../component/layout/TabPanel";
 import TotalBySearchTags from "../spent-budget/budget/TotalBySearchTags";
+import SpentBudgetTotalBanner from "../spent-budget/budget/SpentBudgetTotalBanner";
+import MonthsSelector from "../spent-budget/budget/MonthsSelector";
+import {DateFormatPattern} from "../../component/form/FormDatePicker";
 
 const BudgetExpensePage = (props) => {
     const {messageRegistry, links} = props
@@ -152,6 +155,11 @@ const BudgetExpensePage = (props) => {
         setTabPanel(newValue);
     };
 
+    let navBarItems = [
+        <MonthsSelector monthRegistry={monthRegistry} month={getMonth()} year={getYear()} action={links.home}/>,
+        <SpentBudgetTotalBanner total={spentBudget.total}/>
+    ];
+
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
             <CreateNewBudgetExpensePopUp
@@ -175,7 +183,10 @@ const BudgetExpensePage = (props) => {
                                                   handleClose={deleteBudgetExpensePopUpCloseHandler}
                                                   modal={configMap.budgetExpense(messageRegistry).deleteModal}/>
 
-            <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}>
+            <Menu messages={configMap.searchTags(messageRegistry).menuMessages}
+                  links={links}
+                  navBarItems={navBarItems}>
+
                 <OpenPopUpMenuItem icon={<LocalGroceryStore/>}
                                    openPopupHandler={makeSaveBudgetExpensePopUpOpen}
                                    text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>

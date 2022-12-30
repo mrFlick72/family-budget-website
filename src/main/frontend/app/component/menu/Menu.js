@@ -4,8 +4,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
 
-const Menu = ({links, messages, children}) => {
-    console.log(children)
+const Menu = ({links, messages, children, navBarItems}) => {
     let theme = useTheme()
     const [openDrawer, setOpenDrawer] = React.useState(false);
 
@@ -49,6 +48,7 @@ const Menu = ({links, messages, children}) => {
                         </Box>
                     </Drawer>
                 }
+                {navBarItems}
                 <form action={links.logOut} method="GET">
                     <Button color="inherit" type="submit">
                         {messages.logOutLabel} <LogoutIcon/>

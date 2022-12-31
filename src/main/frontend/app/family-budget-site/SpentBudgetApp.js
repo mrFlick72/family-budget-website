@@ -4,8 +4,8 @@ import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./page/SearchTagsPage";
 import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
-import BudgetRevenuePage from "./page/BudgetRevenuePage";
 import BudgetExpensePage from "./page/BudgetExpensePage";
+import BudgetRevenuePage from "./page/BudgetRevenuePage";
 
 const links = {
     logOut: "/family-budget/oidc_logout.html",

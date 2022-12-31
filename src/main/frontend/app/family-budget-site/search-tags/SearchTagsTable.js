@@ -1,31 +1,32 @@
 import React from "react"
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {ModeEdit} from "@mui/icons-material";
+import FormButton from "../../component/form/FormButton";
 
 export default ({searchTagsRegistry, handler}) => {
-    return <div>
-        <div className="table-responsive">
-            <table className="table">
-                <thead>
-                <tr scope="row">
-                    <th scope="col">Description</th>
-                    <th scope="col">Operation</th>
-                </tr>
-                </thead>
-                <tbody>
-                {searchTagsRegistry.map(searchTag => {
-                    return <tr>
-                        <td>{searchTag.value}</td>
-                        <td>
-                            <div className="btn-group" role="group">
-                                <button type="button" className="btn btn-secondary"
-                                        onClick={handler.editHandler.bind(this, searchTag.key, searchTag.value)}>
-                                    <i className="fas fa-edit fa-lg"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                })}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    return <TableContainer component={Paper}>
+        <Table aria-label="simple table">
+            <TableHead>
+                <TableRow>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Operation</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {searchTagsRegistry.map((searchTag) => (
+                    <TableRow key={searchTag.key}>
+                        <TableCell scope="row">
+                            {searchTag.value}
+                        </TableCell>
+                        <TableCell>
+                            <FormButton type="button"
+                                        labelPrefix={<ModeEdit/>}
+                                        onClickHandler={handler.editHandler.bind(this, searchTag.key, searchTag.value)}
+                            />
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
 }

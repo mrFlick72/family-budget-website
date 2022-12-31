@@ -3,6 +3,10 @@ import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import SearchTagsTable from "../search-tags/SearchTagsTable";
 import SearchTagsForm from "../search-tags/SearchTagsForm";
 import {getSearchTagRegistry, saveSearchTag} from "../../domain/repository/SearchTagRepository";
+import {Container, Paper, ThemeProvider} from "@mui/material";
+import themeProvider from "../../theme/ThemeProvider";
+import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";
+import Separator from "../../component/form/Separator";
 import Menu from "../../component/menu/Menu";
 
 const SearchTagsPage = (props) => {
@@ -39,29 +43,22 @@ const SearchTagsPage = (props) => {
             setSearchTagValue(searchTagValue)
         }
     }
+    let theme = themeProvider
 
-    return <div>
-        <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}></Menu>
+    return <ThemeProvider theme={theme}>
+        <Paper variant="outlined">
+            <Menu messages={configMap.searchTags(messageRegistry).menuMessages} links={links}>
+                <AccountPageMenuItem text={configMap.searchTags(messageRegistry).menuMessages.userProfileLabel}/>
+            </Menu>
 
-        <div className="container-fluid">
-            <div className="content">
-                <div className="row">
-                    <div className="col-12">
-                        <SearchTagsForm searchTag={{key: searchTagKey, value: searchTagValue}} handler={formHandler}/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <hr/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <SearchTagsTable searchTagsRegistry={searchTagsRegistry} handler={tableHandler}/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <Container>
+                <SearchTagsForm searchTag={{key: searchTagKey, value: searchTagValue}} handler={formHandler}/>
+
+                <Separator/>
+
+                <SearchTagsTable searchTagsRegistry={searchTagsRegistry} handler={tableHandler}/>
+            </Container>
+        </Paper>
+    </ThemeProvider>
 }
 export default SearchTagsPage

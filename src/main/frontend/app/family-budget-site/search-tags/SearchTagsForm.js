@@ -1,13 +1,20 @@
 import React from "react"
-import TextInput from "../../component/form/TextInput";
+import {Save} from "@mui/icons-material";
+import FormInputTextField from "../../component/form/FormInputTextField";
+import FormButton from "../../component/form/FormButton";
 
 export default ({searchTag, handler}) => {
     return <div>
-        <TextInput componentId="searchTagValue" componentLabel="Search Tag Value" value={searchTag.value}
-                   onChangeHandler={handler.valueHandler}/>
-        <button type="button" className="btn btn-secondary"
-                onClick={handler.submitHandler.bind(this, searchTag.key, searchTag.value)}>
-            <i className="fas fa-save fa-lg"></i> Save
-        </button>
+        <FormInputTextField handler={handler.valueHandler}
+                            autoFocus={true}
+                            value={searchTag.value}
+                            id="searchTagValue"
+                            label="Search Tag Value"
+        />
+        <FormButton type="button"
+                    labelPrefix={<Save/>}
+                    label="Save"
+                    onClickHandler={handler.submitHandler.bind(this, searchTag.key, searchTag.value)}
+        />
     </div>
 }

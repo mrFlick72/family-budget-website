@@ -1,26 +1,36 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
-import Menu from "../../component/menu/Menu";
-import SelectMonthlySpentBudget from "../../component/menu/SelectMonthlySpentBudget";
-import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
 import {getMonth, getSearchTags, getYear} from "../../domain/model/SearchCriteriaOnUrl";
 import {
     deleteBudgetExpense,
     findBudgetExpense,
     saveBudgetExpense
 } from "../../domain/repository/BudgetExpenseRepository";
-
-import TotalBySearchTags from "../spent-budget/menu/TotalBySearchTags";
-import ContentCard from "../../component/layout/ContentCard";
-import CreateNewBudgetExpensePopup from "../spent-budget/popup/CreateNewBudgetExpensePopup";
-import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
 import moment from "moment";
-import PageNavigationMenuItem from "../../component/menu/PageNavigationMenuItem";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import {getMonthRegistry} from "../../domain/repository/MonthRepository";
 import {getSearchTagRegistry} from "../../domain/repository/SearchTagRepository";
+import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
+import themeProvider from "../../theme/ThemeProvider";
+import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";
+import {LocalGroceryStore, Search} from "@mui/icons-material";
+import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
+import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
+import {SearchTagsPageMenuItem} from "../../component/menu/SearchTagsPageMenuItem";
+import {BudgetRevenuePageMenuItem} from "../../component/menu/BudgetRevenuePageMenuItem";
+import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";
+import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
+import Menu from "../../component/menu/Menu";
+import {TabPanel} from "../../component/layout/TabPanel";
+import TotalBySearchTags from "../spent-budget/budget/TotalBySearchTags";
+import SpentBudgetTotalBanner from "../spent-budget/budget/SpentBudgetTotalBanner";
+import {DateFormatPattern} from "../../component/form/FormDatePicker";
+import SearchBudgetExpensePopUp from "../spent-budget/popup/SearchBudgetExpensePopUp";
 
 const BudgetExpensePage = (props) => {
+    const {messageRegistry, links} = props
+    const [tabPanel, setTabPanel] = React.useState(0);
+
+
     const [id, setId] = useState("")
     const [date, setDate] = useState(moment())
     const [amount, setAmount] = useState("0.00")
@@ -30,6 +40,14 @@ const BudgetExpensePage = (props) => {
     const [deletableItem, setDeletableItem] = useState({})
     const [searchTagRegistry, setSearchTagRegistry] = useState([])
     const [monthRegistry, setMonthRegistry] = useState([])
+
+    const [openSaveBudgetExpensePopUp, setOpenSaveBudgetExpensePopUp] = useState(false)
+    const [openDeleteBudgetExpensePopUp, setOpenDeleteBudgetExpensePopUp] = useState(false)
+    const [openSearchBudgetExpensePopUp, setOpenSearchBudgetExpensePopUp] = useState(false)
+
+    const [selectedMonth, setSelectedMonth] = useState(getMonth())
+    const [selectedYear, setSelectedYear] = useState(getYear())
+    const [selectedSearchTags, setSelectedSearchTags] = useState([])
 
     const configMap = new FamilyBudgetPagesConfigMap();
 
@@ -48,10 +66,17 @@ const BudgetExpensePage = (props) => {
         getSearchTagRegistry().then(data => setSearchTagRegistry(data));
     }
 
-    const openDeleteBudgetExpensePopUp = useCallback((dailyBudgetExpense) => {
-        setDeletableItem(dailyBudgetExpense)
-        $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("show");
+    const makeSearchBudgetExpensePopUpOpen = useCallback(() => {
+        setOpenSearchBudgetExpensePopUp(true)
+    }, [])
 
+    const searchBudgetExpensePopUpCloseHandler = useCallback(() => {
+        setOpenSearchBudgetExpensePopUp(false)
+    }, [])
+
+    const makeDeleteBudgetExpensePopUpOpen = useCallback((dailyBudgetExpense) => {
+        setOpenDeleteBudgetExpensePopUp(true)
+        setDeletableItem(dailyBudgetExpense)
     }, [])
 
     const deleteItem = useCallback(() => {
@@ -59,14 +84,19 @@ const BudgetExpensePage = (props) => {
             .then((response) => {
                 if (response.status === 204) {
                     getSpentBudget();
-                    $(`#${configMap.budgetExpense(props.messageRegistry).deleteModal.id}`).modal("hide");
+                    setOpenDeleteBudgetExpensePopUp(false)
                 }
             })
     }, [deletableItem])
 
     const savePopupEventHandlers = {
         date: (value) => {
-            setDate(value)
+            let date = moment();
+            try {
+                date = value.format(DateFormatPattern);
+            } catch (e) {
+            }
+            setDate(date)
         },
         amount: (event) => {
             setAmount(event.target.value)
@@ -76,14 +106,39 @@ const BudgetExpensePage = (props) => {
         },
         note: (event) => setNote(event.target.value)
     }
+    const searchPopupEventHandlers = {
+        searchTag: (searchTag) => {
+            setSelectedSearchTags(searchTag)
+        },
+        month: (event) => {
+            setSelectedMonth(event.value)
+        },
+        year: (event) => {
+            setSelectedYear(event.target.value)
+        }
+    }
 
-    const openSaveBudgetExpensePopUp = useCallback(() => {
+    const saveBudgetExpensePopUpCloseHandler = useCallback(() => {
         setId("")
         setDate(moment())
         setAmount("0.00")
         setNote("")
         setSearchTag("")
-        $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
+        setOpenSaveBudgetExpensePopUp(false)
+    }, [])
+
+    const deleteBudgetExpensePopUpCloseHandler = useCallback(() => {
+        setDeletableItem({})
+        setOpenDeleteBudgetExpensePopUp(false)
+    }, [])
+
+    const makeSaveBudgetExpensePopUpOpen = useCallback(() => {
+        setId("")
+        setDate(moment())
+        setAmount("0.00")
+        setNote("")
+        setSearchTag("")
+        setOpenSaveBudgetExpensePopUp(true)
     }, [])
 
     const openUpdateBudgetExpensePopUp = useCallback((expense) => {
@@ -92,7 +147,7 @@ const BudgetExpensePage = (props) => {
         setAmount(expense.amount)
         setNote(expense.note)
         setSearchTag(expense.searchTag)
-        $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("show");
+        setOpenSaveBudgetExpensePopUp(true)
     }, [])
 
 
@@ -109,90 +164,102 @@ const BudgetExpensePage = (props) => {
             .then(response => {
                 if (response.status === 201 || response.status === 204) {
                     getSpentBudget();
-                    $(`#${configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}`).modal("hide");
+                    setOpenSaveBudgetExpensePopUp(false)
                 }
             })
     }, [id, date, amount, note, searchTag])
 
     useEffect(() => {
-        loadCommonData();
-        getSpentBudget();
-    }, [])
+            loadCommonData();
+            getSpentBudget();
+        }, []
+    )
 
+    let theme = themeProvider
 
-    return <div>
-        <Menu messages={configMap.budgetExpense(props.messageRegistry).menuMessages}
-              links={props.links}>
-            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                <OpenPopUpMenuItem key="insertBudgetModal"
-                                   callback={openSaveBudgetExpensePopUp}
-                                   label={configMap.budgetExpense(props.messageRegistry).menuMessages.insertBudgetModal}
-                                   modalId={configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal.id}
-                                   iconClassNames="fas fa-cart-plus fa-lg"/>
+    const handleTabPanelChange = (event, newValue) => {
+        setTabPanel(newValue);
+    };
 
-                <PageNavigationMenuItem
-                    menuItemLabel={configMap.budgetExpense(props.messageRegistry).menuMessages.searchTags}
-                    link="/search-tags"
-                    menuItemPrefixIcon="fas fa-tags fa-lg"/>
-            </ul>
+    let navBarItems = [
+        <SpentBudgetTotalBanner total={spentBudget.total}/>
+    ];
 
+    return <ThemeProvider theme={theme}>
+        <Paper variant="outlined">
+            <SearchBudgetExpensePopUp
+                month={selectedMonth}
+                year={selectedYear}
+                monthRegistry={monthRegistry}
+                searchTagRegistry={searchTagRegistry}
+                handlers={searchPopupEventHandlers}
+                modal={configMap.budgetExpense(messageRegistry).searchFilterModal}
+                handleClose={searchBudgetExpensePopUpCloseHandler}
+                open={openSearchBudgetExpensePopUp}
+                saveCallback={() => {
+                    window.location.href = `${links.home}?choicedMonth=${selectedMonth}&year=${selectedYear}`;
+                }}
+            />
 
-            <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-                <li className="badge badge-info nav-item active total-box">
-                    <h6>Total: <span>{spentBudget.total || 0.00}</span></h6>
-                </li>
-                <li className="nav-item active">
-                    <SelectMonthlySpentBudget action={props.links.home}
-                                              name="selectMonthlySpentBudget"
-                                              monthRegistry={monthRegistry}
-                                              month={getMonth()}
-                                              year={getYear()}/>
-                </li>
-                <PageNavigationMenuItem menuItemLabel="Revenue"
-                                        link="/budget-revenue"
-                                        menuItemPrefixIcon="fas fa-money-bill-wave fa-lg"/>
-            </ul>
-        </Menu>
-        <div className="container-fluid">
-            <div className="content">
+            <CreateNewBudgetExpensePopUp
+                open={openSaveBudgetExpensePopUp}
+                handleClose={saveBudgetExpensePopUpCloseHandler}
+                spentBudgetHandlers={savePopupEventHandlers}
+                budgetExpense={{
+                    id: id,
+                    date: date,
+                    amount: amount,
+                    note: note,
+                    searchTag: searchTag
+                }}
+                saveCallback={saveExpense}
+                searchTagRegistry={searchTagRegistry}
+                modal={configMap.budgetExpense(messageRegistry).newBudgetExpenseModal}
+            />
 
-                <CreateNewBudgetExpensePopup spentBudgetHandlers={savePopupEventHandlers}
-                                             budgetExpense={{
-                                                 id: id,
-                                                 date: date,
-                                                 amount: amount,
-                                                 note: note,
-                                                 searchTag: searchTag
-                                             }}
-                                             saveCallback={saveExpense}
-                                             searchTagRegistry={searchTagRegistry}
-                                             modal={configMap.budgetExpense(props.messageRegistry).newBudgetExpenseModal}/>
+            <DeleteBudgetExpenseConfirmationPopUp deleteBudgetExpenseAction={deleteItem}
+                                                  open={openDeleteBudgetExpensePopUp}
+                                                  handleClose={deleteBudgetExpensePopUpCloseHandler}
+                                                  modal={configMap.budgetExpense(messageRegistry).deleteModal}/>
 
-                <DeleteBudgetExpenseConfirmationPopUp deleteBudgetExpenseAction={deleteItem}
-                                                      modal={configMap.budgetExpense(props.messageRegistry).deleteModal}/>
+            <Menu messages={configMap.searchTags(messageRegistry).menuMessages}
+                  links={links}
+                  navBarItems={navBarItems}>
 
+                <OpenPopUpMenuItem icon={<LocalGroceryStore/>}
+                                   openPopupHandler={makeSaveBudgetExpensePopUpOpen}
+                                   text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
 
-                <div className="row">
-                    <div className="col-12 col-md-9">
-                        <ContentCard
-                            header={configMap.budgetExpense(props.messageRegistry).cards.dailyDetails}>
-                            <SpentBudgetContent spentBudget={spentBudget}
-                                                searchTagRegistry={searchTagRegistry}
-                                                openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp}
-                                                openDeleteBudgetExpensePopUp={openDeleteBudgetExpensePopUp}/>
-                        </ContentCard>
-                    </div>
+                <OpenPopUpMenuItem icon={<Search/>}
+                                   openPopupHandler={makeSearchBudgetExpensePopUpOpen}
+                                   text="Search"/>
 
-                    <div className="col-12 col-md-3">
-                        <ContentCard
-                            header={configMap.budgetExpense(props.messageRegistry).cards.totalByCategories}>
-                            <TotalBySearchTags totals={spentBudget.totalDetailList || []}/>
-                        </ContentCard>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                <SearchTagsPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.searchTags}/>
+                <BudgetRevenuePageMenuItem text="Revenue"/>
+                <AccountPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.userProfileLabel}/>
+            </Menu>
 
+            <Container>
+                <Tabs
+                    value={tabPanel}
+                    onChange={handleTabPanelChange}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    aria-label="secondary tabs example"
+                >
+                    <Tab value={0} label="Budget Expense Daily View"/>
+                    <Tab value={1} label="Budget Expense By Tags View"/>
+                </Tabs>
+                <TabPanel value={tabPanel} index={0}>
+                    <SpentBudgetContent spentBudget={spentBudget}
+                                        searchTagRegistry={searchTagRegistry}
+                                        openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp}
+                                        openDeleteBudgetExpensePopUp={makeDeleteBudgetExpensePopUpOpen}/> </TabPanel>
+                <TabPanel value={tabPanel} index={1}>
+                    <TotalBySearchTags totals={spentBudget.totalDetailList || []}/>
+                </TabPanel>
+            </Container>
+        </Paper>
+    </ThemeProvider>
 }
 export default BudgetExpensePage

@@ -1,22 +1,20 @@
 import React from "react"
+import {Button, ButtonGroup, TableCell, TableRow} from "@mui/material";
+import {Delete, Edit} from "@mui/icons-material";
+import {v1 as uuidv1} from "uuid";
+
 
 export default ({revenue, openDeletePopUp, openUpdatePopUp}) => {
-    return <tr>
-        <td>{revenue.date}</td>
-        <td>{revenue.amount}</td>
-        <td>{revenue.note}</td>
-        <td scope="col">
-            <div className="btn-group" role="group">
-                <button type="button" className="btn btn-secondary"
-                        onClick={openUpdatePopUp}>
-                    <i className="fas fa-edit fa-lg"></i> Edit
-                </button>
+    return <TableRow key={uuidv1()} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+        <TableCell>{revenue.date}</TableCell>
+        <TableCell>{revenue.amount}</TableCell>
+        <TableCell>{revenue.note}</TableCell>
+        <TableCell>
+            <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                <Button onClick={openUpdatePopUp}><Edit/> Edit</Button>
+                <Button onClick={openDeletePopUp}><Delete/>Delete </Button>
+            </ButtonGroup>
+        </TableCell>
+    </TableRow>
 
-                <button type="button" className="btn btn-secondary"
-                        onClick={openDeletePopUp}>
-                    <i className="fas fa-trash-alt fa-lg"></i> Delete
-                </button>
-            </div>
-        </td>
-    </tr>
 }

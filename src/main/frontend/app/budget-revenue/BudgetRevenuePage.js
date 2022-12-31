@@ -16,6 +16,7 @@ import {Money} from "@mui/icons-material";
 import BudgetRevenueContent from "./BudgetRevenueContent";
 import DeleteBudgetRevenueConfirmationPopUp from "./DeleteBudgetRevenueConfirmationPopUp";
 import SaveBudgetRevenuePopUp from "./SaveBudgetRevenuePopUp";
+import {DateFormatPattern} from "../component/form/FormDatePicker";
 
 const BudgetRevenuePage = ({messageRegistry, links}) => {
 
@@ -38,16 +39,12 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
         setOpenSaveBudgetRevenuePopUp(false)
     }, [])
 
-    const [openUpdateBudgetRevenuePopUp, setOpenUpdateBudgetRevenuePopUp] = useState(false)
     const makeUpdateBudgetRevenuePopUpOpen = useCallback((revenue) => {
         setCurrentBudgetRevenueId(revenue.id)
         setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
         setCurrentBudgetRevenueAmount(revenue.amount)
         setCurrentBudgetRevenueNote(revenue.note)
-        setOpenUpdateBudgetRevenuePopUp(true)
-    }, [])
-    const updateBudgetRevenuePopUpCloseHandler = useCallback(() => {
-        setOpenUpdateBudgetRevenuePopUp(false)
+        setOpenSaveBudgetRevenuePopUp(true)
     }, [])
 
     const [openDeleteBudgetRevenuePopUp, setOpenDeleteBudgetRevenuePopUp] = useState(false)
@@ -86,13 +83,12 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     const saveRevenue = useCallback(() => {
         saveBudgetRevenue({
             id: currentBudgetRevenueId,
-            date: currentBudgetRevenueDate.format("DD/MM/YYYY"),
+            date: currentBudgetRevenueDate.format(DateFormatPattern),
             amount: currentBudgetRevenueAmount,
             note: currentBudgetRevenueNote
         }).then(response => {
             if (response.status === 201 || response.status === 204) {
                 setOpenSaveBudgetRevenuePopUp(false)
-                setOpenUpdateBudgetRevenuePopUp(false)
                 budgetRevenue()
             }
         })
@@ -126,13 +122,6 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
                 <SaveBudgetRevenuePopUp
                     open={openSaveBudgetRevenuePopUp}
                     handleClose={saveBudgetRevenuePopUpCloseHandler}
-                    modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
-                    form={budgetRevenueForm}
-                    saveCallback={saveRevenue}/>
-
-                <SaveBudgetRevenuePopUp
-                    open={openUpdateBudgetRevenuePopUp}
-                    handleClose={updateBudgetRevenuePopUpCloseHandler}
                     modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
                     form={budgetRevenueForm}
                     saveCallback={saveRevenue}/>

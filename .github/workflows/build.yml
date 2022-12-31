@@ -28,7 +28,7 @@ jobs:
         run: |
           cd src/main/frontend
           npm install
-          npm run-script build
+          npm run-script production-build
 
       - name: Build
         run: |

@@ -4,7 +4,7 @@ import {DesktopDatePicker} from "@mui/x-date-pickers"
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 
-export default function FormDatePicker({label, value, onClickHandler}) {
+export default function FormDatePicker({id, label, value, onClickHandler}) {
     const theme = useTheme()
     return <Grid container alignItems="flex-end" style={theme.formDatePicker}>
         <Grid item md={true} sm={true} xs={true} justify="flex-end">

@@ -11,8 +11,10 @@ import {
     saveBudgetRevenue
 } from "../../domain/repository/BudgetRevenueRepository";
 import themeProvider from "../../theme/ThemeProvider";
-import {Paper, ThemeProvider} from "@mui/material";
-import {LocalGroceryStore, Money} from "@mui/icons-material";
+import {Container, Paper, ThemeProvider} from "@mui/material";
+import {Money} from "@mui/icons-material";
+import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
+import DeleteBudgetRevenueConfirmationPopUp from "../budget-revenue/DeleteBudgetRevenueConfirmationPopUp";
 
 const BudgetRevenuePage = ({messageRegistry, links}) => {
 
@@ -24,9 +26,19 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     const [currentBudgetRevenueNote, setCurrentBudgetRevenueNote] = useState("")
 
     const [openSaveBudgetRevenuePopUpOpen, setOpenSaveBudgetRevenuePopUpOpen] = useState(false)
-
     const makeOpenSaveBudgetRevenuePopUpOpen = useCallback(() => {
         setOpenSaveBudgetRevenuePopUpOpen(true)
+    }, [])
+    const saveBudgetRevenuePopUpOpenCloseHandler = useCallback(() => {
+        setOpenSaveBudgetRevenuePopUpOpen(false)
+    }, [])
+
+    const [openDeleteBudgetRevenuePopUpOpen, setOpenDeleteBudgetRevenuePopUpOpen] = useState(false)
+    const makeOpenDeleteBudgetRevenuePopUpOpen = useCallback(() => {
+        setOpenSaveBudgetRevenuePopUpOpen(true)
+    }, [])
+    const deleteBudgetRevenuePopUpOpenCloseHandler = useCallback(() => {
+        setOpenSaveBudgetRevenuePopUpOpen(false)
     }, [])
 
     let configMap = new FamilyBudgetPagesConfigMap()
@@ -60,7 +72,7 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
         setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
         setCurrentBudgetRevenueAmount(revenue.amount)
         setCurrentBudgetRevenueNote(revenue.note)
-        $(`#${configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
+        makeOpenSaveBudgetRevenuePopUpOpen()
     }, [])
 
     const deleteItem = useCallback(() => {
@@ -96,6 +108,11 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     let theme = themeProvider
 
 
+    let deleteConfirmationPopupMessages = {
+        id: "deleteBudgetRevenueModal",
+        title: "Delete Budget Revenue",
+        message: "Are you sure of delete the Budget Revenue from the list?"
+    };
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
 
@@ -106,29 +123,23 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
                                    text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
 
             </Menu>
+            <Container>
+                {/*        <PopupContainer
+                    modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
+                    form={budgetRevenueForm}
+                    saveFun={saveRevenue}/>*/}
 
-            {/*
-            <div className="container-fluid">
-                <div className="content">
-                    <PopupContainer
-                        modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
-                        form={budgetRevenueForm}
-                        saveFun={saveRevenue}/>
+                <DeleteBudgetRevenueConfirmationPopUp
+                    open={openDeleteBudgetRevenuePopUpOpen}
+                    handleClose={delteBudgetRevenuePopUpOpenCloseHandler}
+                    modal={deleteConfirmationPopupMessages}
+                    confirmationHandler={deleteItem}/>
 
-                    <ConfirmationPopUp confirmationHandler={deleteItem}
-                                       modalId="deleteBudgetRevenueModal"
-                                       modalMessageBody="Are you sure of delete the Budget Revenue from the list?"
-                                       modalTitle="Delete Budget Revenue"/>
+                <BudgetRevenueContent openUpdatePopUp={openUpdateBudgetRevenuePopUp}
+                                      openDeletePopUp={openDeleteBudgetRevenuePopUp}
+                                      revenues={revenues}/>
+            </Container>
 
-                    <div className="row justify-content-md-center">
-                        <div className="col-8">
-                            <BudgetRevenueContent openUpdatePopUp={openUpdateBudgetRevenuePopUp}
-                                                  openDeletePopUp={openDeleteBudgetRevenuePopUp}
-                                                  revenues={revenues}/>
-                        </div>
-                    </div>
-                </div>
-            </div>*/}
         </Paper>
     </ThemeProvider>
 

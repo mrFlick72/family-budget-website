@@ -1,8 +1,8 @@
 import React from "react"
-import {Box, Paper} from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 
 export default ({total}) => {
     return <Box component={Paper} color="primary">
-        Total: {total || 0.00}
+        <Typography sx={{margin: "10px"}}>Total: {total || 0.00}</Typography>
     </Box>
 }

@@ -1,8 +1,8 @@
 import React from "react"
-import ConfirmationPopUp from "../../../component/layout/ConfirmationPopUp";
+import ConfirmationPopUp from "../../component/layout/ConfirmationPopUp";
 
-export default ({deleteBudgetRevenueAction, modal, open, handleClose}) =>
-    <ConfirmationPopUp confirmationHandler={deleteBudgetRevenueAction}
+export default ({saveCallback, modal, open, handleClose}) =>
+    <ConfirmationPopUp confirmationHandler={saveCallback}
                        modalId={modal.id}
                        handleClose={handleClose}
                        open={open}

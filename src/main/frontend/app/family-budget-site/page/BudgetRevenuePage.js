@@ -15,6 +15,7 @@ import {Container, Paper, ThemeProvider} from "@mui/material";
 import {Money} from "@mui/icons-material";
 import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
 import DeleteBudgetRevenueConfirmationPopUp from "../budget-revenue/DeleteBudgetRevenueConfirmationPopUp";
+import SaveBudgetRevenuePopUp from "../budget-revenue/SaveBudgetRevenuePopUp";
 
 const BudgetRevenuePage = ({messageRegistry, links}) => {
 
@@ -25,20 +26,37 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     const [currentBudgetRevenueAmount, setCurrentBudgetRevenueAmount] = useState("0.00")
     const [currentBudgetRevenueNote, setCurrentBudgetRevenueNote] = useState("")
 
-    const [openSaveBudgetRevenuePopUpOpen, setOpenSaveBudgetRevenuePopUpOpen] = useState(false)
-    const makeOpenSaveBudgetRevenuePopUpOpen = useCallback(() => {
-        setOpenSaveBudgetRevenuePopUpOpen(true)
+    const [openSaveBudgetRevenuePopUp, setOpenSaveBudgetRevenuePopUp] = useState(false)
+    const makeSaveBudgetRevenuePopUpOpen = useCallback(() => {
+        setCurrentBudgetRevenueId("")
+        setCurrentBudgetRevenueDate(moment())
+        setCurrentBudgetRevenueAmount("0.00")
+        setCurrentBudgetRevenueNote("")
+        setOpenSaveBudgetRevenuePopUp(true)
     }, [])
-    const saveBudgetRevenuePopUpOpenCloseHandler = useCallback(() => {
-        setOpenSaveBudgetRevenuePopUpOpen(false)
+    const saveBudgetRevenuePopUpCloseHandler = useCallback(() => {
+        setOpenSaveBudgetRevenuePopUp(false)
     }, [])
 
-    const [openDeleteBudgetRevenuePopUpOpen, setOpenDeleteBudgetRevenuePopUpOpen] = useState(false)
-    const makeOpenDeleteBudgetRevenuePopUpOpen = useCallback(() => {
-        setOpenSaveBudgetRevenuePopUpOpen(true)
+    const [openUpdateBudgetRevenuePopUp, setOpenUpdateBudgetRevenuePopUp] = useState(false)
+    const makeUpdateBudgetRevenuePopUpOpen = useCallback((revenue) => {
+        setCurrentBudgetRevenueId(revenue.id)
+        setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
+        setCurrentBudgetRevenueAmount(revenue.amount)
+        setCurrentBudgetRevenueNote(revenue.note)
+        setOpenUpdateBudgetRevenuePopUp(true)
+    }, [])
+    const updateBudgetRevenuePopUpCloseHandler = useCallback(() => {
+        setOpenUpdateBudgetRevenuePopUp(false)
+    }, [])
+
+    const [openDeleteBudgetRevenuePopUp, setOpenDeleteBudgetRevenuePopUp] = useState(false)
+    const makeDeleteBudgetRevenuePopUpOpen = useCallback((revenue) => {
+        setDeletableItem(revenue)
+        setOpenDeleteBudgetRevenuePopUp(true)
     }, [])
     const deleteBudgetRevenuePopUpOpenCloseHandler = useCallback(() => {
-        setOpenSaveBudgetRevenuePopUpOpen(false)
+        setOpenDeleteBudgetRevenuePopUp(false)
     }, [])
 
     let configMap = new FamilyBudgetPagesConfigMap()
@@ -54,33 +72,13 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
         amount: (event) => setCurrentBudgetRevenueAmount(event.target.value),
         note: (event) => setCurrentBudgetRevenueNote(event.target.value)
     }
-    const openSaveBudgetRevenuePopUp = useCallback(() => {
-        setCurrentBudgetRevenueId("")
-        setCurrentBudgetRevenueDate(moment())
-        setCurrentBudgetRevenueAmount("0.00")
-        setCurrentBudgetRevenueNote("")
-        $(`#${configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal.id}`).modal("show");
-    }, [])
-
-    const openDeleteBudgetRevenuePopUp = useCallback((revenue) => {
-        setDeletableItem(revenue)
-        $(`#${configMap.budgetRevenue(messageRegistry).deleteModal.id}`).modal("show");
-    }, [])
-
-    const openUpdateBudgetRevenuePopUp = useCallback((revenue) => {
-        setCurrentBudgetRevenueId(revenue.id)
-        setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
-        setCurrentBudgetRevenueAmount(revenue.amount)
-        setCurrentBudgetRevenueNote(revenue.note)
-        makeOpenSaveBudgetRevenuePopUpOpen()
-    }, [])
 
     const deleteItem = useCallback(() => {
         deleteBudgetRevenue(deletableItem.id)
             .then((response) => {
                 if (response.status === 204) {
-                    $(`#${configMap.budgetRevenue(messageRegistry).deleteModal.id}`).modal("hide");
                     budgetRevenue()
+                    setOpenDeleteBudgetRevenuePopUp(false)
                 }
             })
     }, [deletableItem])
@@ -93,7 +91,8 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
             note: currentBudgetRevenueNote
         }).then(response => {
             if (response.status === 201 || response.status === 204) {
-                $(`#${configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal.id}`).modal("hide");
+                setOpenSaveBudgetRevenuePopUp(false)
+                setOpenUpdateBudgetRevenuePopUp(false)
                 budgetRevenue()
             }
         })
@@ -119,24 +118,33 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
             <Menu messages={configMap.budgetRevenue(messageRegistry).menuMessages} links={links}>
 
                 <OpenPopUpMenuItem icon={<Money/>}
-                                   openPopupHandler={makeOpenSaveBudgetRevenuePopUpOpen}
+                                   openPopupHandler={makeSaveBudgetRevenuePopUpOpen}
                                    text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
 
             </Menu>
             <Container>
-                {/*        <PopupContainer
+                <SaveBudgetRevenuePopUp
+                    open={openSaveBudgetRevenuePopUp}
+                    handleClose={saveBudgetRevenuePopUpCloseHandler}
                     modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
                     form={budgetRevenueForm}
-                    saveFun={saveRevenue}/>*/}
+                    saveCallback={saveRevenue}/>
+
+                <SaveBudgetRevenuePopUp
+                    open={openUpdateBudgetRevenuePopUp}
+                    handleClose={updateBudgetRevenuePopUpCloseHandler}
+                    modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
+                    form={budgetRevenueForm}
+                    saveCallback={saveRevenue}/>
 
                 <DeleteBudgetRevenueConfirmationPopUp
-                    open={openDeleteBudgetRevenuePopUpOpen}
-                    handleClose={delteBudgetRevenuePopUpOpenCloseHandler}
+                    open={openDeleteBudgetRevenuePopUp}
+                    handleClose={deleteBudgetRevenuePopUpOpenCloseHandler}
                     modal={deleteConfirmationPopupMessages}
-                    confirmationHandler={deleteItem}/>
+                    saveCallback={deleteItem}/>
 
-                <BudgetRevenueContent openUpdatePopUp={openUpdateBudgetRevenuePopUp}
-                                      openDeletePopUp={openDeleteBudgetRevenuePopUp}
+                <BudgetRevenueContent openUpdatePopUp={makeUpdateBudgetRevenuePopUpOpen}
+                                      openDeletePopUp={makeDeleteBudgetRevenuePopUpOpen}
                                       revenues={revenues}/>
             </Container>
 

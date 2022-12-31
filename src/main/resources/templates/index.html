@@ -1,38 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Family Budget</title>
+<head>
+    <title>Family Budget</title>
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+</head>
+<body>
+<div id="app"></div>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/family-budget/webjars/bootstrap/4.0.0-1/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="/family-budget/webjars/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />
-        <link rel="stylesheet" href="/family-budget/webjars/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.standalone.min.css" />
-        <link rel="stylesheet" href="/family-budget/webjars/font-awesome/5.6.3/css/all.min.css" />
-        <link rel="stylesheet" href="/family-budget/main.css" />
-    </head>
-    <body>
+<iframe title="rp session management iframe" style="visibility: hidden;" id="rp_session_management_iframe"
+        th:src="${rpSessionManagementIFrame}"></iframe>
+<iframe title="op session management iframe" style="visibility: hidden;" id="op_session_management_iframe"
+        th:src="${opSessionManagementIFrame}"></iframe>
 
-        <div id="app"></div>
-
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="/family-budget/webjars/jquery/3.0.0/jquery.min.js" ></script>
-        <script src="/family-budget/webjars/popper.js/1.12.9-1/umd/popper-utils.min.js" ></script>
-        <script src="/family-budget/webjars/popper.js/1.12.9-1/umd/popper.min.js" ></script>
-        <script src="/family-budget/webjars/bootstrap/4.0.0-1/js/bootstrap.min.js" ></script>
-        <script src="/family-budget/webjars/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js" ></script>
-        <script src="/family-budget/webjars/jquery-maskmoney/3.0.2/dist/jquery.maskMoney.min.js" ></script>
-        <script src="/family-budget/webjars/font-awesome/5.6.3/js/all.min.js" ></script>
-
-        <script src="/family-budget/webjars/font-awesome/5.6.3/js/all.min.js" ></script>
-
-        <iframe title="rp session management iframe" style="visibility: hidden;" id="rp_session_management_iframe" th:src="${rpSessionManagementIFrame}"></iframe>
-        <iframe title="op session management iframe" style="visibility: hidden;" id="op_session_management_iframe" th:src="${opSessionManagementIFrame}"></iframe>
-
-        <script src="family-budget/familyBudget_bundle.js" ></script>
-    </body>
+<script src="family-budget/familyBudget_bundle.js"></script>
+</body>
 </html>

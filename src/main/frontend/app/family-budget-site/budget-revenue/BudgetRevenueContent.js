@@ -14,9 +14,9 @@ export default ({revenues, openDeletePopUp, openUpdatePopUp}) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                revenues.map(revenue => <BudgetRevenueRow revenue={revenue}
-                                                          openUpdatePopUp={openUpdatePopUp.bind(this, revenue)}
-                                                          openDeletePopUp={openDeletePopUp.bind(this, revenue)}/>)
+                {revenues.map(revenue => <BudgetRevenueRow revenue={revenue}
+                                                           openUpdatePopUp={openUpdatePopUp.bind(this, revenue)}
+                                                           openDeletePopUp={openDeletePopUp.bind(this, revenue)}/>)}
             </TableBody>
         </Table>
     </TableContainer>

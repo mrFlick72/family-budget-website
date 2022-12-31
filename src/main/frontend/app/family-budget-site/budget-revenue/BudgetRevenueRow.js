@@ -5,7 +5,7 @@ import {v1 as uuidv1} from "uuid";
 
 
 export default ({revenue, openDeletePopUp, openUpdatePopUp}) => {
-    return <TableRow key={uuidv1()}} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+    return <TableRow key={uuidv1()} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
         <TableCell>{revenue.date}</TableCell>
         <TableCell>{revenue.amount}</TableCell>
         <TableCell>{revenue.note}</TableCell>

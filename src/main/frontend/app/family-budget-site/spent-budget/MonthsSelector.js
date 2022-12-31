@@ -1,7 +1,7 @@
 import React from "react";
 import FormSelect from "../../component/form/FormSelect";
 
-export default ({monthRegistry, month, year, handler}) => {
+export default ({monthRegistry, month, handler}) => {
 
     let valueLabel
     let options = monthRegistry.map(item => {

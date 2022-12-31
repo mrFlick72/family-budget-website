@@ -110,8 +110,12 @@ const BudgetExpensePage = (props) => {
         searchTag: (searchTag) => {
             setSelectedSearchTags(searchTag)
         },
-        month: (event) => setSelectedMonth(event.target.value),
-        year: (event) => setSelectedYear(event.target.value)
+        month: (event) => {
+            setSelectedMonth(event.value)
+        },
+        year: (event) => {
+            setSelectedYear(event.target.value)
+        }
     }
 
     const saveBudgetExpensePopUpCloseHandler = useCallback(() => {
@@ -166,9 +170,10 @@ const BudgetExpensePage = (props) => {
     }, [id, date, amount, note, searchTag])
 
     useEffect(() => {
-        loadCommonData();
-        getSpentBudget();
-    }, [])
+            loadCommonData();
+            getSpentBudget();
+        }, []
+    )
 
     let theme = themeProvider
 
@@ -183,6 +188,8 @@ const BudgetExpensePage = (props) => {
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
             <SearchBudgetExpensePopUp
+                month={selectedMonth}
+                year={selectedYear}
                 monthRegistry={monthRegistry}
                 searchTagRegistry={searchTagRegistry}
                 handlers={searchPopupEventHandlers}

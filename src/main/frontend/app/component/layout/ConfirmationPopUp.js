@@ -1,6 +1,6 @@
 import React from "react"
 import YesAndNoButtonGroup from "./YesAndNoButtonGroup";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {Check} from "@mui/icons-material";
 
 export default ({confirmationHandler, modalTitle, modalMessageBody, open, handleClose}) =>
@@ -8,9 +8,7 @@ export default ({confirmationHandler, modalTitle, modalMessageBody, open, handle
         <DialogTitle>{modalTitle}</DialogTitle>
 
         <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-                {modalMessageBody}
-            </DialogContentText>
+            {modalMessageBody}
         </DialogContent>
         <DialogActions>
             <YesAndNoButtonGroup yesIcon={<Check/>}

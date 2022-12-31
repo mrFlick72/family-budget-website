@@ -1,8 +1,9 @@
 import React from "react"
 import SpentBudgetForm from "../budget/SpentBudgetForm";
 import YesAndNoButtonGroup from "../../../component/layout/YesAndNoButtonGroup";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {AddShoppingCart} from "@mui/icons-material";
+import selectUiAdapterFor from "../../search-tags/SearchTagsUIAdapter";
 
 const CreateNewBudgetExpensePopUp = ({
                                          open,
@@ -17,13 +18,9 @@ const CreateNewBudgetExpensePopUp = ({
         <DialogTitle>{modal.title}</DialogTitle>
 
         <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-                <SpentBudgetForm spentBudgetData={budgetExpense}
-                                 spentBudgetHandlers={spentBudgetHandlers}
-                                 searchTagRegistry={searchTagRegistry.map(searchTag => {
-                                     return {value: searchTag.key, label: searchTag.value}
-                                 })}/>
-            </DialogContentText>
+            <SpentBudgetForm spentBudgetData={budgetExpense}
+                             spentBudgetHandlers={spentBudgetHandlers}
+                             searchTagRegistry={selectUiAdapterFor(searchTagRegistry)}/>
         </DialogContent>
         <DialogActions>
             <YesAndNoButtonGroup yesIcon={<AddShoppingCart/>}

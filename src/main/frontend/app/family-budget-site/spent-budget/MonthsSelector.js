@@ -1,11 +1,11 @@
 import React from "react";
-import FormSelect from "../../../component/form/FormSelect";
+import FormSelect from "../../component/form/FormSelect";
 
-export default ({monthRegistry, month, year, action}) => {
+export default ({monthRegistry, month, year, handler}) => {
 
     let valueLabel
     let options = monthRegistry.map(item => {
-        if(Number(item.monthValue) === Number(month)){
+        if (Number(item.monthValue) === Number(month)) {
             valueLabel = item.monthLabel
         }
         return {
@@ -19,7 +19,5 @@ export default ({monthRegistry, month, year, action}) => {
                        label=""
                        multi={false}
                        options={options}
-                       onChangeHandler={(event) => {
-                           window.location.href = `${action}?choicedMonth=${event.value}&year=${year}`;
-                       }}/>
+                       onChangeHandler={handler}/>
 }

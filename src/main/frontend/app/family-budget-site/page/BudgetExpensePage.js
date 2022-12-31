@@ -12,7 +12,7 @@ import {getSearchTagRegistry} from "../../domain/repository/SearchTagRepository"
 import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
 import themeProvider from "../../theme/ThemeProvider";
 import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";
-import {LocalGroceryStore} from "@mui/icons-material";
+import {LocalGroceryStore, Search} from "@mui/icons-material";
 import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
 import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
 import {SearchTagsPageMenuItem} from "../../component/menu/SearchTagsPageMenuItem";
@@ -23,8 +23,8 @@ import Menu from "../../component/menu/Menu";
 import {TabPanel} from "../../component/layout/TabPanel";
 import TotalBySearchTags from "../spent-budget/budget/TotalBySearchTags";
 import SpentBudgetTotalBanner from "../spent-budget/budget/SpentBudgetTotalBanner";
-import MonthsSelector from "../spent-budget/budget/MonthsSelector";
 import {DateFormatPattern} from "../../component/form/FormDatePicker";
+import SearchBudgetExpensePopUp from "../spent-budget/popup/SearchBudgetExpensePopUp";
 
 const BudgetExpensePage = (props) => {
     const {messageRegistry, links} = props
@@ -43,6 +43,12 @@ const BudgetExpensePage = (props) => {
 
     const [openSaveBudgetExpensePopUp, setOpenSaveBudgetExpensePopUp] = useState(false)
     const [openDeleteBudgetExpensePopUp, setOpenDeleteBudgetExpensePopUp] = useState(false)
+    const [openSearchBudgetExpensePopUp, setOpenSearchBudgetExpensePopUp] = useState(false)
+
+    const [selectedMonth, setSelectedMonth] = useState(getMonth())
+    const [selectedYear, setSelectedYear] = useState(getYear())
+    const [selectedSearchTags, setSelectedSearchTags] = useState([])
+
     const configMap = new FamilyBudgetPagesConfigMap();
 
     function getSpentBudget() {
@@ -59,6 +65,14 @@ const BudgetExpensePage = (props) => {
         getMonthRegistry().then(data => setMonthRegistry(data));
         getSearchTagRegistry().then(data => setSearchTagRegistry(data));
     }
+
+    const makeSearchBudgetExpensePopUpOpen = useCallback(() => {
+        setOpenSearchBudgetExpensePopUp(true)
+    }, [])
+
+    const searchBudgetExpensePopUpCloseHandler = useCallback(() => {
+        setOpenSearchBudgetExpensePopUp(false)
+    }, [])
 
     const makeDeleteBudgetExpensePopUpOpen = useCallback((dailyBudgetExpense) => {
         setOpenDeleteBudgetExpensePopUp(true)
@@ -91,6 +105,13 @@ const BudgetExpensePage = (props) => {
             setSearchTag(searchTag)
         },
         note: (event) => setNote(event.target.value)
+    }
+    const searchPopupEventHandlers = {
+        searchTag: (searchTag) => {
+            setSelectedSearchTags(searchTag)
+        },
+        month: (event) => setSelectedMonth(event.target.value),
+        year: (event) => setSelectedYear(event.target.value)
     }
 
     const saveBudgetExpensePopUpCloseHandler = useCallback(() => {
@@ -156,12 +177,23 @@ const BudgetExpensePage = (props) => {
     };
 
     let navBarItems = [
-        <MonthsSelector monthRegistry={monthRegistry} month={getMonth()} year={getYear()} action={links.home}/>,
         <SpentBudgetTotalBanner total={spentBudget.total}/>
     ];
 
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
+            <SearchBudgetExpensePopUp
+                monthRegistry={monthRegistry}
+                searchTagRegistry={searchTagRegistry}
+                handlers={searchPopupEventHandlers}
+                modal={configMap.budgetExpense(messageRegistry).searchFilterModal}
+                handleClose={searchBudgetExpensePopUpCloseHandler}
+                open={openSearchBudgetExpensePopUp}
+                saveCallback={() => {
+                    window.location.href = `${links.home}?choicedMonth=${selectedMonth}&year=${selectedYear}`;
+                }}
+            />
+
             <CreateNewBudgetExpensePopUp
                 open={openSaveBudgetExpensePopUp}
                 handleClose={saveBudgetExpensePopUpCloseHandler}
@@ -190,6 +222,11 @@ const BudgetExpensePage = (props) => {
                 <OpenPopUpMenuItem icon={<LocalGroceryStore/>}
                                    openPopupHandler={makeSaveBudgetExpensePopUpOpen}
                                    text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
+
+                <OpenPopUpMenuItem icon={<Search/>}
+                                   openPopupHandler={makeSearchBudgetExpensePopUpOpen}
+                                   text="Search"/>
+
                 <SearchTagsPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.searchTags}/>
                 <BudgetRevenuePageMenuItem text="Revenue"/>
                 <AccountPageMenuItem text={configMap.budgetExpense(messageRegistry).menuMessages.userProfileLabel}/>

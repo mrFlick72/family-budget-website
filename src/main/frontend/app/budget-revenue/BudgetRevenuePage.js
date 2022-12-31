@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react"
 import Menu from "../component/menu/Menu";
 import OpenPopUpMenuItem from "../component/menu/OpenPopUpMenuItem";
-import BudgetRevenueForm from "./BudgetRevenueForm";
 import moment from "moment";
 import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
 import * as searchCriteria from "../SearchCriteriaOnUrl";
@@ -94,20 +93,12 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
         })
     }, [currentBudgetRevenueId, currentBudgetRevenueDate, currentBudgetRevenueAmount, currentBudgetRevenueNote])
 
-    let budgetRevenueForm = <BudgetRevenueForm budgetRevenueData={{
-        date: currentBudgetRevenueDate,
-        amount: currentBudgetRevenueAmount,
-        note: currentBudgetRevenueNote
-    }} budgetRevenueHandlers={budgetRevenueHandlers}/>;
-
-    let theme = themeProvider
-
-
     let deleteConfirmationPopupMessages = {
         id: "deleteBudgetRevenueModal",
         title: "Delete Budget Revenue",
         message: "Are you sure of delete the Budget Revenue from the list?"
     };
+    let theme = themeProvider
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
 
@@ -122,8 +113,13 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
                 <SaveBudgetRevenuePopUp
                     open={openSaveBudgetRevenuePopUp}
                     handleClose={saveBudgetRevenuePopUpCloseHandler}
+                    budgetRevenue={{
+                        date: currentBudgetRevenueDate,
+                        amount: currentBudgetRevenueAmount,
+                        note: currentBudgetRevenueNote
+                    }}
+                    handlers={budgetRevenueHandlers}
                     modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
-                    form={budgetRevenueForm}
                     saveCallback={saveRevenue}/>
 
                 <DeleteBudgetRevenueConfirmationPopUp

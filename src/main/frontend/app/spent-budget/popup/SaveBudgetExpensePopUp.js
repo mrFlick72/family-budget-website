@@ -5,7 +5,7 @@ import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {AddShoppingCart} from "@mui/icons-material";
 import selectUiAdapterFor from "../../search-tags/SearchTagsUIAdapter";
 
-const CreateNewBudgetExpensePopUp = ({
+const SaveBudgetExpensePopUp = ({
                                          open,
                                          handleClose,
                                          modal,
@@ -34,4 +34,4 @@ const CreateNewBudgetExpensePopUp = ({
     </Dialog>
 }
 
-export default CreateNewBudgetExpensePopUp
+export default SaveBudgetExpensePopUp

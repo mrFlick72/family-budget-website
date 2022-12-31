@@ -7,12 +7,13 @@ import YesAndNoButtonGroup from "../component/layout/YesAndNoButtonGroup";
 import {AddShoppingCart} from "@mui/icons-material";
 import BudgetRevenueForm from "./BudgetRevenueForm";
 
-export default ({form, saveCallback, modal, open, handleClose}) =>
+export default ({budgetRevenue, handlers, saveCallback, modal, open, handleClose}) =>
     <Dialog onClose={handleClose} open={open} fullWidth scroll="paper">
         <DialogTitle>{modal.title}</DialogTitle>
 
         <DialogContent>
-            {form}
+            <BudgetRevenueForm budgetRevenueData={budgetRevenue}
+                               budgetRevenueHandlers={handlers}/>
         </DialogContent>
         <DialogActions>
             <YesAndNoButtonGroup yesIcon={<AddShoppingCart/>}

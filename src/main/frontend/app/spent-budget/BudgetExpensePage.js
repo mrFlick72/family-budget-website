@@ -11,7 +11,7 @@ import {getMonthRegistry} from "../time/MonthRepository";
 import {getSearchTagRegistry} from "../search-tags/SearchTagRepository";
 import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
 import themeProvider from "../theme/ThemeProvider";
-import CreateNewBudgetExpensePopUp from "./popup/CreateNewBudgetExpensePopUp";
+import SaveBudgetExpensePopUp from "./popup/SaveBudgetExpensePopUp";
 import {LocalGroceryStore, Search} from "@mui/icons-material";
 import SpentBudgetContent from "./budget/SpentBudgetContent";
 import DeleteBudgetExpenseConfirmationPopUp from "./popup/DeleteBudgetExpenseConfirmationPopUp";
@@ -193,7 +193,7 @@ const BudgetExpensePage = (props) => {
                 }}
             />
 
-            <CreateNewBudgetExpensePopUp
+            <SaveBudgetExpensePopUp
                 open={openSaveBudgetExpensePopUp}
                 handleClose={saveBudgetExpensePopUpCloseHandler}
                 spentBudgetHandlers={savePopupEventHandlers}

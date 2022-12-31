@@ -1,8 +1,8 @@
 import React from "react"
 
-import FormMoneyFormat from "../../component/form/FormMoneyFormat";
-import FormDatePicker, {DateFormatPattern} from "../../component/form/FormDatePicker";
-import FormTextArea from "../../component/form/FormTextArea";
+import FormMoneyFormat from "../component/form/FormMoneyFormat";
+import FormDatePicker, {DateFormatPattern} from "../component/form/FormDatePicker";
+import FormTextArea from "../component/form/FormTextArea";
 import {v1 as uuidv1} from 'uuid';
 import {Box} from "@mui/material";
 import moment from "moment/moment";

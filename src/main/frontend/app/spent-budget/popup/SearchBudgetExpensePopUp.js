@@ -1,8 +1,8 @@
 import React from "react"
-import YesAndNoButtonGroup from "../../../component/layout/YesAndNoButtonGroup";
+import YesAndNoButtonGroup from "../../component/layout/YesAndNoButtonGroup";
 import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {AddShoppingCart} from "@mui/icons-material";
-import FormSelect from "../../../component/form/FormSelect";
+import FormSelect from "../../component/form/FormSelect";
 import MonthsSelector from "../MonthsSelector";
 import YearSelector from "../YearSelector";
 import selectUiAdapterFor from "../../search-tags/SearchTagsUIAdapter";

@@ -1,5 +1,5 @@
 import React from "react";
-import FormSelect from "../../component/form/FormSelect";
+import FormSelect from "../component/form/FormSelect";
 
 export default ({monthRegistry, month, handler}) => {
 

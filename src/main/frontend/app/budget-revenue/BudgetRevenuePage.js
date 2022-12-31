@@ -1,21 +1,21 @@
 import React, {useCallback, useEffect, useState} from "react"
-import Menu from "../../component/menu/Menu";
-import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
-import BudgetRevenueForm from "../budget-revenue/BudgetRevenueForm";
+import Menu from "../component/menu/Menu";
+import OpenPopUpMenuItem from "../component/menu/OpenPopUpMenuItem";
+import BudgetRevenueForm from "./BudgetRevenueForm";
 import moment from "moment";
-import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
-import * as searchCriteria from "../../domain/model/SearchCriteriaOnUrl";
+import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
+import * as searchCriteria from "../SearchCriteriaOnUrl";
 import {
     deleteBudgetRevenue,
     findBudgetRevenue,
     saveBudgetRevenue
-} from "../../domain/repository/BudgetRevenueRepository";
-import themeProvider from "../../theme/ThemeProvider";
+} from "./BudgetRevenueRepository";
+import themeProvider from "../theme/ThemeProvider";
 import {Container, Paper, ThemeProvider} from "@mui/material";
 import {Money} from "@mui/icons-material";
-import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
-import DeleteBudgetRevenueConfirmationPopUp from "../budget-revenue/DeleteBudgetRevenueConfirmationPopUp";
-import SaveBudgetRevenuePopUp from "../budget-revenue/SaveBudgetRevenuePopUp";
+import BudgetRevenueContent from "./BudgetRevenueContent";
+import DeleteBudgetRevenueConfirmationPopUp from "./DeleteBudgetRevenueConfirmationPopUp";
+import SaveBudgetRevenuePopUp from "./SaveBudgetRevenuePopUp";
 
 const BudgetRevenuePage = ({messageRegistry, links}) => {
 

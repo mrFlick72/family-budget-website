@@ -3,9 +3,9 @@ import 'url-search-params-polyfill';
 import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./search-tags/SearchTagsPage";
-import {getAllMessageRegistry} from "../domain/repository/MessageRepository";
-import BudgetExpensePage from "./page/BudgetExpensePage";
-import BudgetRevenuePage from "./page/BudgetRevenuePage";
+import {getAllMessageRegistry} from "./messages/MessageRepository";
+import BudgetExpensePage from "./spent-budget/BudgetExpensePage";
+import BudgetRevenuePage from "./budget-revenue/BudgetRevenuePage";
 
 const links = {
     logOut: "/family-budget/oidc_logout.html",

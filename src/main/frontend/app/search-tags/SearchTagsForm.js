@@ -1,7 +1,7 @@
 import React from "react"
 import {Save} from "@mui/icons-material";
-import FormInputTextField from "../../component/form/FormInputTextField";
-import FormButton from "../../component/form/FormButton";
+import FormInputTextField from "../component/form/FormInputTextField";
+import FormButton from "../component/form/FormButton";
 
 export default ({searchTag, handler}) => {
     return <div>

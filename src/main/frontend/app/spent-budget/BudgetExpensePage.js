@@ -1,30 +1,30 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {getMonth, getSearchTags, getYear} from "../../domain/model/SearchCriteriaOnUrl";
+import {getMonth, getSearchTags, getYear} from "../SearchCriteriaOnUrl";
 import {
     deleteBudgetExpense,
     findBudgetExpense,
     saveBudgetExpense
-} from "../../domain/repository/BudgetExpenseRepository";
+} from "./BudgetExpenseRepository";
 import moment from "moment";
-import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
-import {getMonthRegistry} from "../../domain/repository/MonthRepository";
+import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
+import {getMonthRegistry} from "../time/MonthRepository";
 import {getSearchTagRegistry} from "../search-tags/SearchTagRepository";
 import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
-import themeProvider from "../../theme/ThemeProvider";
-import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";
+import themeProvider from "../theme/ThemeProvider";
+import CreateNewBudgetExpensePopUp from "./popup/CreateNewBudgetExpensePopUp";
 import {LocalGroceryStore, Search} from "@mui/icons-material";
-import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
-import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
-import {SearchTagsPageMenuItem} from "../../component/menu/SearchTagsPageMenuItem";
-import {BudgetRevenuePageMenuItem} from "../../component/menu/BudgetRevenuePageMenuItem";
-import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";
-import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
-import Menu from "../../component/menu/Menu";
-import {TabPanel} from "../../component/layout/TabPanel";
-import TotalBySearchTags from "../spent-budget/budget/TotalBySearchTags";
-import SpentBudgetTotalBanner from "../spent-budget/budget/SpentBudgetTotalBanner";
-import {DateFormatPattern} from "../../component/form/FormDatePicker";
-import SearchBudgetExpensePopUp from "../spent-budget/popup/SearchBudgetExpensePopUp";
+import SpentBudgetContent from "./budget/SpentBudgetContent";
+import DeleteBudgetExpenseConfirmationPopUp from "./popup/DeleteBudgetExpenseConfirmationPopUp";
+import {SearchTagsPageMenuItem} from "../component/menu/SearchTagsPageMenuItem";
+import {BudgetRevenuePageMenuItem} from "../component/menu/BudgetRevenuePageMenuItem";
+import AccountPageMenuItem from "../component/menu/AccountPageMenuItem";
+import OpenPopUpMenuItem from "../component/menu/OpenPopUpMenuItem";
+import Menu from "../component/menu/Menu";
+import {TabPanel} from "../component/layout/TabPanel";
+import TotalBySearchTags from "./budget/TotalBySearchTags";
+import SpentBudgetTotalBanner from "./budget/SpentBudgetTotalBanner";
+import {DateFormatPattern} from "../component/form/FormDatePicker";
+import SearchBudgetExpensePopUp from "./popup/SearchBudgetExpensePopUp";
 
 const BudgetExpensePage = (props) => {
     const {messageRegistry, links} = props

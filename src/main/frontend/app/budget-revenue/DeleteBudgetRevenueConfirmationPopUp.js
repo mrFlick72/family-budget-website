@@ -1,5 +1,5 @@
 import React from "react"
-import ConfirmationPopUp from "../../component/layout/ConfirmationPopUp";
+import ConfirmationPopUp from "../component/layout/ConfirmationPopUp";
 
 export default ({saveCallback, modal, open, handleClose}) =>
     <ConfirmationPopUp confirmationHandler={saveCallback}

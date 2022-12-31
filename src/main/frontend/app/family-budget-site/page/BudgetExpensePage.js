@@ -42,8 +42,44 @@ const BudgetExpensePage = (props) => {
     const [monthRegistry, setMonthRegistry] = useState([])
 
     const [openSaveBudgetExpensePopUp, setOpenSaveBudgetExpensePopUp] = useState(false)
+    const makeNewBudgetExpensePopUpOpen = useCallback(() => {
+        setId("")
+        setDate(moment())
+        setAmount("0.00")
+        setNote("")
+        setSearchTag("")
+        setOpenSaveBudgetExpensePopUp(true)
+    }, [])
+    const makeUpdateBudgetExpensePopUpOpen = useCallback((expense) => {
+        setId(expense.id)
+        setDate(moment(expense.date, DateFormatPattern))
+        setAmount(expense.amount)
+        setNote(expense.note)
+        setSearchTag(expense.searchTag)
+        setOpenSaveBudgetExpensePopUp(true)
+    }, [])
+    const saveBudgetExpensePopUpCloseHandler = useCallback(() => {
+        setOpenSaveBudgetExpensePopUp(false)
+    }, [])
+
+
     const [openDeleteBudgetExpensePopUp, setOpenDeleteBudgetExpensePopUp] = useState(false)
+    const makeDeleteBudgetExpensePopUpOpen = useCallback((dailyBudgetExpense) => {
+        setOpenDeleteBudgetExpensePopUp(true)
+        setDeletableItem(dailyBudgetExpense)
+    }, [])
+    const deleteBudgetExpensePopUpCloseHandler = useCallback(() => {
+        setDeletableItem({})
+        setOpenDeleteBudgetExpensePopUp(false)
+    }, [])
+
     const [openSearchBudgetExpensePopUp, setOpenSearchBudgetExpensePopUp] = useState(false)
+    const makeSearchBudgetExpensePopUpOpen = useCallback(() => {
+        setOpenSearchBudgetExpensePopUp(true)
+    }, [])
+    const searchBudgetExpensePopUpCloseHandler = useCallback(() => {
+        setOpenSearchBudgetExpensePopUp(false)
+    }, [])
 
     const [selectedMonth, setSelectedMonth] = useState(getMonth())
     const [selectedYear, setSelectedYear] = useState(getYear())
@@ -66,18 +102,6 @@ const BudgetExpensePage = (props) => {
         getSearchTagRegistry().then(data => setSearchTagRegistry(data));
     }
 
-    const makeSearchBudgetExpensePopUpOpen = useCallback(() => {
-        setOpenSearchBudgetExpensePopUp(true)
-    }, [])
-
-    const searchBudgetExpensePopUpCloseHandler = useCallback(() => {
-        setOpenSearchBudgetExpensePopUp(false)
-    }, [])
-
-    const makeDeleteBudgetExpensePopUpOpen = useCallback((dailyBudgetExpense) => {
-        setOpenDeleteBudgetExpensePopUp(true)
-        setDeletableItem(dailyBudgetExpense)
-    }, [])
 
     const deleteItem = useCallback(() => {
         deleteBudgetExpense(deletableItem.id)
@@ -93,8 +117,9 @@ const BudgetExpensePage = (props) => {
         date: (value) => {
             let date = moment();
             try {
-                date = value.format(DateFormatPattern);
+                date = moment(value, DateFormatPattern);
             } catch (e) {
+                console.log(e)
             }
             setDate(date)
         },
@@ -118,43 +143,10 @@ const BudgetExpensePage = (props) => {
         }
     }
 
-    const saveBudgetExpensePopUpCloseHandler = useCallback(() => {
-        setId("")
-        setDate(moment())
-        setAmount("0.00")
-        setNote("")
-        setSearchTag("")
-        setOpenSaveBudgetExpensePopUp(false)
-    }, [])
-
-    const deleteBudgetExpensePopUpCloseHandler = useCallback(() => {
-        setDeletableItem({})
-        setOpenDeleteBudgetExpensePopUp(false)
-    }, [])
-
-    const makeSaveBudgetExpensePopUpOpen = useCallback(() => {
-        setId("")
-        setDate(moment())
-        setAmount("0.00")
-        setNote("")
-        setSearchTag("")
-        setOpenSaveBudgetExpensePopUp(true)
-    }, [])
-
-    const openUpdateBudgetExpensePopUp = useCallback((expense) => {
-        setId(expense.id)
-        setDate(moment(expense.date, "DD/MM/YYYY"))
-        setAmount(expense.amount)
-        setNote(expense.note)
-        setSearchTag(expense.searchTag)
-        setOpenSaveBudgetExpensePopUp(true)
-    }, [])
-
-
     const saveExpense = useCallback(() => {
         let budgetExpense = {
             id: id,
-            date: date.format("DD/MM/YYYY"),
+            date: date.format(DateFormatPattern),
             amount: amount,
             note: note,
             tagKey: searchTag.value
@@ -227,7 +219,7 @@ const BudgetExpensePage = (props) => {
                   navBarItems={navBarItems}>
 
                 <OpenPopUpMenuItem icon={<LocalGroceryStore/>}
-                                   openPopupHandler={makeSaveBudgetExpensePopUpOpen}
+                                   openPopupHandler={makeNewBudgetExpensePopUpOpen}
                                    text={configMap.budgetExpense(messageRegistry).menuMessages.insertBudgetModal}/>
 
                 <OpenPopUpMenuItem icon={<Search/>}
@@ -240,21 +232,20 @@ const BudgetExpensePage = (props) => {
             </Menu>
 
             <Container>
-                <Tabs
-                    value={tabPanel}
-                    onChange={handleTabPanelChange}
-                    textColor="secondary"
-                    indicatorColor="secondary"
-                    aria-label="secondary tabs example"
-                >
-                    <Tab value={0} label="Budget Expense Daily View"/>
-                    <Tab value={1} label="Budget Expense By Tags View"/>
+                <Tabs value={tabPanel}
+                      onChange={handleTabPanelChange}
+                      textColor="secondary"
+                      indicatorColor="secondary"
+                      aria-label="secondary tabs example">
+                    <Tab value={0} label="Daily View"/>
+                    <Tab value={1} label="By Tags View"/>
                 </Tabs>
                 <TabPanel value={tabPanel} index={0}>
                     <SpentBudgetContent spentBudget={spentBudget}
                                         searchTagRegistry={searchTagRegistry}
-                                        openUpdateBudgetExpensePopUp={openUpdateBudgetExpensePopUp}
-                                        openDeleteBudgetExpensePopUp={makeDeleteBudgetExpensePopUpOpen}/> </TabPanel>
+                                        openUpdateBudgetExpensePopUp={makeUpdateBudgetExpensePopUpOpen}
+                                        openDeleteBudgetExpensePopUp={makeDeleteBudgetExpensePopUpOpen}/>
+                </TabPanel>
                 <TabPanel value={tabPanel} index={1}>
                     <TotalBySearchTags totals={spentBudget.totalDetailList || []}/>
                 </TabPanel>

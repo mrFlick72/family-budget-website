@@ -8,7 +8,7 @@ import {
 import moment from "moment";
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
 import {getMonthRegistry} from "../../domain/repository/MonthRepository";
-import {getSearchTagRegistry} from "../../domain/repository/SearchTagRepository";
+import {getSearchTagRegistry} from "../search-tags/SearchTagRepository";
 import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
 import themeProvider from "../../theme/ThemeProvider";
 import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
-import SearchTagsTable from "../search-tags/SearchTagsTable";
-import SearchTagsForm from "../search-tags/SearchTagsForm";
-import {getSearchTagRegistry, saveSearchTag} from "../../domain/repository/SearchTagRepository";
+import SearchTagsTable from "./SearchTagsTable";
+import SearchTagsForm from "./SearchTagsForm";
+import {getSearchTagRegistry, saveSearchTag} from "./SearchTagRepository";
 import {Container, Paper, ThemeProvider} from "@mui/material";
 import themeProvider from "../../theme/ThemeProvider";
 import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";

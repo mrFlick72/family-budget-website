@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {getMonth, getSearchTags, getYear} from "../SearchCriteriaOnUrl";
+import {getMonth, getSearchTags, getYear, setMonth, setSearchTags, setYear} from "../SearchCriteriaOnUrl";
 import {
     deleteBudgetExpense,
     findBudgetExpense,
@@ -189,7 +189,11 @@ const BudgetExpensePage = (props) => {
                 handleClose={searchBudgetExpensePopUpCloseHandler}
                 open={openSearchBudgetExpensePopUp}
                 saveCallback={() => {
-                    window.location.href = `${links.home}?choicedMonth=${selectedMonth}&year=${selectedYear}`;
+                    setMonth(selectedMonth)
+                    setYear(selectedYear)
+                    setSearchTags(selectedSearchTags)
+                    setOpenSearchBudgetExpensePopUp(false)
+                    getSpentBudget()
                 }}
             />
 

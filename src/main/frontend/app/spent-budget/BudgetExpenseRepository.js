@@ -17,11 +17,13 @@ export function saveBudgetExpense(budgetExpense) {
 
 export function findBudgetExpense(searchCriteria) {
     let baseUri = BUDGET_EXPENSE_URI();
-    let query = QUERY_PART(searchCriteria.month, searchCriteria.year, searchCriteria.searchTags);
-    return fetch([baseUri, query].join("?"), {
+    return fetch(baseUri, {
+        method: "PUT",
         headers: {
+            'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
+        body: JSON.stringify(searchCriteria),
         credentials: 'same-origin',
     }).then((response) => {
         return response.json();

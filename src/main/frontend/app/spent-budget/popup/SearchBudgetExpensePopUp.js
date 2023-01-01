@@ -23,7 +23,7 @@ const SearchBudgetExpensePopUp = ({
         <DialogTitle>{modal.title}</DialogTitle>
 
         <DialogContent>
-            <FormSelect options={selectUiAdapterFor(searchTagRegistry)} multi={true}/>
+            <FormSelect options={selectUiAdapterFor(searchTagRegistry)} value={searchTags} multi={true}/>
             <MonthsSelector monthRegistry={monthRegistry} month={month} handler={handlers.month}/>
             <YearSelector year={year} handler={handlers.year}/>
         </DialogContent>

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react"
-import 'url-search-params-polyfill';
 import {Route, Routes} from "react-router";
 import {HashRouter} from "react-router-dom";
 import SearchTagsPage from "./search-tags/SearchTagsPage";

@@ -1,10 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {getMonth, getSearchTags, getYear, setMonth, setSearchTags, setYear} from "../SearchCriteriaOnUrl";
 import {
-    deleteBudgetExpense,
-    findBudgetExpense,
-    saveBudgetExpense
-} from "./BudgetExpenseRepository";
+    getMonthSearchCriteria,
+    getSearchTagsSearchCriteria,
+    getYearSearchCriteria,
+    setMonthSearchCriteria,
+    setSearchTagsSearchCriteria,
+    setYearSearchCriteria
+} from "../SearchCriteriaOnUrl";
+import {deleteBudgetExpense, findBudgetExpense, saveBudgetExpense} from "./BudgetExpenseRepository";
 import moment from "moment";
 import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
 import {getMonthRegistry} from "../time/MonthRepository";
@@ -81,17 +84,17 @@ const BudgetExpensePage = (props) => {
         setOpenSearchBudgetExpensePopUp(false)
     }, [])
 
-    const [selectedMonth, setSelectedMonth] = useState(getMonth())
-    const [selectedYear, setSelectedYear] = useState(getYear())
+    const [selectedMonth, setSelectedMonth] = useState(getMonthSearchCriteria())
+    const [selectedYear, setSelectedYear] = useState(getYearSearchCriteria())
     const [selectedSearchTags, setSelectedSearchTags] = useState([])
 
     const configMap = new FamilyBudgetPagesConfigMap();
 
     function getSpentBudget() {
         findBudgetExpense({
-            month: getMonth(),
-            year: getYear(),
-            searchTags: getSearchTags()
+            month: getMonthSearchCriteria(),
+            year: getYearSearchCriteria(),
+            searchTagList: getSearchTagsSearchCriteria()
         }).then(data => {
             setSpentBudget(data)
         });
@@ -182,6 +185,7 @@ const BudgetExpensePage = (props) => {
             <SearchBudgetExpensePopUp
                 month={selectedMonth}
                 year={selectedYear}
+                searchTags={selectedSearchTags}
                 monthRegistry={monthRegistry}
                 searchTagRegistry={searchTagRegistry}
                 handlers={searchPopupEventHandlers}
@@ -189,9 +193,9 @@ const BudgetExpensePage = (props) => {
                 handleClose={searchBudgetExpensePopUpCloseHandler}
                 open={openSearchBudgetExpensePopUp}
                 saveCallback={() => {
-                    setMonth(selectedMonth)
-                    setYear(selectedYear)
-                    setSearchTags(selectedSearchTags)
+                    setMonthSearchCriteria(selectedMonth)
+                    setYearSearchCriteria(selectedYear)
+                    setSearchTagsSearchCriteria(selectedSearchTags.map(tag => tag.value))
                     setOpenSearchBudgetExpensePopUp(false)
                     getSpentBudget()
                 }}

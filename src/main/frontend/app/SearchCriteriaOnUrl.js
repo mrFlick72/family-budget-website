@@ -1,4 +1,4 @@
-export function getMonth() {
+export function getMonthSearchCriteria() {
     let month = window.sessionStorage.getItem("month");
     if (!month) {
         month = String(new Date().getMonth() + 1);
@@ -7,11 +7,11 @@ export function getMonth() {
     return month
 }
 
-export function setMonth(month) {
+export function setMonthSearchCriteria(month) {
     window.sessionStorage.setItem("month", month)
 }
 
-export function getYear() {
+export function getYearSearchCriteria() {
     let year = window.sessionStorage.getItem("year");
     if (!year) {
         year = String(new Date().getFullYear());
@@ -20,20 +20,20 @@ export function getYear() {
     return year
 }
 
-export function setYear(year) {
+export function setYearSearchCriteria(year) {
     window.sessionStorage.setItem("year", year)
 }
 
-export function getSearchTags() {
+export function getSearchTagsSearchCriteria() {
     let searchTags = window.sessionStorage.getItem("searchTags");
     if (!searchTags) {
         searchTags = ""
         window.sessionStorage.setItem("searchTags", searchTags)
     }
-    return searchTags
+    return searchTags.split(",")
 }
 
-export function setSearchTags(searchTags) {
+export function setSearchTagsSearchCriteria(searchTags) {
     window.sessionStorage.setItem("searchTags", searchTags)
 }
 
@@ -42,7 +42,7 @@ export function resetSearchParameters() {
     window.sessionStorage.removeItem("year")
     window.sessionStorage.removeItem("searchTags")
 
-    getMonth()
-    getYear()
-    getSearchTags()
+    getMonthSearchCriteria()
+    getYearSearchCriteria()
+    getSearchTagsSearchCriteria()
 }

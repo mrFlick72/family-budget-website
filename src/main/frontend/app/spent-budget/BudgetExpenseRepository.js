@@ -2,8 +2,6 @@ const BUDGET_EXPENSE_URI = (budgetExpenseId) => budgetExpenseId ?
     `/family-budget/budget-service/budget/expense/${budgetExpenseId}` :
     "/family-budget/budget-service/budget/expense"
 
-const QUERY_PART = (month, year, searchTags) => `q=month=${month};year=${year};searchTag=${searchTags}`;
-
 export function saveBudgetExpense(budgetExpense) {
     return fetch(BUDGET_EXPENSE_URI(budgetExpense.id), {
         method: budgetExpense.id ? "PUT" : "POST",

@@ -4,11 +4,7 @@ import OpenPopUpMenuItem from "../component/menu/OpenPopUpMenuItem";
 import moment from "moment";
 import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
 import * as searchCriteria from "../SearchCriteriaOnUrl";
-import {
-    deleteBudgetRevenue,
-    findBudgetRevenue,
-    saveBudgetRevenue
-} from "./BudgetRevenueRepository";
+import {deleteBudgetRevenue, findBudgetRevenue, saveBudgetRevenue} from "./BudgetRevenueRepository";
 import themeProvider from "../theme/ThemeProvider";
 import {Container, Paper, ThemeProvider} from "@mui/material";
 import {Money} from "@mui/icons-material";
@@ -59,7 +55,7 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     useEffect(() => budgetRevenue(), [])
 
     const budgetRevenue = () => {
-        findBudgetRevenue(searchCriteria.getYear())
+        findBudgetRevenue(searchCriteria.getYearSearchCriteria())
             .then(revenues => setRevenues(revenues))
     }
 

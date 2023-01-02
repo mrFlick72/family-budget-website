@@ -1,21 +1,17 @@
 import React, {useCallback, useEffect, useState} from "react"
-import Menu from "../../component/menu/Menu";
-import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
-import BudgetRevenueForm from "../budget-revenue/BudgetRevenueForm";
+import Menu from "../component/menu/Menu";
+import OpenPopUpMenuItem from "../component/menu/OpenPopUpMenuItem";
 import moment from "moment";
-import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
-import * as searchCriteria from "../../domain/model/SearchCriteriaOnUrl";
-import {
-    deleteBudgetRevenue,
-    findBudgetRevenue,
-    saveBudgetRevenue
-} from "../../domain/repository/BudgetRevenueRepository";
-import themeProvider from "../../theme/ThemeProvider";
+import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
+import * as searchCriteria from "../SearchCriteriaOnUrl";
+import {deleteBudgetRevenue, findBudgetRevenue, saveBudgetRevenue} from "./BudgetRevenueRepository";
+import themeProvider from "../theme/ThemeProvider";
 import {Container, Paper, ThemeProvider} from "@mui/material";
 import {Money} from "@mui/icons-material";
-import BudgetRevenueContent from "../budget-revenue/BudgetRevenueContent";
-import DeleteBudgetRevenueConfirmationPopUp from "../budget-revenue/DeleteBudgetRevenueConfirmationPopUp";
-import SaveBudgetRevenuePopUp from "../budget-revenue/SaveBudgetRevenuePopUp";
+import BudgetRevenueContent from "./BudgetRevenueContent";
+import DeleteBudgetRevenueConfirmationPopUp from "./DeleteBudgetRevenueConfirmationPopUp";
+import SaveBudgetRevenuePopUp from "./SaveBudgetRevenuePopUp";
+import {DateFormatPattern} from "../component/form/FormDatePicker";
 
 const BudgetRevenuePage = ({messageRegistry, links}) => {
 
@@ -38,16 +34,12 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
         setOpenSaveBudgetRevenuePopUp(false)
     }, [])
 
-    const [openUpdateBudgetRevenuePopUp, setOpenUpdateBudgetRevenuePopUp] = useState(false)
     const makeUpdateBudgetRevenuePopUpOpen = useCallback((revenue) => {
         setCurrentBudgetRevenueId(revenue.id)
         setCurrentBudgetRevenueDate(moment(revenue.date, "DD/MM/YYYY"))
         setCurrentBudgetRevenueAmount(revenue.amount)
         setCurrentBudgetRevenueNote(revenue.note)
-        setOpenUpdateBudgetRevenuePopUp(true)
-    }, [])
-    const updateBudgetRevenuePopUpCloseHandler = useCallback(() => {
-        setOpenUpdateBudgetRevenuePopUp(false)
+        setOpenSaveBudgetRevenuePopUp(true)
     }, [])
 
     const [openDeleteBudgetRevenuePopUp, setOpenDeleteBudgetRevenuePopUp] = useState(false)
@@ -63,7 +55,7 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     useEffect(() => budgetRevenue(), [])
 
     const budgetRevenue = () => {
-        findBudgetRevenue(searchCriteria.getYear())
+        findBudgetRevenue(searchCriteria.getYearSearchCriteria())
             .then(revenues => setRevenues(revenues))
     }
 
@@ -86,32 +78,23 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
     const saveRevenue = useCallback(() => {
         saveBudgetRevenue({
             id: currentBudgetRevenueId,
-            date: currentBudgetRevenueDate.format("DD/MM/YYYY"),
+            date: currentBudgetRevenueDate.format(DateFormatPattern),
             amount: currentBudgetRevenueAmount,
             note: currentBudgetRevenueNote
         }).then(response => {
             if (response.status === 201 || response.status === 204) {
                 setOpenSaveBudgetRevenuePopUp(false)
-                setOpenUpdateBudgetRevenuePopUp(false)
                 budgetRevenue()
             }
         })
     }, [currentBudgetRevenueId, currentBudgetRevenueDate, currentBudgetRevenueAmount, currentBudgetRevenueNote])
-
-    let budgetRevenueForm = <BudgetRevenueForm budgetRevenueData={{
-        date: currentBudgetRevenueDate,
-        amount: currentBudgetRevenueAmount,
-        note: currentBudgetRevenueNote
-    }} budgetRevenueHandlers={budgetRevenueHandlers}/>;
-
-    let theme = themeProvider
-
 
     let deleteConfirmationPopupMessages = {
         id: "deleteBudgetRevenueModal",
         title: "Delete Budget Revenue",
         message: "Are you sure of delete the Budget Revenue from the list?"
     };
+    let theme = themeProvider
     return <ThemeProvider theme={theme}>
         <Paper variant="outlined">
 
@@ -126,15 +109,13 @@ const BudgetRevenuePage = ({messageRegistry, links}) => {
                 <SaveBudgetRevenuePopUp
                     open={openSaveBudgetRevenuePopUp}
                     handleClose={saveBudgetRevenuePopUpCloseHandler}
+                    budgetRevenue={{
+                        date: currentBudgetRevenueDate,
+                        amount: currentBudgetRevenueAmount,
+                        note: currentBudgetRevenueNote
+                    }}
+                    handlers={budgetRevenueHandlers}
                     modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
-                    form={budgetRevenueForm}
-                    saveCallback={saveRevenue}/>
-
-                <SaveBudgetRevenuePopUp
-                    open={openUpdateBudgetRevenuePopUp}
-                    handleClose={updateBudgetRevenuePopUpCloseHandler}
-                    modal={configMap.budgetRevenue(messageRegistry).saveBudgetRevenueModal}
-                    form={budgetRevenueForm}
                     saveCallback={saveRevenue}/>
 
                 <DeleteBudgetRevenueConfirmationPopUp

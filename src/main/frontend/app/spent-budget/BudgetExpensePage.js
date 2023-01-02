@@ -1,30 +1,33 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {getMonth, getSearchTags, getYear} from "../../domain/model/SearchCriteriaOnUrl";
 import {
-    deleteBudgetExpense,
-    findBudgetExpense,
-    saveBudgetExpense
-} from "../../domain/repository/BudgetExpenseRepository";
+    getMonthSearchCriteria,
+    getSearchTagsSearchCriteria,
+    getYearSearchCriteria,
+    setMonthSearchCriteria,
+    setSearchTagsSearchCriteria,
+    setYearSearchCriteria
+} from "../SearchCriteriaOnUrl";
+import {deleteBudgetExpense, findBudgetExpense, saveBudgetExpense} from "./BudgetExpenseRepository";
 import moment from "moment";
-import {FamilyBudgetPagesConfigMap} from "../FamilyBudgetPagesConfigMap";
-import {getMonthRegistry} from "../../domain/repository/MonthRepository";
-import {getSearchTagRegistry} from "../../domain/repository/SearchTagRepository";
+import {FamilyBudgetPagesConfigMap} from "../messages/FamilyBudgetPagesConfigMap";
+import {getMonthRegistry} from "../time/MonthRepository";
+import {getSearchTagRegistry} from "../search-tags/SearchTagRepository";
 import {Container, Paper, Tab, Tabs, ThemeProvider} from "@mui/material";
-import themeProvider from "../../theme/ThemeProvider";
-import CreateNewBudgetExpensePopUp from "../spent-budget/popup/CreateNewBudgetExpensePopUp";
+import themeProvider from "../theme/ThemeProvider";
+import SaveBudgetExpensePopUp from "./popup/SaveBudgetExpensePopUp";
 import {LocalGroceryStore, Search} from "@mui/icons-material";
-import SpentBudgetContent from "../spent-budget/budget/SpentBudgetContent";
-import DeleteBudgetExpenseConfirmationPopUp from "../spent-budget/popup/DeleteBudgetExpenseConfirmationPopUp";
-import {SearchTagsPageMenuItem} from "../../component/menu/SearchTagsPageMenuItem";
-import {BudgetRevenuePageMenuItem} from "../../component/menu/BudgetRevenuePageMenuItem";
-import AccountPageMenuItem from "../../component/menu/AccountPageMenuItem";
-import OpenPopUpMenuItem from "../../component/menu/OpenPopUpMenuItem";
-import Menu from "../../component/menu/Menu";
-import {TabPanel} from "../../component/layout/TabPanel";
-import TotalBySearchTags from "../spent-budget/budget/TotalBySearchTags";
-import SpentBudgetTotalBanner from "../spent-budget/budget/SpentBudgetTotalBanner";
-import {DateFormatPattern} from "../../component/form/FormDatePicker";
-import SearchBudgetExpensePopUp from "../spent-budget/popup/SearchBudgetExpensePopUp";
+import SpentBudgetContent from "./budget/SpentBudgetContent";
+import DeleteBudgetExpenseConfirmationPopUp from "./popup/DeleteBudgetExpenseConfirmationPopUp";
+import {SearchTagsPageMenuItem} from "../component/menu/SearchTagsPageMenuItem";
+import {BudgetRevenuePageMenuItem} from "../component/menu/BudgetRevenuePageMenuItem";
+import AccountPageMenuItem from "../component/menu/AccountPageMenuItem";
+import OpenPopUpMenuItem from "../component/menu/OpenPopUpMenuItem";
+import Menu from "../component/menu/Menu";
+import {TabPanel} from "../component/layout/TabPanel";
+import TotalBySearchTags from "./budget/TotalBySearchTags";
+import SpentBudgetTotalBanner from "./budget/SpentBudgetTotalBanner";
+import {DateFormatPattern} from "../component/form/FormDatePicker";
+import SearchBudgetExpensePopUp from "./popup/SearchBudgetExpensePopUp";
 
 const BudgetExpensePage = (props) => {
     const {messageRegistry, links} = props
@@ -81,17 +84,17 @@ const BudgetExpensePage = (props) => {
         setOpenSearchBudgetExpensePopUp(false)
     }, [])
 
-    const [selectedMonth, setSelectedMonth] = useState(getMonth())
-    const [selectedYear, setSelectedYear] = useState(getYear())
+    const [selectedMonth, setSelectedMonth] = useState(getMonthSearchCriteria())
+    const [selectedYear, setSelectedYear] = useState(getYearSearchCriteria())
     const [selectedSearchTags, setSelectedSearchTags] = useState([])
 
     const configMap = new FamilyBudgetPagesConfigMap();
 
     function getSpentBudget() {
         findBudgetExpense({
-            month: getMonth(),
-            year: getYear(),
-            searchTags: getSearchTags()
+            month: getMonthSearchCriteria(),
+            year: getYearSearchCriteria(),
+            searchTagList: getSearchTagsSearchCriteria()
         }).then(data => {
             setSpentBudget(data)
         });
@@ -182,6 +185,7 @@ const BudgetExpensePage = (props) => {
             <SearchBudgetExpensePopUp
                 month={selectedMonth}
                 year={selectedYear}
+                searchTags={selectedSearchTags}
                 monthRegistry={monthRegistry}
                 searchTagRegistry={searchTagRegistry}
                 handlers={searchPopupEventHandlers}
@@ -189,11 +193,15 @@ const BudgetExpensePage = (props) => {
                 handleClose={searchBudgetExpensePopUpCloseHandler}
                 open={openSearchBudgetExpensePopUp}
                 saveCallback={() => {
-                    window.location.href = `${links.home}?choicedMonth=${selectedMonth}&year=${selectedYear}`;
+                    setMonthSearchCriteria(selectedMonth)
+                    setYearSearchCriteria(selectedYear)
+                    setSearchTagsSearchCriteria(selectedSearchTags.map(tag => tag.value))
+                    setOpenSearchBudgetExpensePopUp(false)
+                    getSpentBudget()
                 }}
             />
 
-            <CreateNewBudgetExpensePopUp
+            <SaveBudgetExpensePopUp
                 open={openSaveBudgetExpensePopUp}
                 handleClose={saveBudgetExpensePopUpCloseHandler}
                 spentBudgetHandlers={savePopupEventHandlers}

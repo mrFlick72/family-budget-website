@@ -1,11 +1,9 @@
-var path = require('path');
-
+const path = require('path');
 const BUID_DIR = path.resolve(__dirname + "../../../../target/classes/static");
 
 module.exports = {
-    mode: 'development',
     entry: {
-        familyBudget: path.resolve(__dirname, './app/family-budget-site/index.js')
+        familyBudget: path.resolve(__dirname, './app/index.js')
     },
     resolve: {
         extensions: [".js", ".jsx"]

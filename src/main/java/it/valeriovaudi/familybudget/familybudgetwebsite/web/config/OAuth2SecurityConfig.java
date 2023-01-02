@@ -52,9 +52,7 @@ public class OAuth2SecurityConfig {
         );
 
         return http.build();
-
     }
-
 
     @Bean
     public RestTemplate budgetRestTemplate(OAuth2TokenResolver oAuth2TokenResolver) {

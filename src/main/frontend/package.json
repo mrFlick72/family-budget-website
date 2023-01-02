@@ -9,7 +9,8 @@
     ]
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js --mode=development",
+    "production-build": "webpack --config webpack.config.js --mode=production",
     "watch": "webpack --watch"
   },
   "author": "mrFlick72",
@@ -45,7 +46,6 @@
     "react-router-dom": "^6.6.1",
     "react-select": "^5.7.0",
     "style-loader": "^3.3.1",
-    "url-search-params-polyfill": "^8.1.1",
     "uuid": "^9.0.0"
   }
 }

@@ -1,4 +1,4 @@
-import {getMessageFor} from "../domain/repository/MessageRepository";
+import {getMessageFor} from "./MessageRepository";
 
 export class FamilyBudgetPagesConfigMap {
 

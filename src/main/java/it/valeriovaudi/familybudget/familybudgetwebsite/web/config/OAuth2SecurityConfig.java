@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,20 +32,18 @@ public class OAuth2SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().headers().frameOptions().disable();
+        http.csrf(AbstractHttpConfigurer::disable)
+                .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
-        http.logout()
-                .deleteCookies("opbs")
+        http.logout(logoutConfigurer -> logoutConfigurer.deleteCookies("opbs")
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/index");
+                .logoutSuccessUrl("/index"));
 
 
-        http.oauth2Login().defaultSuccessUrl("/index")
-                .userInfoEndpoint()
-                .oidcUserService(vAuthenticatorOidcUserService)
-                .and()
-                .authorizationEndpoint()
-                .authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState);
+        http.oauth2Login(loginConfigurer -> loginConfigurer
+                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.oidcUserService(vAuthenticatorOidcUserService))
+                .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.authorizationRequestResolver(oAuth2AuthorizationRequestResolverWithSessionState)));
+
 
         http.authorizeHttpRequests(
                 authz ->

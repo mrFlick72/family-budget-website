@@ -15,7 +15,6 @@ import org.springframework.web.context.request.WebRequest;
 @RestController
 public class BudgetEndPoint {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(BudgetEndPoint.class);
     private final String budgetServiceUri;
     private final BudgetProxyService budgetProxyService;
     private final RestTemplate budgetRestTemplate;

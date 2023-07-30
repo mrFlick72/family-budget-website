@@ -15,10 +15,7 @@ export default () => {
 
     let [messageRegistry, setMessageRegistry] = useState({})
     useEffect(() => {
-        getAllMessageRegistry()
-            .then(data => {
-                setMessageRegistry(data)
-            })
+        setMessageRegistry(getAllMessageRegistry())
     }, [])
 
     return (

@@ -2,7 +2,7 @@ export function getAllMessageRegistry() {
     return {
         "menu.userProfile.label": "User Profile",
         "menu.logOut.label": "Log Out",
-        "menu.title=Family": "Budget",
+        "menu.title": "Onlyone Portal (Budget)",
         "common.button.save": "label=Save",
         "common.button.close": "label=Close",
         "budgetExpensePage.menu.newBudgetExpense": "New Budget Expense",

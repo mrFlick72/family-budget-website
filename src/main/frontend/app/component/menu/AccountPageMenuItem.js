@@ -5,6 +5,6 @@ import React from "react";
 export default ({text}) => {
     return <MenuItem
         icon={<Person/>}
-        link="/account/site/index.html"
+        link="/account/index"
         text={text}/>
 }
